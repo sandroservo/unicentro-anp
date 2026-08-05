@@ -3,7 +3,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Plus, Pencil, Trash2, Youtube, ClipboardList } from "lucide-react";
+import { Plus, Pencil, Trash2, Youtube, ClipboardList, FileText } from "lucide-react";
+import { TranscriptDialog } from "./transcript-dialog";
 import {
   Table, TableHeader, TableBody, TableHead, TableRow, TableCell,
 } from "@/components/ui/table";
@@ -72,6 +73,8 @@ export function LessonsTable({ moduleId, canWrite }: { moduleId: string; canWrit
                     } />
                     {canWrite && (
                       <>
+                        <TranscriptDialog lessonId={l.id}
+                          trigger={<Button variant="ghost" size="icon" aria-label="Transcrição"><FileText className="h-4 w-4" /></Button>} />
                         <LessonDialog mode="edit" moduleId={moduleId} lesson={l}
                           trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
                         <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(l.id)}>
