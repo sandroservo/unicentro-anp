@@ -32,6 +32,7 @@ const adminItems: MenuItem[] = [
   { icon: Users, label: "Alunos", href: "/admin/alunos", permission: "students.read" },
   { icon: BookOpen, label: "Cursos", href: "/admin/cursos", permission: "courses.read" },
   { icon: ClipboardList, label: "Banco de Questões", href: "/admin/questoes", permission: "questions.write" },
+  { icon: Users, label: "Usuários", href: "/admin/usuarios", permission: "users.manage" },
 ];
 
 const settingsItem: MenuItem = {
