@@ -37,7 +37,6 @@ export function Topbar() {
 
         <DropdownMenu>
           <DropdownMenuTrigger
-            nativeButton={false}
             render={
               <button className="flex items-center gap-2 rounded-lg p-1 pr-2 hover:bg-muted transition-colors">
                 <span className="h-8 w-8 rounded-full bg-primary text-primary-foreground grid place-items-center text-xs font-semibold">
