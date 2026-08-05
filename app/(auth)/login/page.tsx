@@ -49,21 +49,31 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Esquerda: foto full-height com overlay (dropar public/login-bg.jpg; fallback gradiente) */}
+      {/* Esquerda: foto full-height com overlay (dropar public/login-bg.jpg; fallback gradiente da marca) */}
       <div
-        className="hidden md:block md:w-1/2 lg:w-3/5 bg-slate-900 bg-cover bg-center relative"
+        className="hidden md:flex md:w-1/2 lg:w-3/5 bg-slate-900 bg-cover bg-center relative flex-col justify-end p-12"
         style={{ backgroundImage: "url('/login-bg.jpg')" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/70 to-slate-900/40" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-slate-900/80 to-slate-950/90" />
+        <div className="relative text-white max-w-md">
+          <h2 className="text-3xl font-bold leading-tight">
+            Compromisso com o presente,<br />transformando o futuro.
+          </h2>
+          <p className="mt-3 text-white/70">
+            Plataforma de ensino da UNICENTROMA — aulas, atividades e tutor com IA.
+          </p>
+        </div>
       </div>
 
       {/* Direita: form */}
       <div className="flex-1 flex items-center justify-center bg-white px-6 py-12">
         <div className="w-full max-w-sm">
           {/* Logo */}
-          <div className="flex justify-center mb-8">
+          <div className="flex flex-col items-center mb-8">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="UNICENTROMA" className="h-28 w-auto" />
+            <img src="/logo.png" alt="UNICENTROMA" className="h-24 w-auto" />
+            <h1 className="mt-6 text-xl font-semibold text-gray-900">Bem-vindo de volta</h1>
+            <p className="text-sm text-gray-500">Entre na sua conta para continuar</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -79,7 +89,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 required
               />
             </div>
@@ -91,7 +101,7 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-2.5 pr-11 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 pr-11 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   required
                 />
                 <button
@@ -107,7 +117,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-primary text-primary-foreground rounded-md font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
