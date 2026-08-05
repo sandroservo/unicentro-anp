@@ -20,8 +20,15 @@ export async function POST(request: Request) {
     }
 
     const hashedPassword = await hash(password, 12);
+    const alunoRole = await prisma.role.findUnique({ where: { slug: "ALUNO" } });
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword, role: "STUDENT" },
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        role: "ALUNO",
+        roleId: alunoRole?.id ?? null,
+      },
     });
 
     return NextResponse.json(
