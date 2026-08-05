@@ -18,6 +18,7 @@ import {
   ChevronDown,
   Users,
   BarChart3,
+  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isAdminRole } from "@/lib/rbac";
@@ -35,6 +36,7 @@ const menuItemsAluno: MenuItem[] = [
   { icon: ClipboardList, label: "Atividades", href: "/aluno/atividades" },
   { icon: MessageSquare, label: "Fórum", href: "/aluno/forum" },
   { icon: Brain, label: "Professor IA", href: "/aluno/tutor" },
+  { icon: Search, label: "Busca", href: "/aluno/busca" },
   { icon: GraduationCap, label: "Certificados", href: "/aluno/certificados" },
 ];
 
