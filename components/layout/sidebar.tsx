@@ -74,7 +74,7 @@ export function Sidebar() {
       <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
         {!collapsed && (
           <Link href="/aluno" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center">
               <GraduationCap className="text-white" size={24} />
             </div>
             <span className="font-bold text-xl text-gray-800">ANP</span>
@@ -99,7 +99,7 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
                 isActive
-                  ? "bg-blue-50 text-blue-600 font-medium"
+                  ? "bg-primary/10 text-primary font-medium"
                   : "text-gray-600 hover:bg-gray-50"
               )}
             >
@@ -129,7 +129,7 @@ export function Sidebar() {
                     className={cn(
                       "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
                       isActive
-                        ? "bg-blue-50 text-blue-600 font-medium"
+                        ? "bg-primary/10 text-primary font-medium"
                         : "text-gray-600 hover:bg-gray-50"
                     )}
                   >
