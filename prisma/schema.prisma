@@ -31,6 +31,7 @@ model User {
   aiChats       AIChat[]
   progress      Progress[]
   studentProfile StudentProfile?
+  coordinatedCourses Course[] @relation("CourseCoordinator")
 }
 
 model StudentProfile {
@@ -73,6 +74,11 @@ model Course {
   description   String
   thumbnail     String?
   isActive      Boolean   @default(true)
+  slug          String?   @unique // gerado do título (estável)
+  code          String?   // código institucional
+  workloadHours Int?      // carga horária
+  coordinatorId String?
+  coordinator   User?     @relation("CourseCoordinator", fields: [coordinatorId], references: [id])
   aiPersona     String?   // Persona do Professor Virtual
   aiContext     String?   // Contexto/Ementa para a IA
   createdAt     DateTime  @default(now())
