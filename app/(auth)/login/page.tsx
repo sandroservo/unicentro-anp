@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, Loader2, GraduationCap } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -61,21 +61,9 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center bg-white px-6 py-12">
         <div className="w-full max-w-sm">
           {/* Logo */}
-          <div className="flex flex-col items-center mb-8">
-            <div className="flex items-center gap-2">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center">
-                <GraduationCap className="text-white" size={26} />
-              </div>
-              <div className="leading-tight">
-                <p className="text-xl font-bold text-gray-900">USTA</p>
-                <p className="text-[10px] text-gray-500 tracking-wide">
-                  UNIVERSIDADE SOLARIS DE TECNOLOGIA E ARTES
-                </p>
-              </div>
-            </div>
-            <span className="mt-4 inline-block rounded-md bg-primary px-3 py-1 text-sm font-medium text-primary-foreground">
-              Acesso
-            </span>
+          <div className="flex justify-center mb-8">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/image/bandeira-Uni.png" alt="UNICENTROMA" className="h-28 w-auto" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
