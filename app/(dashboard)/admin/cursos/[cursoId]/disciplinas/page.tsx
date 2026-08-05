@@ -20,11 +20,11 @@ export default async function DisciplinasPage({
   if (!course) notFound();
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Disciplinas" subtitle={course.title} />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <SubjectsTable courseId={cursoId} canWrite={canWrite} />
       </div>
-    </div>
+    </>
   );
 }

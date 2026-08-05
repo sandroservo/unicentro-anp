@@ -35,9 +35,9 @@ export default async function AdminDashboard() {
 
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Painel Administrativo" subtitle="Visão geral da plataforma" />
-      <div className="flex-1 p-6 overflow-auto space-y-6">
+      <div className="space-y-6">
         {/* KPIs */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard label="Alunos" value={students} icon={Users} />
@@ -71,22 +71,22 @@ export default async function AdminDashboard() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="flex items-center gap-3 rounded-lg p-2 hover:bg-muted transition-colors"
+                  className="flex items-center gap-3 rounded-lg p-2 transition-colors hover:bg-gray-50 dark:hover:bg-white/5"
                 >
-                  <div className="h-9 w-9 rounded-lg bg-primary/10 grid place-items-center shrink-0">
-                    <l.icon className="h-4 w-4 text-primary" />
+                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-50 dark:bg-brand-500/15">
+                    <l.icon className="h-4 w-4 text-brand-500" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium">{l.label}</p>
-                    <p className="text-xs text-muted-foreground truncate">{l.desc}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-800 dark:text-white/90">{l.label}</p>
+                    <p className="truncate text-xs text-gray-500 dark:text-gray-400">{l.desc}</p>
                   </div>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <ChevronRight className="h-4 w-4 shrink-0 text-gray-400" />
                 </Link>
               ))}
             </CardContent>
           </Card>
         </div>
       </div>
-    </div>
+    </>
   );
 }

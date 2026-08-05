@@ -174,28 +174,30 @@ Você gostaria que eu explicasse algum conceito específico como:
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <Header
-        title={lessonData.title}
-        subtitle="Introdução à Programação"
-      />
+    <div className="-m-4 flex h-[calc(100vh-80px)] flex-col md:-m-6">
+      <div className="px-4 pt-4 md:px-6 md:pt-6">
+        <Header
+          title={lessonData.title}
+          subtitle="Introdução à Programação"
+        />
+      </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Main Content - Video */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex flex-1 flex-col">
           {/* Video Player */}
-          <div className="relative bg-black aspect-video">
+          <div className="relative aspect-video bg-black">
             <iframe
               src={`https://www.youtube.com/embed/${lessonData.videoId}?rel=0`}
               title={lessonData.title}
-              className="w-full h-full"
+              className="h-full w-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
           </div>
 
           {/* Video Info & Navigation */}
-          <div className="p-4 bg-card border-b">
+          <div className="border-b border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-xl font-semibold text-foreground">

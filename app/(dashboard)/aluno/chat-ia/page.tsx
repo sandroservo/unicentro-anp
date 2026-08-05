@@ -149,14 +149,16 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <Header title="Professor Virtual" subtitle="Tire suas dúvidas com IA" />
+    <div className="-m-4 flex h-[calc(100vh-80px)] flex-col md:-m-6">
+      <div className="px-4 pt-4 md:px-6 md:pt-6">
+        <Header title="Professor Virtual" subtitle="Tire suas dúvidas com IA" />
+      </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col bg-muted">
+        <div className="flex flex-1 flex-col bg-gray-50 dark:bg-gray-900">
           {/* Course Selector */}
-          <div className="bg-card border-b px-4 py-3">
+          <div className="border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900">
             <div className="flex items-center justify-between">
               <div className="relative">
                 <button

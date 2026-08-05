@@ -80,5 +80,5 @@ export function toRoleSlug(role: string | null | undefined): RoleSlug {
 }
 
 export function isAdminRole(slug: string | null | undefined): boolean {
-  return !!slug && (ADMIN_ROLE_SLUGS as string[]).includes(slug);
+  return (ADMIN_ROLE_SLUGS as string[]).includes(toRoleSlug(slug));
 }

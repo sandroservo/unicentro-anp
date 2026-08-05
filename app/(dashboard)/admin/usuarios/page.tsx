@@ -6,11 +6,11 @@ export default async function UsuariosPage() {
   await requirePermission("users.manage");
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Usuários" subtitle="Gestão de usuários e tipos de acesso" />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <UsersTable />
       </div>
-    </div>
+    </>
   );
 }

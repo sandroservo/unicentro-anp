@@ -7,11 +7,11 @@ export default async function QuestoesPage() {
   const canWrite = session.user.permissions.includes("questions.write");
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Banco de Questões" subtitle="Pool reusável de questões" />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <QuestionsTable canWrite={canWrite} />
       </div>
-    </div>
+    </>
   );
 }

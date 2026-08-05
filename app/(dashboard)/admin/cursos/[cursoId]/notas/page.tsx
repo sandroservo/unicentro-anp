@@ -20,11 +20,11 @@ export default async function NotasPage({
   if (!course) notFound();
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title={`Notas · ${course.title}`} subtitle="Boletim" />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <GradebookTable courseId={cursoId} canWrite={canWrite} />
       </div>
-    </div>
+    </>
   );
 }

@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/header";
-import { Settings, Save, Loader2, Check } from "lucide-react";
-import Link from "next/link";
+import { Save, Loader2, Check } from "lucide-react";
 
 type Provider = "anthropic" | "openai" | "";
 
@@ -78,49 +77,40 @@ export default function ConfiguracoesPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col h-full">
-        <Header />
-        <div className="flex-1 flex items-center justify-center">
-          <Loader2 className="animate-spin text-primary" size={32} />
+      <>
+        <Header title="Configurações" subtitle="Sistema e integrações" />
+        <div className="flex min-h-[40vh] items-center justify-center">
+          <Loader2 className="animate-spin text-brand-500" size={32} />
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <Header />
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="mb-6 flex items-center gap-2">
-          <Link href="/admin" className="text-muted-foreground hover:text-foreground text-sm">
-            Admin
-          </Link>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-foreground font-medium">Configurações</span>
-        </div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-          <Settings size={28} />
-          Configurações do sistema
-        </h1>
-        <p className="text-muted-foreground mt-1 mb-6">
+    <>
+      <Header title="Configurações" subtitle="Sistema e integrações" />
+      <div className="space-y-6">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Configure o provedor de IA do Professor Virtual. As chaves ficam salvas no banco de dados (não use .env).
         </p>
 
         {error && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+          <div className="rounded-xl border border-error-500/20 bg-error-50 p-4 text-sm text-error-600">
             {error}
           </div>
         )}
         {saved && (
-          <div className="mb-4 p-4 bg-primary/10 border border-primary/30 rounded-xl text-green-700 text-sm flex items-center gap-2">
+          <div className="flex items-center gap-2 rounded-xl border border-success-500/20 bg-success-50 p-4 text-sm text-success-600">
             <Check size={18} />
             Configurações salvas com sucesso.
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-          <div className="bg-card rounded-xl border border-border p-6">
-            <h2 className="font-semibold text-foreground mb-4">Professor Virtual (IA)</h2>
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h2 className="mb-4 font-semibold text-gray-800 dark:text-white/90">
+              Professor Virtual (IA)
+            </h2>
 
             <div className="space-y-4">
               <div>
@@ -186,7 +176,7 @@ export default function ConfiguracoesPage() {
                 />
               </div>
 
-              <div className="border-t border-border pt-4 mt-4">
+              <div className="border-t border-gray-100 dark:border-gray-800 pt-4 mt-4">
                 <label className="block text-sm font-medium text-foreground mb-2">
                   Chave API OpenAI (GPT)
                 </label>
@@ -234,7 +224,7 @@ export default function ConfiguracoesPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 rounded-xl bg-brand-500 px-6 py-3 font-medium text-white transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving ? (
               <Loader2 size={20} className="animate-spin" />
@@ -245,6 +235,6 @@ export default function ConfiguracoesPage() {
           </button>
         </form>
       </div>
-    </div>
+    </>
   );
 }

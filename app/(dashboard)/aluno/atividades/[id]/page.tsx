@@ -11,11 +11,11 @@ export default async function ResolverAtividadePage({
   const { id } = await params;
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Atividade" subtitle="Resolução" />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <ActivityTake activityId={id} />
       </div>
-    </div>
+    </>
   );
 }

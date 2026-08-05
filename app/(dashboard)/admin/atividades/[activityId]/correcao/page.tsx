@@ -20,11 +20,11 @@ export default async function CorrecaoPage({
   if (!activity) notFound();
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title={`Correção · ${activity.title}`} subtitle="Submissões" />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <SubmissionsList activityId={activityId} canWrite={canWrite} />
       </div>
-    </div>
+    </>
   );
 }

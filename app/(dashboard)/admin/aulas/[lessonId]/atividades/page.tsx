@@ -20,11 +20,11 @@ export default async function AtividadesPage({
   if (!lesson) notFound();
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title={`Atividades · ${lesson.title}`} subtitle="Autoria" />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <ActivitiesTable lessonId={lessonId} canWrite={canWrite} />
       </div>
-    </div>
+    </>
   );
 }

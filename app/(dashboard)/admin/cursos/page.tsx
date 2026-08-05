@@ -7,11 +7,11 @@ export default async function CursosPage() {
   const canWrite = session.user.permissions.includes("courses.write");
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Cursos" subtitle="Gestão de cursos" />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <CoursesTable canWrite={canWrite} />
       </div>
-    </div>
+    </>
   );
 }

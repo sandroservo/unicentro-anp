@@ -36,11 +36,11 @@ export function GradebookTable({ courseId, canWrite }: { courseId: string; canWr
   if (data.rows.length === 0) return <p className="text-muted-foreground">Nenhuma submissão ainda.</p>;
 
   return (
-    <div className="rounded-2xl border bg-card shadow-sm overflow-x-auto">
+    <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="sticky left-0 bg-card">Aluno</TableHead>
+            <TableHead className="sticky left-0 bg-white dark:bg-gray-900">Aluno</TableHead>
             {data.activities.map((a) => (
               <TableHead key={a.id} className="whitespace-nowrap">{a.title}</TableHead>
             ))}
@@ -51,7 +51,7 @@ export function GradebookTable({ courseId, canWrite }: { courseId: string; canWr
         <TableBody>
           {data.rows.map((r) => (
             <TableRow key={r.userId}>
-              <TableCell className="font-medium sticky left-0 bg-card">{r.name}</TableCell>
+              <TableCell className="font-medium sticky left-0 bg-white dark:bg-gray-900">{r.name}</TableCell>
               {data.activities.map((a) => (
                 <TableCell key={a.id}>{r.grades[a.id] ?? "—"}</TableCell>
               ))}

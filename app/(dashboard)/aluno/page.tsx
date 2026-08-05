@@ -50,9 +50,9 @@ export default async function AlunoDashboard() {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header />
-      <div className="flex-1 p-6 overflow-auto space-y-6">
+      <div className="space-y-6">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard label="Cursos matriculados" value={enrollments.length} icon={BookOpen} />
           <StatCard
@@ -64,8 +64,8 @@ export default async function AlunoDashboard() {
           <StatCard label="Certificados" value={certificates} icon={Award} />
         </div>
 
-        <div className="rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
-          <div className="p-5 border-b border-border flex items-center justify-between">
+        <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
+          <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <h2 className="font-semibold text-foreground">Meus Cursos</h2>
             <Link href="/aluno/cursos" className="text-sm text-primary hover:underline">
               Ver todos
@@ -76,14 +76,14 @@ export default async function AlunoDashboard() {
               Você ainda não está matriculado em cursos.
             </p>
           ) : (
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-gray-100 dark:divide-gray-800">
               {enrollments.map((e) => {
                 const lessons = e.course.modules.reduce((a, m) => a + m.lessons.length, 0);
                 return (
                   <Link
                     key={e.id}
                     href={`/aluno/cursos/${e.course.id}`}
-                    className="flex items-center gap-4 p-4 hover:bg-muted transition-colors"
+                    className="flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
                   >
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                       <BookOpen size={22} />
@@ -108,6 +108,6 @@ export default async function AlunoDashboard() {
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 }

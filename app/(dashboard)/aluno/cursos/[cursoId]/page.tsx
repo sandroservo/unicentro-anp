@@ -83,13 +83,12 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
   );
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header
         title={courseData.title}
         subtitle={`${completedLessons} de ${totalLessons} aulas concluídas`}
       />
-
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Módulos e Aulas */}
           <div className="lg:col-span-2 space-y-4">
@@ -103,7 +102,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
               return (
                 <div
                   key={module.id}
-                  className="bg-card rounded-xl border border-border overflow-hidden"
+                  className="rounded-2xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]"
                 >
                   {/* Module Header */}
                   <button
@@ -143,12 +142,12 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
 
                   {/* Lessons */}
                   {isExpanded && (
-                    <div className="border-t border-border">
+                    <div className="border-t border-gray-100 dark:border-gray-800">
                       {module.lessons.map((lesson, index) => (
                         <Link
                           key={lesson.id}
                           href={`/aluno/cursos/${cursoId}/aulas/${lesson.id}`}
-                          className="flex items-center gap-4 p-4 hover:bg-muted transition-colors border-b border-border last:border-0"
+                          className="flex items-center gap-4 p-4 hover:bg-muted transition-colors border-b border-gray-100 dark:border-gray-800 last:border-0"
                         >
                           <div
                             className={cn(
@@ -200,7 +199,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Progress Card */}
-            <div className="bg-card rounded-xl border border-border p-4">
+            <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
               <h3 className="font-semibold text-foreground mb-4">Seu Progresso</h3>
               <div className="relative pt-1">
                 <div className="flex items-center justify-between mb-2">
@@ -243,7 +242,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-card rounded-xl border border-border p-4">
+            <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
               <h3 className="font-semibold text-foreground mb-4">Ações Rápidas</h3>
               <div className="space-y-2">
                 <Link
@@ -269,6 +268,6 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

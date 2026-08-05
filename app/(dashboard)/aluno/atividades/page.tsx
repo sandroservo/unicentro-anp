@@ -56,10 +56,9 @@ export default function AtividadesPage() {
   const completed = activities.filter((a) => a.status === "completed").length;
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Atividades" subtitle="Gerencie suas atividades e entregas" />
-
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
             <div className="flex items-center justify-between">
@@ -81,8 +80,8 @@ export default function AtividadesPage() {
           </div>
         </div>
 
-        <div className="bg-card rounded-xl border border-border overflow-hidden">
-          <div className="p-4 border-b border-border">
+        <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
+          <div className="p-4 border-b border-gray-100 dark:border-gray-800">
             <h2 className="font-semibold text-foreground">Todas as Atividades</h2>
           </div>
           <div className="divide-y divide-border">
@@ -127,6 +126,6 @@ export default function AtividadesPage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

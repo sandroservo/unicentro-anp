@@ -45,7 +45,7 @@ export function ModulesTable({ subjectId, canWrite }: { subjectId: string; canWr
             trigger={<Button><Plus className="h-4 w-4" /> Novo módulo</Button>} />
         )}
       </div>
-      <div className="rounded-2xl border bg-card shadow-sm">
+      <div className="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
         <Table>
           <TableHeader>
             <TableRow>

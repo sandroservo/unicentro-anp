@@ -66,13 +66,12 @@ const posts = [
 
 export default function ForumPage() {
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header
         title="Fórum"
         subtitle="Discussões e dúvidas dos cursos"
       />
-
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="flex-1 relative">
@@ -94,23 +93,23 @@ export default function ForumPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
             <p className="text-2xl font-bold text-foreground">{posts.length}</p>
             <p className="text-sm text-muted-foreground">Discussões</p>
           </div>
-          <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
             <p className="text-2xl font-bold text-primary">
               {posts.filter((p) => p.resolved).length}
             </p>
             <p className="text-sm text-muted-foreground">Resolvidas</p>
           </div>
-          <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
             <p className="text-2xl font-bold text-primary">
               {posts.filter((p) => p.hasAIReply).length}
             </p>
             <p className="text-sm text-muted-foreground">Com resposta IA</p>
           </div>
-          <div className="bg-card rounded-xl border border-border p-4 text-center">
+          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
             <p className="text-2xl font-bold text-purple-600">
               {posts.reduce((acc, p) => acc + p.replies, 0)}
             </p>
@@ -123,7 +122,7 @@ export default function ForumPage() {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="bg-card rounded-xl border border-border p-4 hover:shadow-md transition-shadow cursor-pointer"
+              className="cursor-pointer rounded-2xl border border-gray-200 bg-white p-4 transition-shadow hover:shadow-theme-md dark:border-gray-800 dark:bg-white/[0.03]"
             >
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-primary to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
@@ -178,6 +177,6 @@ export default function ForumPage() {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }

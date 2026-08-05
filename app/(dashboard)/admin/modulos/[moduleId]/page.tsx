@@ -20,11 +20,11 @@ export default async function AulasPage({
   if (!mod) notFound();
 
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title={`Aulas · ${mod.title}`} subtitle={mod.subject?.title ?? undefined} />
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <LessonsTable moduleId={moduleId} canWrite={canWrite} />
       </div>
-    </div>
+    </>
   );
 }

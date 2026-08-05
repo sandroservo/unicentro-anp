@@ -36,23 +36,22 @@ const courses = [
 ];
 
 const colors = [
-  "from-primary/100 to-primary",
-  "from-green-500 to-green-600",
-  "from-purple-500 to-purple-600",
+  "from-brand-400 to-brand-600",
+  "from-sky-400 to-sky-600",
+  "from-brand-500 to-brand-800",
 ];
 
 export default function CursosPage() {
   return (
-    <div className="flex flex-col h-full">
+    <>
       <Header title="Meus Cursos" subtitle="Gerencie seus cursos e acompanhe seu progresso" />
-
-      <div className="flex-1 p-6 overflow-auto">
+      <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {courses.map((course, index) => (
             <Link
               key={course.id}
               href={`/aluno/cursos/${course.id}`}
-              className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all group"
+              className="group overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all hover:shadow-theme-md dark:border-gray-800 dark:bg-white/[0.03]"
             >
               <div className={`h-32 bg-gradient-to-br ${colors[index % colors.length]} relative`}>
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -78,7 +77,7 @@ export default function CursosPage() {
                   <span>{course.aiPersona}</span>
                 </div>
 
-                <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
+                <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <PlayCircle size={14} />
                     <span>{course.lessons} aulas</span>
@@ -106,6 +105,6 @@ export default function CursosPage() {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }
