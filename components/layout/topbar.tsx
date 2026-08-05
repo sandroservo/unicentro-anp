@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Topbar() {
   const { data: session } = useSession();
@@ -26,6 +27,7 @@ export function Topbar() {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
         <button
           className="relative p-2 rounded-lg hover:bg-muted transition-colors"
           aria-label="Notificações"
