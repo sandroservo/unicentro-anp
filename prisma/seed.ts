@@ -3,6 +3,7 @@ import "dotenv/config";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from "bcryptjs";
+import { PERMISSIONS, ROLES, toRoleSlug } from "../lib/rbac";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL,
@@ -49,6 +50,50 @@ async function main() {
   });
 
   console.log("✅ Usuários criados");
+
+  // RBAC: roles, permissões e matriz (idempotente)
+  const permIds = new Map<string, string>();
+  for (const slug of PERMISSIONS) {
+    const p = await prisma.permission.upsert({
+      where: { slug },
+      update: {},
+      create: { slug },
+    });
+    permIds.set(slug, p.id);
+  }
+
+  const roleIdBySlug = new Map<string, string>();
+  for (const def of ROLES) {
+    const r = await prisma.role.upsert({
+      where: { slug: def.slug },
+      update: { name: def.name },
+      create: { slug: def.slug, name: def.name },
+    });
+    roleIdBySlug.set(def.slug, r.id);
+    // (re)vincula permissões da role
+    await prisma.rolePermission.deleteMany({ where: { roleId: r.id } });
+    if (def.permissions.length) {
+      await prisma.rolePermission.createMany({
+        data: def.permissions.map((perm) => ({
+          roleId: r.id,
+          permissionId: permIds.get(perm)!,
+        })),
+        skipDuplicates: true,
+      });
+    }
+  }
+
+  // Backfill: mapeia User.role (string legada) -> roleId
+  const allUsers = await prisma.user.findMany({ select: { id: true, role: true } });
+  for (const u of allUsers) {
+    const slug = toRoleSlug(u.role);
+    await prisma.user.update({
+      where: { id: u.id },
+      data: { roleId: roleIdBySlug.get(slug)! },
+    });
+  }
+
+  console.log(`✅ RBAC: ${ROLES.length} roles, ${PERMISSIONS.length} permissões, ${allUsers.length} usuários vinculados`);
 
   // Criar curso de Programação
   const cursoProgramacao = await prisma.course.upsert({

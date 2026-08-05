@@ -6,7 +6,8 @@ declare module "next-auth" {
       id: string;
       email: string;
       name: string;
-      role: string;
+      role: string; // slug canônico (SUPER_ADMIN, ALUNO, ...)
+      permissions: string[];
     };
   }
 
@@ -15,6 +16,7 @@ declare module "next-auth" {
     email: string;
     name: string;
     role: string;
+    permissions: string[];
   }
 }
 
@@ -22,6 +24,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     role: string;
+    permissions: string[];
   }
 }
 
@@ -30,5 +33,6 @@ declare module "@auth/core/jwt" {
   interface JWT {
     id: string;
     role: string;
+    permissions: string[];
   }
 }

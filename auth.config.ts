@@ -1,4 +1,5 @@
 import type { NextAuthConfig } from "next-auth";
+import { isAdminRole } from "@/lib/rbac";
 
 // Config edge-safe: SEM Prisma, SEM bcrypt. Usado pelo middleware (runtime edge)
 // e espalhado dentro de auth.ts (runtime node, que adiciona o provider Credentials).
@@ -14,9 +15,7 @@ export default {
       if (!isLoggedIn) return false;
 
       const { pathname } = request.nextUrl;
-      const role = auth.user.role;
-      const isAdmin = role === "ADMIN" || role === "SUPER";
-      if (pathname.startsWith("/admin") && !isAdmin) {
+      if (pathname.startsWith("/admin") && !isAdminRole(auth.user.role)) {
         return Response.redirect(new URL("/aluno", request.nextUrl));
       }
       return true;
@@ -25,6 +24,7 @@ export default {
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.permissions = user.permissions;
       }
       return token;
     },
@@ -32,6 +32,7 @@ export default {
       if (session.user) {
         session.user.id = token.id;
         session.user.role = token.role;
+        session.user.permissions = token.permissions ?? [];
       }
       return session;
     },
