@@ -6,7 +6,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
@@ -50,12 +49,11 @@ export function Topbar() {
             }
           />
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              <div className="flex flex-col">
-                <span className="font-medium">{name}</span>
-                <span className="text-xs text-muted-foreground font-normal">{email}</span>
-              </div>
-            </DropdownMenuLabel>
+            <div className="px-2 py-1.5">
+              <p className="text-sm font-medium">{name}</p>
+              <p className="text-xs text-muted-foreground">{email}</p>
+              {role && <p className="text-[10px] text-muted-foreground capitalize mt-0.5">{role.toLowerCase()}</p>}
+            </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })}>
               <LogOut className="h-4 w-4" /> Sair
