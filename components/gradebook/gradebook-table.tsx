@@ -1,6 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Award } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Table, TableHeader, TableBody, TableHead, TableRow, TableCell,
 } from "@/components/ui/table";
@@ -9,10 +12,23 @@ type Activity = { id: string; title: string };
 type Row = { userId: string; name: string; grades: Record<string, number | null>; average: number };
 type Data = { activities: Activity[]; rows: Row[] };
 
-export function GradebookTable({ courseId }: { courseId: string }) {
+export function GradebookTable({ courseId, canWrite }: { courseId: string; canWrite: boolean }) {
   const { data, isLoading } = useQuery({
     queryKey: ["gradebook", courseId],
     queryFn: async () => (await (await fetch(`/api/admin/courses/${courseId}/gradebook`)).json()) as Data,
+  });
+
+  const issue = useMutation({
+    mutationFn: async (userId: string) => {
+      const res = await fetch(`/api/admin/courses/${courseId}/certificates`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? "Erro");
+    },
+    onSuccess: () => toast.success("Certificado emitido"),
+    onError: (e: Error) => toast.error(e.message),
   });
 
   if (isLoading || !data) return <p className="text-gray-500">Carregando...</p>;
@@ -29,6 +45,7 @@ export function GradebookTable({ courseId }: { courseId: string }) {
               <TableHead key={a.id} className="whitespace-nowrap">{a.title}</TableHead>
             ))}
             <TableHead>Média</TableHead>
+            {canWrite && <TableHead className="text-right">Certificado</TableHead>}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -39,6 +56,13 @@ export function GradebookTable({ courseId }: { courseId: string }) {
                 <TableCell key={a.id}>{r.grades[a.id] ?? "—"}</TableCell>
               ))}
               <TableCell className="font-semibold">{r.average}</TableCell>
+              {canWrite && (
+                <TableCell className="text-right">
+                  <Button variant="outline" size="sm" onClick={() => issue.mutate(r.userId)} disabled={issue.isPending}>
+                    <Award className="h-4 w-4" /> Certificar
+                  </Button>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

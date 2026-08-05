@@ -35,6 +35,7 @@ const menuItemsAluno: MenuItem[] = [
   { icon: ClipboardList, label: "Atividades", href: "/aluno/atividades" },
   { icon: MessageSquare, label: "Fórum", href: "/aluno/forum" },
   { icon: Brain, label: "Professor IA", href: "/aluno/chat-ia" },
+  { icon: GraduationCap, label: "Certificados", href: "/aluno/certificados" },
 ];
 
 const menuItems = menuItemsAluno;

@@ -32,6 +32,7 @@ model User {
   progress      Progress[]
   studentProfile StudentProfile?
   coordinatedCourses Course[] @relation("CourseCoordinator")
+  certificates  Certificate[]
 }
 
 model StudentProfile {
@@ -87,6 +88,7 @@ model Course {
   modules       Module[]
   subjects      Subject[]
   enrollments   Enrollment[]
+  certificates  Certificate[]
 }
 
 model Enrollment {
@@ -246,6 +248,17 @@ model Progress {
   lesson        Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   @@unique([userId, lessonId])
+}
+
+model Certificate {
+  id       String   @id @default(cuid())
+  userId   String
+  courseId String
+  issuedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
 }
 
 model QuestionCategory {

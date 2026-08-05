@@ -9,8 +9,9 @@ export default async function NotasPage({
 }: {
   params: Promise<{ cursoId: string }>;
 }) {
-  await requirePermission("courses.read");
+  const session = await requirePermission("courses.read");
   const { cursoId } = await params;
+  const canWrite = session.user.permissions.includes("courses.write");
 
   const course = await prisma.course.findUnique({
     where: { id: cursoId },
@@ -22,7 +23,7 @@ export default async function NotasPage({
     <div className="flex flex-col h-full">
       <Header title={`Notas · ${course.title}`} subtitle="Boletim" />
       <div className="flex-1 p-6 overflow-auto">
-        <GradebookTable courseId={cursoId} />
+        <GradebookTable courseId={cursoId} canWrite={canWrite} />
       </div>
     </div>
   );
