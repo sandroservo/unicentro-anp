@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { z } from "zod";
 import { authOptions } from "@/lib/auth";
 import {
   buildSystemPrompt,
@@ -8,23 +9,21 @@ import {
 } from "@/lib/ai/professor-virtual";
 import { callChatAPI, getActiveProvider } from "@/lib/ai/providers";
 import { getAISettings } from "@/lib/settings";
+import { parseBody, apiError, ApiError } from "@/lib/api";
+
+const chatSchema = z.object({
+  messages: z
+    .array(z.object({ role: z.string(), content: z.string() }))
+    .min(1, "Mensagens são obrigatórias"),
+  context: z.record(z.string(), z.unknown()).optional(),
+});
 
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
+    if (!session) return apiError("Não autorizado", 401);
 
-    if (!session) {
-      return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
-    }
-
-    const { messages, context } = await request.json();
-
-    if (!messages || !Array.isArray(messages)) {
-      return NextResponse.json(
-        { error: "Mensagens são obrigatórias" },
-        { status: 400 }
-      );
-    }
+    const { messages, context } = await parseBody(chatSchema, request);
 
     const aiSettings = await getAISettings();
     const activeProvider = getActiveProvider(aiSettings);
@@ -36,13 +35,14 @@ export async function POST(request: Request) {
       });
     }
 
+    const ctx = context as Partial<AIContext> | undefined;
     const aiContext: AIContext = {
-      courseName: context?.courseName || "Curso",
-      courseDescription: context?.courseDescription || "",
-      lessonTitle: context?.lessonTitle,
-      lessonContent: context?.lessonContent,
-      materials: context?.materials,
-      aiPersona: context?.aiPersona,
+      courseName: ctx?.courseName || "Curso",
+      courseDescription: ctx?.courseDescription || "",
+      lessonTitle: ctx?.lessonTitle,
+      lessonContent: ctx?.lessonContent,
+      materials: ctx?.materials,
+      aiPersona: ctx?.aiPersona,
     };
 
     const systemPrompt = buildSystemPrompt(aiContext);
@@ -54,19 +54,17 @@ export async function POST(request: Request) {
         aiSettings
       );
       return NextResponse.json({ response });
-    } catch (apiError: any) {
-      console.warn(`API ${activeProvider.provider} indisponível, usando resposta simulada:`, apiError?.message);
+    } catch (providerError: any) {
+      console.warn(`API ${activeProvider.provider} indisponível, usando resposta simulada:`, providerError?.message);
       return NextResponse.json({
         response: getSimulatedResponse(messages[messages.length - 1]?.content || ""),
         simulated: true,
       });
     }
-  } catch (error: any) {
+  } catch (error) {
+    if (error instanceof ApiError) return apiError(error.message, error.status);
     console.error("Erro no chat IA:", error);
-    return NextResponse.json(
-      { error: error.message || "Erro interno do servidor" },
-      { status: 500 }
-    );
+    return apiError("Erro interno do servidor", 500);
   }
 }
 
