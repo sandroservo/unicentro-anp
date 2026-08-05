@@ -18,6 +18,9 @@ Login por credenciais (email/senha) com Auth.js v5, JWT, split edge/node. Sessã
 - Registro público (`/api/auth/register`): cria User role ALUNO + roleId, bcrypt(12).
 - `/` redireciona: deslogado → `/login`; logado → `/admin` ou `/aluno`.
 
+## UI — Login (split-screen USTA)
+`/login`: layout split — esquerda foto full-height (`public/login-bg.jpg`, fallback gradiente escuro) com overlay; direita branca com logo USTA + badge "Acesso" + Email/Senha + botão Login (token `primary`). Register centralizado (layout `(auth)` é passthrough full-screen). Trocar `public/login-bg.jpg` e logo pela arte oficial.
+
 ## Env
 `AUTH_SECRET` (fallback `NEXTAUTH_SECRET`), `trustHost: true` (dev). App em :3000/:3001.
 

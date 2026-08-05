@@ -54,7 +54,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-white to-primary/5 p-4">
+      <div className="w-full max-w-md">
       <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Crie sua conta</h1>
@@ -184,6 +185,7 @@ export default function RegisterPage() {
             </Link>
           </p>
         </div>
+      </div>
       </div>
     </div>
   );
