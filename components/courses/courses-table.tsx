@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Archive, Search } from "lucide-react";
+import Link from "next/link";
+import { Plus, Pencil, Archive, Search, Layers } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -119,6 +120,11 @@ export function CoursesTable({ canWrite }: { canWrite: boolean }) {
                   </TableCell>
                   {canWrite && (
                     <TableCell className="text-right space-x-1">
+                      <Button variant="ghost" size="icon" aria-label="Disciplinas" render={
+                        <Link href={`/admin/cursos/${c.id}/disciplinas`}>
+                          <Layers className="h-4 w-4" />
+                        </Link>
+                      } />
                       <CourseDialog
                         mode="edit"
                         course={c}
