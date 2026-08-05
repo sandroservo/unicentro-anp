@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import Link from "next/link";
-import { Plus, Pencil, Archive, Search, Layers } from "lucide-react";
+import { Plus, Pencil, Archive, Search, Layers, GraduationCap } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -123,6 +123,11 @@ export function CoursesTable({ canWrite }: { canWrite: boolean }) {
                       <Button variant="ghost" size="icon" aria-label="Disciplinas" render={
                         <Link href={`/admin/cursos/${c.id}/disciplinas`}>
                           <Layers className="h-4 w-4" />
+                        </Link>
+                      } />
+                      <Button variant="ghost" size="icon" aria-label="Notas" render={
+                        <Link href={`/admin/cursos/${c.id}/notas`}>
+                          <GraduationCap className="h-4 w-4" />
                         </Link>
                       } />
                       <CourseDialog
