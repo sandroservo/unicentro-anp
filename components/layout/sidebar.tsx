@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import {
-  Home, BookOpen, ClipboardList, MessageSquare, Brain, Settings,
+  BookOpen, ClipboardList, MessageSquare, Brain, Settings,
   LogOut, Menu, X, Users, Search, GraduationCap, Award,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,6 @@ interface MenuItem {
 }
 
 const menuItemsAluno: MenuItem[] = [
-  { icon: Home, label: "Dashboard", href: "/aluno" },
   { icon: BookOpen, label: "Meus Cursos", href: "/aluno/cursos" },
   { icon: ClipboardList, label: "Atividades", href: "/aluno/atividades" },
   { icon: MessageSquare, label: "Fórum", href: "/aluno/forum" },
@@ -103,13 +102,6 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto pb-4">
-        <SectionLabel>Menu</SectionLabel>
-        <div className="space-y-1">
-          {menuItemsAluno.map((item) => (
-            <NavItem key={item.href} item={item} />
-          ))}
-        </div>
-
         {isAdminRole(userRole) && (
           <>
             <SectionLabel>Administração</SectionLabel>
@@ -122,6 +114,13 @@ export function Sidebar() {
             </div>
           </>
         )}
+
+        <SectionLabel>Visão do Aluno</SectionLabel>
+        <div className="space-y-1">
+          {menuItemsAluno.map((item) => (
+            <NavItem key={item.href} item={item} />
+          ))}
+        </div>
       </nav>
 
       {/* User */}
