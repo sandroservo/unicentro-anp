@@ -75,7 +75,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 placeholder="seu@email.com"
                 required
               />
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full pl-10 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                 placeholder="••••••••"
                 required
               />
@@ -112,7 +112,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
@@ -130,7 +130,7 @@ export default function LoginPage() {
             Não tem uma conta?{" "}
             <Link
               href="/register"
-              className="text-blue-600 font-medium hover:text-blue-700"
+              className="text-primary font-medium hover:text-primary"
             >
               Cadastre-se
             </Link>
@@ -139,12 +139,12 @@ export default function LoginPage() {
       </div>
 
       {/* Demo credentials */}
-      <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
-        <p className="text-sm text-blue-800 font-medium mb-2">
+      <div className="mt-4 p-4 bg-primary/10 rounded-xl border border-primary/30">
+        <p className="text-sm text-primary font-medium mb-2">
           Credenciais de demonstração:
         </p>
-        <p className="text-sm text-blue-600">Email: aluno@anp.com</p>
-        <p className="text-sm text-blue-600">Senha: 123456</p>
+        <p className="text-sm text-primary">Email: aluno@anp.com</p>
+        <p className="text-sm text-primary">Senha: 123456</p>
       </div>
     </div>
   );

@@ -83,10 +83,10 @@ export default function ForumPage() {
             <input
               type="text"
               placeholder="Buscar discussões..."
-              className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
-          <button className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium">
+          <button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium">
             <Plus size={20} />
             Nova Discussão
           </button>
@@ -105,7 +105,7 @@ export default function ForumPage() {
             <p className="text-sm text-gray-500">Resolvidas</p>
           </div>
           <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <p className="text-2xl font-bold text-blue-600">
+            <p className="text-2xl font-bold text-primary">
               {posts.filter((p) => p.hasAIReply).length}
             </p>
             <p className="text-sm text-gray-500">Com resposta IA</p>
@@ -126,13 +126,13 @@ export default function ForumPage() {
               className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
             >
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
                   {post.author[0]}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="font-semibold text-gray-900 hover:text-blue-600">
+                      <h3 className="font-semibold text-gray-900 hover:text-primary">
                         {post.title}
                       </h3>
                       <p className="text-sm text-gray-600 mt-1 line-clamp-1">
@@ -166,7 +166,7 @@ export default function ForumPage() {
                       {post.replies} respostas
                     </span>
                     {post.hasAIReply && (
-                      <span className="flex items-center gap-1 text-sm text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                      <span className="flex items-center gap-1 text-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                         <Bot size={14} />
                         Resposta IA
                       </span>

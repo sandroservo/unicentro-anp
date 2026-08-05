@@ -97,7 +97,7 @@ export default function AtividadesPage() {
                       activity.type === "quiz"
                         ? "bg-purple-100 text-purple-600"
                         : activity.type === "essay"
-                        ? "bg-blue-100 text-blue-600"
+                        ? "bg-primary/10 text-primary"
                         : "bg-green-100 text-green-600"
                     }`}
                   >

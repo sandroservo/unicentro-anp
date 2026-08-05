@@ -163,7 +163,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                   onClick={() => setShowCourseSelector(!showCourseSelector)}
                   className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                 >
-                  <BookOpen size={18} className="text-blue-500" />
+                  <BookOpen size={18} className="text-primary" />
                   <span className="font-medium text-gray-700">
                     {selectedCourse.name}
                   </span>
@@ -178,7 +178,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                         onClick={() => handleCourseChange(course)}
                         className={cn(
                           "w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg",
-                          selectedCourse.id === course.id && "bg-blue-50"
+                          selectedCourse.id === course.id && "bg-primary/10"
                         )}
                       >
                         <p className="font-medium text-gray-900">{course.name}</p>
@@ -210,7 +210,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                 )}
               >
                 {msg.role === "assistant" && (
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/100 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-md">
                     <Bot size={20} className="text-white" />
                   </div>
                 )}
@@ -219,7 +219,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                   className={cn(
                     "max-w-[70%] px-4 py-3 rounded-2xl shadow-sm",
                     msg.role === "user"
-                      ? "bg-blue-500 text-white rounded-br-md"
+                      ? "bg-primary/100 text-white rounded-br-md"
                       : "bg-white text-gray-800 rounded-bl-md border"
                   )}
                 >
@@ -256,7 +256,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                   <p
                     className={cn(
                       "text-xs mt-2",
-                      msg.role === "user" ? "text-blue-100" : "text-gray-400"
+                      msg.role === "user" ? "text-primary-foreground" : "text-gray-400"
                     )}
                   >
                     {msg.timestamp.toLocaleTimeString("pt-BR", {
@@ -276,7 +276,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
 
             {isLoading && (
               <div className="flex gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/100 to-purple-500 flex items-center justify-center shadow-md">
                   <Bot size={20} className="text-white" />
                 </div>
                 <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-md shadow-sm border">
@@ -304,7 +304,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                   <button
                     key={suggestion}
                     onClick={() => setInput(suggestion)}
-                    className="px-3 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 transition-colors"
+                    className="px-3 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-primary/90 hover:border-primary/30 hover:text-primary transition-colors"
                   >
                     {suggestion}
                   </button>
@@ -322,13 +322,13 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSendMessage()}
                 placeholder="Digite sua dúvida..."
-                className="flex-1 px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+                className="flex-1 px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all"
                 disabled={isLoading}
               />
               <button
                 onClick={handleSendMessage}
                 disabled={!input.trim() || isLoading}
-                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-medium hover:from-blue-600 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-md hover:shadow-lg"
+                className="px-6 py-3 bg-gradient-to-r from-primary/100 to-primary text-white rounded-xl font-medium hover:from-primary hover:to-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-md hover:shadow-lg"
               >
                 <Send size={18} />
                 <span className="hidden sm:inline">Enviar</span>
@@ -341,7 +341,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
         <aside className="hidden lg:block w-80 bg-white border-l p-4 overflow-auto">
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
-              <Brain className="text-blue-500" size={20} />
+              <Brain className="text-primary" size={20} />
               <h3 className="font-semibold text-gray-900">
                 {selectedCourse.persona}
               </h3>
@@ -353,9 +353,9 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
           </div>
 
           <div className="space-y-4">
-            <div className="p-4 bg-blue-50 rounded-xl">
-              <h4 className="font-medium text-blue-900 mb-2">💡 Dica</h4>
-              <p className="text-sm text-blue-700">
+            <div className="p-4 bg-primary/10 rounded-xl">
+              <h4 className="font-medium text-primary mb-2">💡 Dica</h4>
+              <p className="text-sm text-primary">
                 Seja específico nas suas perguntas para obter respostas mais
                 úteis. Por exemplo: "Como criar uma função que soma dois números
                 em Python?"

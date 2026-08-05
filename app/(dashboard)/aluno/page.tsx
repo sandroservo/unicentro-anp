@@ -150,7 +150,7 @@ export default async function AlunoDashboard() {
   ];
 
   const colors = [
-    "from-blue-500 to-blue-600",
+    "from-primary/100 to-primary",
     "from-green-500 to-green-600",
     "from-purple-500 to-purple-600",
     "from-orange-500 to-orange-600",
@@ -193,7 +193,7 @@ export default async function AlunoDashboard() {
                 <h2 className="font-semibold text-gray-800">Meus Cursos</h2>
                 <Link
                   href="/aluno/cursos"
-                  className="text-sm text-blue-600 hover:text-blue-700"
+                  className="text-sm text-primary hover:text-primary"
                 >
                   Ver todos
                 </Link>
@@ -243,14 +243,14 @@ export default async function AlunoDashboard() {
             </div>
 
             {/* Continuar Assistindo */}
-            <div className="mt-6 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
+            <div className="mt-6 bg-gradient-to-br from-primary/100 to-primary rounded-xl p-6 text-white">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-blue-100 text-sm">Continuar assistindo</p>
+                  <p className="text-primary-foreground text-sm">Continuar assistindo</p>
                   <h3 className="text-xl font-semibold mt-1">
                     Aula 8: Funções em Python
                   </h3>
-                  <p className="text-blue-100 text-sm mt-2">
+                  <p className="text-primary-foreground text-sm mt-2">
                     Introdução à Programação • 45min restantes
                   </p>
                 </div>
@@ -315,7 +315,7 @@ export default async function AlunoDashboard() {
             <div className="p-4 border-t border-gray-200">
               <Link
                 href="/aluno/atividades"
-                className="block w-full py-2 text-sm text-blue-600 hover:text-blue-700 font-medium text-center"
+                className="block w-full py-2 text-sm text-primary hover:text-primary font-medium text-center"
               >
                 Ver todas as atividades
               </Link>

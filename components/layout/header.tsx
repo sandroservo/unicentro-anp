@@ -52,7 +52,7 @@ export function Header({ title, subtitle }: HeaderProps) {
         {/* Professor Virtual Button */}
         <Link
           href="/aluno/chat-ia"
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-md hover:shadow-lg"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/100 to-primary text-white rounded-xl hover:from-primary hover:to-primary transition-all shadow-md hover:shadow-lg"
         >
           <Brain size={18} />
           <span className="font-medium hidden sm:inline">Professor Virtual</span>

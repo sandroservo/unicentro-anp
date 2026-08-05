@@ -36,7 +36,7 @@ const courses = [
 ];
 
 const colors = [
-  "from-blue-500 to-blue-600",
+  "from-primary/100 to-primary",
   "from-green-500 to-green-600",
   "from-purple-500 to-purple-600",
 ];
@@ -66,7 +66,7 @@ export default function CursosPage() {
               </div>
 
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 text-lg group-hover:text-blue-600 transition-colors">
+                <h3 className="font-semibold text-gray-900 text-lg group-hover:text-primary transition-colors">
                   {course.title}
                 </h3>
                 <p className="text-gray-500 text-sm mt-1 line-clamp-2">
@@ -74,7 +74,7 @@ export default function CursosPage() {
                 </p>
 
                 <div className="flex items-center gap-2 mt-3 text-sm text-gray-600">
-                  <Bot size={16} className="text-blue-500" />
+                  <Bot size={16} className="text-primary" />
                   <span>{course.aiPersona}</span>
                 </div>
 

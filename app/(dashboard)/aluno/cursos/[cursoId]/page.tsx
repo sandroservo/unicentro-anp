@@ -116,7 +116,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
                           "w-8 h-8 rounded-lg flex items-center justify-center",
                           moduleCompleted
                             ? "bg-green-100 text-green-600"
-                            : "bg-blue-100 text-blue-600"
+                            : "bg-primary/10 text-primary"
                         )}
                       >
                         {moduleCompleted ? (
@@ -185,7 +185,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
                             className={cn(
                               lesson.completed
                                 ? "text-green-500"
-                                : "text-blue-500"
+                                : "text-primary"
                             )}
                           />
                         </Link>
@@ -213,7 +213,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
                 </div>
                 <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                    className="h-full bg-gradient-to-r from-primary/100 to-primary rounded-full"
                     style={{ width: `${courseData.progress}%` }}
                   ></div>
                 </div>
@@ -221,17 +221,17 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
             </div>
 
             {/* Professor Virtual Card */}
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl p-4 text-white">
+            <div className="bg-gradient-to-br from-primary/100 to-purple-600 rounded-xl p-4 text-white">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
                   <Bot size={24} />
                 </div>
                 <div>
                   <h3 className="font-semibold">{courseData.aiPersona}</h3>
-                  <p className="text-sm text-blue-100">Professor Virtual</p>
+                  <p className="text-sm text-primary-foreground">Professor Virtual</p>
                 </div>
               </div>
-              <p className="text-sm text-blue-100 mb-4">
+              <p className="text-sm text-primary-foreground mb-4">
                 {courseData.aiDescription}
               </p>
               <Link
@@ -261,7 +261,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
                   <span className="text-gray-700">Acessar Fórum</span>
                 </Link>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
-                  <Users size={20} className="text-blue-500" />
+                  <Users size={20} className="text-primary" />
                   <span className="text-gray-700">156 alunos matriculados</span>
                 </div>
               </div>

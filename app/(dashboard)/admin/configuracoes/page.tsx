@@ -81,7 +81,7 @@ export default function ConfiguracoesPage() {
       <div className="flex flex-col h-full">
         <Header />
         <div className="flex-1 flex items-center justify-center">
-          <Loader2 className="animate-spin text-blue-600" size={32} />
+          <Loader2 className="animate-spin text-primary" size={32} />
         </div>
       </div>
     );
@@ -132,7 +132,7 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, provider: e.target.value as Provider }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
                 >
                   <option value="">Selecione...</option>
                   <option value="anthropic">Anthropic (Claude)</option>
@@ -154,7 +154,7 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, anthropicApiKey: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
                   autoComplete="off"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -163,7 +163,7 @@ export default function ConfiguracoesPage() {
                     href="https://console.anthropic.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    className="text-primary hover:underline"
                   >
                     console.anthropic.com
                   </a>
@@ -182,7 +182,7 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, anthropicModel: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
                 />
               </div>
 
@@ -197,7 +197,7 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, openaiApiKey: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
                   autoComplete="off"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -206,7 +206,7 @@ export default function ConfiguracoesPage() {
                     href="https://platform.openai.com/api-keys"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    className="text-primary hover:underline"
                   >
                     platform.openai.com/api-keys
                   </a>
@@ -225,7 +225,7 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, openaiModel: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
                 />
               </div>
             </div>
@@ -234,7 +234,7 @@ export default function ConfiguracoesPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {saving ? (
               <Loader2 size={20} className="animate-spin" />

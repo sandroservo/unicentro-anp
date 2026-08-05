@@ -231,7 +231,7 @@ Você gostaria que eu explicasse algum conceito específico como:
               </button>
               <button
                 onClick={() => setChatOpen(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors md:hidden"
+                className="flex items-center gap-2 px-4 py-2 bg-primary/100 text-white rounded-lg hover:bg-primary/90 transition-colors md:hidden"
               >
                 <Brain size={18} />
                 Tirar Dúvida
@@ -249,7 +249,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                   className={cn(
                     "px-4 py-2 rounded-lg font-medium transition-colors",
                     activeTab === tab
-                      ? "bg-blue-500 text-white"
+                      ? "bg-primary/100 text-white"
                       : "bg-white text-gray-600 hover:bg-gray-100"
                   )}
                 >
@@ -266,7 +266,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                     className="flex items-center justify-between p-3 bg-white rounded-lg border"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText size={20} className="text-blue-500" />
+                      <FileText size={20} className="text-primary" />
                       <div>
                         <p className="font-medium text-gray-900">{material.title}</p>
                         <p className="text-xs text-gray-500">{material.size}</p>
@@ -305,7 +305,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                 className={cn(
                   "flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors",
                   activeTab === tab.id
-                    ? "text-blue-600 border-b-2 border-blue-600"
+                    ? "text-primary border-b-2 border-primary"
                     : "text-gray-500 hover:text-gray-700"
                 )}
               >
@@ -330,7 +330,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                       )}
                     >
                       {msg.role === "assistant" && (
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/100 to-purple-500 flex items-center justify-center flex-shrink-0">
                           <Bot size={16} className="text-white" />
                         </div>
                       )}
@@ -338,7 +338,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                         className={cn(
                           "max-w-[80%] px-4 py-2 rounded-2xl",
                           msg.role === "user"
-                            ? "bg-blue-500 text-white rounded-br-md"
+                            ? "bg-primary/100 text-white rounded-br-md"
                             : "bg-gray-100 text-gray-800 rounded-bl-md"
                         )}
                       >
@@ -353,7 +353,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                   ))}
                   {isLoading && (
                     <div className="flex gap-2">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/100 to-purple-500 flex items-center justify-center">
                         <Bot size={16} className="text-white" />
                       </div>
                       <div className="bg-gray-100 px-4 py-3 rounded-2xl rounded-bl-md">
@@ -375,7 +375,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                         <button
                           key={suggestion}
                           onClick={() => setInput(suggestion)}
-                          className="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-full text-xs font-medium whitespace-nowrap hover:bg-blue-100 transition-colors"
+                          className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-medium whitespace-nowrap hover:bg-primary/90 transition-colors"
                         >
                           {suggestion}
                         </button>
@@ -393,12 +393,12 @@ Você gostaria que eu explicasse algum conceito específico como:
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                       placeholder="Digite sua dúvida..."
-                      className="flex-1 px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-1 px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                     <button
                       onClick={handleSendMessage}
                       disabled={!input.trim() || isLoading}
-                      className="p-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors disabled:opacity-50"
+                      className="p-2 bg-primary/100 text-white rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
                     >
                       <Send size={20} />
                     </button>
@@ -415,7 +415,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                     className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <FileText size={20} className="text-blue-500" />
+                      <FileText size={20} className="text-primary" />
                       <div>
                         <p className="font-medium text-gray-900 text-sm">
                           {material.title}
@@ -450,7 +450,7 @@ Você gostaria que eu explicasse algum conceito específico como:
           <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl h-[80vh] flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
               <div className="flex items-center gap-2">
-                <Brain className="text-blue-500" size={20} />
+                <Brain className="text-primary" size={20} />
                 <span className="font-semibold">Professor Virtual</span>
               </div>
               <button onClick={() => setChatOpen(false)}>
@@ -468,7 +468,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                   )}
                 >
                   {msg.role === "assistant" && (
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/100 to-purple-500 flex items-center justify-center flex-shrink-0">
                       <Bot size={16} className="text-white" />
                     </div>
                   )}
@@ -476,7 +476,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                     className={cn(
                       "max-w-[80%] px-4 py-2 rounded-2xl",
                       msg.role === "user"
-                        ? "bg-blue-500 text-white rounded-br-md"
+                        ? "bg-primary/100 text-white rounded-br-md"
                         : "bg-gray-100 text-gray-800 rounded-bl-md"
                     )}
                   >
@@ -494,12 +494,12 @@ Você gostaria que eu explicasse algum conceito específico como:
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                   placeholder="Digite sua dúvida..."
-                  className="flex-1 px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!input.trim() || isLoading}
-                  className="p-2 bg-blue-500 text-white rounded-xl"
+                  className="p-2 bg-primary/100 text-white rounded-xl"
                 >
                   <Send size={20} />
                 </button>

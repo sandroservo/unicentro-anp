@@ -12,12 +12,12 @@ import {
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-primary/10 to-white">
       {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary/100 to-primary rounded-xl flex items-center justify-center">
               <GraduationCap className="text-white" size={24} />
             </div>
             <span className="font-bold text-xl text-gray-800">ANP</span>
@@ -42,7 +42,7 @@ export default function HomePage() {
             </Link>
             <Link
               href="/register"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
             >
               Começar Grátis
             </Link>
@@ -54,13 +54,13 @@ export default function HomePage() {
       <section className="py-20 md:py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-full text-blue-700 text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-6">
               <Brain size={16} />
               <span>Powered by AI</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               Aprenda com um{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
                 Professor Virtual
               </span>{" "}
               sempre disponível
@@ -72,7 +72,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/register"
-                className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold text-lg flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-semibold text-lg flex items-center justify-center gap-2"
               >
                 Começar Agora
                 <ArrowRight size={20} />
@@ -148,7 +148,7 @@ export default function HomePage() {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="p-6 rounded-2xl border border-gray-200 hover:border-blue-200 hover:shadow-lg transition-all group"
+                className="p-6 rounded-2xl border border-gray-200 hover:border-primary/30 hover:shadow-lg transition-all group"
               >
                 <div
                   className={`w-12 h-12 rounded-xl bg-${feature.color}-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
@@ -166,14 +166,14 @@ export default function HomePage() {
       </section>
 
       {/* Professor Virtual Section */}
-      <section id="professor-virtual" className="py-20 bg-gradient-to-br from-blue-600 to-purple-700">
+      <section id="professor-virtual" className="py-20 bg-gradient-to-br from-primary to-purple-700">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-white">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Conheça o Professor Virtual
               </h2>
-              <p className="text-blue-100 text-lg mb-8">
+              <p className="text-primary-foreground text-lg mb-8">
                 Cada disciplina tem seu próprio professor virtual especialista,
                 treinado com o conteúdo do curso para oferecer o melhor suporte.
               </p>
@@ -194,7 +194,7 @@ export default function HomePage() {
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-2xl">
               <div className="flex items-center gap-3 mb-4 pb-4 border-b">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary/100 to-purple-500 rounded-full flex items-center justify-center">
                   <Brain className="text-white" size={20} />
                 </div>
                 <div>
@@ -204,7 +204,7 @@ export default function HomePage() {
               </div>
               <div className="space-y-4">
                 <div className="flex justify-end">
-                  <div className="bg-blue-500 text-white px-4 py-2 rounded-2xl rounded-br-md max-w-[80%]">
+                  <div className="bg-primary/100 text-white px-4 py-2 rounded-2xl rounded-br-md max-w-[80%]">
                     Qual a diferença entre let e const?
                   </div>
                 </div>
@@ -241,7 +241,7 @@ export default function HomePage() {
             </p>
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-semibold text-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-semibold text-lg"
             >
               Criar Conta Grátis
               <ArrowRight size={20} />
@@ -255,7 +255,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary/100 to-primary rounded-lg flex items-center justify-center">
                 <GraduationCap className="text-white" size={18} />
               </div>
               <span className="font-bold text-gray-800">ANP</span>
