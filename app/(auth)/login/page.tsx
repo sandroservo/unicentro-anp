@@ -63,7 +63,7 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="flex justify-center mb-8">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/image/bandeira-Uni.png" alt="UNICENTROMA" className="h-28 w-auto" />
+            <img src="/logo.png" alt="UNICENTROMA" className="h-28 w-auto" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
