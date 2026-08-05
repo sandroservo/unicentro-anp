@@ -2,7 +2,8 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, ListChecks } from "lucide-react";
+import Link from "next/link";
+import { Plus, Pencil, Trash2, ListChecks, CheckSquare } from "lucide-react";
 import {
   Table, TableHeader, TableBody, TableHead, TableRow, TableCell,
 } from "@/components/ui/table";
@@ -71,6 +72,9 @@ export function ActivitiesTable({ lessonId, canWrite }: { lessonId: string; canW
                   <TableCell>{a.aiGrading ? <Badge>IA</Badge> : "—"}</TableCell>
                   {canWrite && (
                     <TableCell className="text-right space-x-1">
+                      <Button variant="ghost" size="icon" aria-label="Correção" render={
+                        <Link href={`/admin/atividades/${a.id}/correcao`}><CheckSquare className="h-4 w-4" /></Link>
+                      } />
                       <ActivityQuestionsDialog activityId={a.id} lessonId={lessonId}
                         trigger={<Button variant="ghost" size="icon" aria-label="Questões"><ListChecks className="h-4 w-4" /></Button>} />
                       <ActivityDialog mode="edit" lessonId={lessonId} activity={a}

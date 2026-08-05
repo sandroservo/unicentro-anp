@@ -17,4 +17,9 @@ export const submitSchema = z.object({
   answers: z.record(z.string(), z.unknown()),
 });
 
+export const gradeManualSchema = z.object({
+  finalGrade: z.coerce.number().min(0),
+  feedback: z.string().trim().optional().or(z.literal("")),
+});
+
 export type ActivityInput = z.infer<typeof activityCreateSchema>;
