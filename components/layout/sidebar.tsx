@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import {
   BookOpen, ClipboardList, MessageSquare, Brain, Settings,
-  LogOut, Menu, X, Users, Search, GraduationCap, Award,
+  LogOut, Menu, X, Users, Search, GraduationCap, Award, Eye, ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isAdminRole } from "@/lib/rbac";
@@ -44,6 +44,11 @@ export function Sidebar() {
   const perms = (session?.user?.permissions as string[] | undefined) ?? [];
   const userName = session?.user?.name || "Usuário";
   const initials = userName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
+
+  const alunoActive = menuItemsAluno.some(
+    (i) => pathname === i.href || pathname.startsWith(i.href + "/")
+  );
+  const [alunoOpen, setAlunoOpen] = useState(true);
 
   const NavItem = ({ item }: { item: MenuItem }) => {
     const active = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -115,12 +120,61 @@ export function Sidebar() {
           </>
         )}
 
-        <SectionLabel>Visão do Aluno</SectionLabel>
-        <div className="space-y-1">
-          {menuItemsAluno.map((item) => (
-            <NavItem key={item.href} item={item} />
-          ))}
-        </div>
+        {collapsed ? (
+          <>
+            <SectionLabel>Aluno</SectionLabel>
+            <div className="space-y-1">
+              {menuItemsAluno.map((item) => (
+                <NavItem key={item.href} item={item} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <SectionLabel>Visão do Aluno</SectionLabel>
+            <button
+              onClick={() => setAlunoOpen((o) => !o)}
+              className={cn(
+                "group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                alunoActive
+                  ? "bg-primary/10 text-primary"
+                  : "text-foreground/70 hover:bg-muted hover:text-foreground"
+              )}
+            >
+              <Eye
+                size={20}
+                className={alunoActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}
+              />
+              <span>Visão do Aluno</span>
+              <ChevronDown
+                size={16}
+                className={cn("ml-auto transition-transform", alunoOpen && "rotate-180")}
+              />
+            </button>
+            {alunoOpen && (
+              <div className="mt-1 ml-4 space-y-1 border-l border-border pl-3">
+                {menuItemsAluno.map((item) => {
+                  const active = pathname === item.href || pathname.startsWith(item.href + "/");
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                        active
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground/70 hover:bg-muted hover:text-foreground"
+                      )}
+                    >
+                      <item.icon size={18} className={active ? "text-primary" : "text-muted-foreground"} />
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
       </nav>
 
       {/* User */}
