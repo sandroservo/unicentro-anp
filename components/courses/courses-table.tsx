@@ -81,7 +81,7 @@ export function CoursesTable({ canWrite }: { canWrite: boolean }) {
         )}
       </div>
 
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-2xl border bg-card shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>

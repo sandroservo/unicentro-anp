@@ -44,7 +44,7 @@ export function LessonsTable({ moduleId, canWrite }: { moduleId: string; canWrit
             trigger={<Button><Plus className="h-4 w-4" /> Nova aula</Button>} />
         )}
       </div>
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-2xl border bg-card shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>

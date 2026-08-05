@@ -18,7 +18,7 @@ export function MyCertificates() {
   return (
     <div className="grid gap-3 max-w-2xl">
       {certs.map((c) => (
-        <div key={c.id} className="flex items-center gap-3 rounded-lg border bg-card p-4">
+        <div key={c.id} className="flex items-center gap-3 rounded-2xl border bg-card shadow-sm p-4">
           <Award className="h-8 w-8 text-yellow-500" />
           <div className="flex-1">
             <p className="font-medium">{c.course.title}</p>

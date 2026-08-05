@@ -47,7 +47,7 @@ export function ActivitiesTable({ lessonId, canWrite }: { lessonId: string; canW
             trigger={<Button><Plus className="h-4 w-4" /> Nova atividade</Button>} />
         )}
       </div>
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-2xl border bg-card shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>

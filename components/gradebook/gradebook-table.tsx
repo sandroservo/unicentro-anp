@@ -36,7 +36,7 @@ export function GradebookTable({ courseId, canWrite }: { courseId: string; canWr
   if (data.rows.length === 0) return <p className="text-gray-500">Nenhuma submissão ainda.</p>;
 
   return (
-    <div className="rounded-lg border bg-card overflow-x-auto">
+    <div className="rounded-2xl border bg-card shadow-sm overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>

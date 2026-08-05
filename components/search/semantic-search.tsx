@@ -55,7 +55,7 @@ export function SemanticSearch() {
         ) : (
           <ul className="space-y-3">
             {results.map((r, i) => (
-              <li key={i} className="rounded-lg border bg-card p-3">
+              <li key={i} className="rounded-2xl border bg-card shadow-sm p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant="secondary">{r.source}</Badge>
                   <span className="text-xs text-gray-400">relevância {r.score.toFixed(2)}</span>
