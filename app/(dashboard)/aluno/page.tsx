@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/auth";
 import { Header } from "@/components/layout/header";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
@@ -40,7 +39,7 @@ async function getStudentData(userId: string) {
 }
 
 export default async function AlunoDashboard() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const userId = session?.user?.id;
 
   let enrollments: any[] = [];

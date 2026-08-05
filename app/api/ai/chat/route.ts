@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 import { z } from "zod";
-import { authOptions } from "@/lib/auth";
 import {
   buildSystemPrompt,
   type AIMessage,
@@ -20,7 +19,7 @@ const chatSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) return apiError("Não autorizado", 401);
 
     const { messages, context } = await parseBody(chatSchema, request);

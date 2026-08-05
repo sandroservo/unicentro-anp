@@ -24,3 +24,11 @@ declare module "next-auth/jwt" {
     role: string;
   }
 }
+
+// Auth.js v5 resolve o JWT via @auth/core/jwt — augmentar aqui também.
+declare module "@auth/core/jwt" {
+  interface JWT {
+    id: string;
+    role: string;
+  }
+}

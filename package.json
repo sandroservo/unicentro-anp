@@ -25,7 +25,7 @@
     "dotenv": "^17.2.3",
     "lucide-react": "^0.563.0",
     "next": "^15.5.22",
-    "next-auth": "^4.24.13",
+    "next-auth": "^5.0.0-beta.32",
     "pg": "^8.22.0",
     "postcss": "^8.5.6",
     "prisma": "^7.3.0",

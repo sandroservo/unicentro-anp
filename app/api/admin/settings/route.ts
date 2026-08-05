@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 import { z } from "zod";
-import { authOptions } from "@/lib/auth";
 import { getAISettings, setAISettings, type AISettings } from "@/lib/settings";
 import { parseBody, apiError, ApiError } from "@/lib/api";
 
@@ -21,7 +20,7 @@ function maskKey(key: string | null): string {
 }
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const role = session?.user?.role;
   if (!session || !role || !ADMIN_ROLES.includes(role)) {
     return apiError("Não autorizado", 401);
@@ -38,7 +37,7 @@ export async function GET() {
 }
 
 export async function PATCH(request: Request) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const role = session?.user?.role;
   if (!session || !role || !ADMIN_ROLES.includes(role)) {
     return apiError("Não autorizado", 401);

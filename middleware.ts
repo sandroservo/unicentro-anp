@@ -1,21 +1,9 @@
-import { withAuth } from "next-auth/middleware";
-import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
+import authConfig from "@/auth.config";
 
-export default withAuth(
-  function middleware(req) {
-    const { pathname } = req.nextUrl;
-    const role = req.nextauth.token?.role;
-    const isAdmin = role === "ADMIN" || role === "SUPER";
-    if (pathname.startsWith("/admin") && !isAdmin) {
-      return NextResponse.redirect(new URL("/aluno", req.url));
-    }
-    return NextResponse.next();
-  },
-  {
-    callbacks: { authorized: ({ token }) => !!token },
-    pages: { signIn: "/login" },
-  }
-);
+// Instância só-edge (authConfig sem Prisma) — o gate de role vive em
+// authConfig.callbacks.authorized. Não importa auth.ts (traria Prisma pro edge).
+export const { auth: middleware } = NextAuth(authConfig);
 
 export const config = {
   matcher: ["/aluno/:path*", "/admin/:path*"],
