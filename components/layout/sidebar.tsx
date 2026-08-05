@@ -32,8 +32,11 @@ const adminItems: MenuItem[] = [
   { icon: Users, label: "Alunos", href: "/admin/alunos", permission: "students.read" },
   { icon: BookOpen, label: "Cursos", href: "/admin/cursos", permission: "courses.read" },
   { icon: ClipboardList, label: "Banco de Questões", href: "/admin/questoes", permission: "questions.write" },
-  { icon: Settings, label: "Configurações", href: "/admin/configuracoes", permission: "settings.manage" },
 ];
+
+const settingsItem: MenuItem = {
+  icon: Settings, label: "Configurações", href: "/admin/configuracoes", permission: "settings.manage",
+};
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
@@ -174,6 +177,13 @@ export function Sidebar() {
             )}
           </div>
         )}
+
+        {isAdminRole(userRole) &&
+          (!settingsItem.permission || perms.includes(settingsItem.permission)) && (
+            <div className="mt-1">
+              <NavItem item={settingsItem} />
+            </div>
+          )}
       </nav>
 
       {/* User */}
