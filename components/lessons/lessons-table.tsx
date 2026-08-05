@@ -2,7 +2,8 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Youtube } from "lucide-react";
+import Link from "next/link";
+import { Plus, Pencil, Trash2, Youtube, ClipboardList } from "lucide-react";
 import {
   Table, TableHeader, TableBody, TableHead, TableRow, TableCell,
 } from "@/components/ui/table";
@@ -49,14 +50,14 @@ export function LessonsTable({ moduleId, canWrite }: { moduleId: string; canWrit
               <TableHead className="w-16">Ordem</TableHead>
               <TableHead>Título</TableHead>
               <TableHead>Vídeo</TableHead>
-              {canWrite && <TableHead className="text-right">Ações</TableHead>}
+              <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={canWrite ? 4 : 3} className="text-center text-gray-500">Carregando...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={4} className="text-center text-gray-500">Carregando...</TableCell></TableRow>
             ) : lessons.length === 0 ? (
-              <TableRow><TableCell colSpan={canWrite ? 4 : 3} className="text-center text-gray-500">Nenhuma aula.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={4} className="text-center text-gray-500">Nenhuma aula.</TableCell></TableRow>
             ) : (
               lessons.map((l) => (
                 <TableRow key={l.id}>
@@ -65,15 +66,20 @@ export function LessonsTable({ moduleId, canWrite }: { moduleId: string; canWrit
                   <TableCell>
                     {l.videoUrl ? <Youtube className="h-4 w-4 text-red-600" /> : <span className="text-gray-400">—</span>}
                   </TableCell>
-                  {canWrite && (
-                    <TableCell className="text-right space-x-1">
-                      <LessonDialog mode="edit" moduleId={moduleId} lesson={l}
-                        trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
-                      <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(l.id)}>
-                        <Trash2 className="h-4 w-4 text-red-600" />
-                      </Button>
-                    </TableCell>
-                  )}
+                  <TableCell className="text-right space-x-1">
+                    <Button variant="ghost" size="icon" aria-label="Atividades" render={
+                      <Link href={`/admin/aulas/${l.id}/atividades`}><ClipboardList className="h-4 w-4" /></Link>
+                    } />
+                    {canWrite && (
+                      <>
+                        <LessonDialog mode="edit" moduleId={moduleId} lesson={l}
+                          trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
+                        <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(l.id)}>
+                          <Trash2 className="h-4 w-4 text-red-600" />
+                        </Button>
+                      </>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))
             )}
