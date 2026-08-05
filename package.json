@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "db:generate": "prisma generate",
-    "db:push": "prisma db push"
+    "db:push": "prisma db push",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
   },
   "keywords": [],
   "author": "",
@@ -47,8 +50,10 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/pg": "^8.20.4",
     "@types/react-dom": "^19.2.4",
-    "eslint-config-next": "^15.5.22"
+    "eslint-config-next": "^15.5.22",
+    "vitest": "^4.1.10"
   }
 }

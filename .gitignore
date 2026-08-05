@@ -47,3 +47,7 @@ generated/
 # IDE
 .idea
 .vscode
+
+# Test artifacts
+playwright-report/
+test-results/
