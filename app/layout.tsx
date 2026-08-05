@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className="dark font-sans">
+    <html lang="pt-BR" className="font-sans">
       <body>
         <Providers>{children}</Providers>
       </body>
