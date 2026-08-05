@@ -130,8 +130,7 @@ export function Sidebar() {
             </div>
           </>
         ) : (
-          <>
-            <SectionLabel>Visão do Aluno</SectionLabel>
+          <div className="mt-2">
             <button
               onClick={() => setAlunoOpen((o) => !o)}
               className={cn(
@@ -173,7 +172,7 @@ export function Sidebar() {
                 })}
               </div>
             )}
-          </>
+          </div>
         )}
       </nav>
 
