@@ -30,6 +30,18 @@ model User {
   submissions   Submission[]
   aiChats       AIChat[]
   progress      Progress[]
+  studentProfile StudentProfile?
+}
+
+model StudentProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  matricula String   @unique
+  phone     String?
+  status    String   @default("ATIVO") // ATIVO | INATIVO
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Role {

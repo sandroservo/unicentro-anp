@@ -20,12 +20,13 @@ import {
   BarChart3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { isAdminRole } from "@/lib/rbac";
 
 interface MenuItem {
   icon: any;
   label: string;
   href: string;
-  roles?: string[];
+  permission?: string; // se definido, só aparece quando a sessão tem a permissão
 }
 
 const menuItemsAluno: MenuItem[] = [
@@ -39,10 +40,9 @@ const menuItemsAluno: MenuItem[] = [
 const menuItems = menuItemsAluno;
 
 const adminItems: MenuItem[] = [
-  { icon: GraduationCap, label: "Painel Admin", href: "/admin", roles: ["ADMIN", "SUPER"] },
-  { icon: Settings, label: "Configurações", href: "/admin/configuracoes", roles: ["ADMIN", "SUPER"] },
-  { icon: Users, label: "Usuários", href: "/admin/usuarios", roles: ["ADMIN", "SUPER"] },
-  { icon: BarChart3, label: "Analytics", href: "/admin/analytics", roles: ["ADMIN", "SUPER"] },
+  { icon: GraduationCap, label: "Painel Admin", href: "/admin" },
+  { icon: Users, label: "Alunos", href: "/admin/alunos", permission: "students.read" },
+  { icon: Settings, label: "Configurações", href: "/admin/configuracoes", permission: "settings.manage" },
 ];
 
 export function Sidebar() {
@@ -50,7 +50,8 @@ export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const userRole = (session?.user?.role as string)?.toUpperCase?.() || "STUDENT";
+  const userRole = (session?.user?.role as string) || "ALUNO";
+  const perms = (session?.user?.permissions as string[] | undefined) ?? [];
   const userName = session?.user?.name || "Usuário";
   const userInitials = userName
     .split(" ")
@@ -106,7 +107,7 @@ export function Sidebar() {
         })}
 
         {/* Admin Menu */}
-        {(userRole === "ADMIN" || userRole === "SUPER") && (
+        {isAdminRole(userRole) && (
           <>
             <div className="pt-4 mt-4 border-t border-gray-200">
               {!collapsed && (
@@ -114,7 +115,9 @@ export function Sidebar() {
                   Administração
                 </p>
               )}
-              {adminItems.map((item) => {
+              {adminItems
+                .filter((item) => !item.permission || perms.includes(item.permission))
+                .map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                 return (
                   <Link
