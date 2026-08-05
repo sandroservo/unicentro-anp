@@ -5,20 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import {
-  GraduationCap,
-  Home,
-  BookOpen,
-  ClipboardList,
-  MessageSquare,
-  Brain,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  ChevronDown,
-  Users,
-  BarChart3,
-  Search,
+  Home, BookOpen, ClipboardList, MessageSquare, Brain, Settings,
+  LogOut, Menu, X, Users, Search, GraduationCap, Award,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isAdminRole } from "@/lib/rbac";
@@ -27,7 +15,7 @@ interface MenuItem {
   icon: any;
   label: string;
   href: string;
-  permission?: string; // se definido, só aparece quando a sessão tem a permissão
+  permission?: string;
 }
 
 const menuItemsAluno: MenuItem[] = [
@@ -37,10 +25,8 @@ const menuItemsAluno: MenuItem[] = [
   { icon: MessageSquare, label: "Fórum", href: "/aluno/forum" },
   { icon: Brain, label: "Professor IA", href: "/aluno/tutor" },
   { icon: Search, label: "Busca", href: "/aluno/busca" },
-  { icon: GraduationCap, label: "Certificados", href: "/aluno/certificados" },
+  { icon: Award, label: "Certificados", href: "/aluno/certificados" },
 ];
-
-const menuItems = menuItemsAluno;
 
 const adminItems: MenuItem[] = [
   { icon: GraduationCap, label: "Painel Admin", href: "/admin" },
@@ -58,128 +44,108 @@ export function Sidebar() {
   const userRole = (session?.user?.role as string) || "ALUNO";
   const perms = (session?.user?.permissions as string[] | undefined) ?? [];
   const userName = session?.user?.name || "Usuário";
-  const userInitials = userName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+  const initials = userName.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
+
+  const NavItem = ({ item }: { item: MenuItem }) => {
+    const active = pathname === item.href || pathname.startsWith(item.href + "/");
+    return (
+      <Link
+        href={item.href}
+        className={cn(
+          "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+          collapsed && "justify-center px-0",
+          active
+            ? "bg-primary/10 text-primary"
+            : "text-foreground/70 hover:bg-muted hover:text-foreground"
+        )}
+      >
+        <item.icon
+          size={20}
+          className={active ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}
+        />
+        {!collapsed && <span>{item.label}</span>}
+      </Link>
+    );
+  };
+
+  const SectionLabel = ({ children }: { children: string }) =>
+    collapsed ? (
+      <div className="my-2 h-px bg-border" />
+    ) : (
+      <p className="px-3 pt-4 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        {children}
+      </p>
+    );
 
   return (
     <aside
       className={cn(
-        "bg-card border-r border-border flex flex-col transition-all duration-300",
-        collapsed ? "w-20" : "w-64"
+        "flex flex-col border-r border-border bg-card transition-all duration-300",
+        collapsed ? "w-[84px] px-2" : "w-[260px] px-4"
       )}
     >
       {/* Logo */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-border">
+      <div className={cn("flex items-center h-20 shrink-0", collapsed ? "justify-center" : "justify-between px-1")}>
         {!collapsed && (
-          <Link href="/aluno" className="flex items-center gap-2">
+          <Link href="/aluno">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="UNICENTROMA" className="h-9 w-auto" />
+            <img src="/logo.png" alt="UNICENTROMA" className="h-11 w-auto" />
           </Link>
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded-lg hover:bg-muted transition-colors"
+          className="p-2 rounded-lg text-muted-foreground hover:bg-muted transition-colors"
+          aria-label="Recolher menu"
         >
           {collapsed ? <Menu size={20} /> : <X size={20} />}
         </button>
       </div>
 
-      {/* Menu Principal */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        {!collapsed && (
-          <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-            Menu
-          </p>
-        )}
-        {menuItems.map((item) => {
-          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
-                isActive
-                  ? "bg-primary/10 text-primary font-medium"
-                  : "text-muted-foreground hover:bg-muted"
-              )}
-            >
-              <item.icon size={20} />
-              {!collapsed && <span>{item.label}</span>}
-            </Link>
-          );
-        })}
+      {/* Nav */}
+      <nav className="flex-1 overflow-y-auto pb-4">
+        <SectionLabel>Menu</SectionLabel>
+        <div className="space-y-1">
+          {menuItemsAluno.map((item) => (
+            <NavItem key={item.href} item={item} />
+          ))}
+        </div>
 
-        {/* Admin Menu */}
         {isAdminRole(userRole) && (
           <>
-            <div className="pt-4 mt-4 border-t border-border">
-              {!collapsed && (
-                <p className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                  Administração
-                </p>
-              )}
+            <SectionLabel>Administração</SectionLabel>
+            <div className="space-y-1">
               {adminItems
-                .filter((item) => !item.permission || perms.includes(item.permission))
-                .map((item) => {
-                const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
-                      isActive
-                        ? "bg-primary/10 text-primary font-medium"
-                        : "text-muted-foreground hover:bg-muted"
-                    )}
-                  >
-                    <item.icon size={20} />
-                    {!collapsed && <span>{item.label}</span>}
-                  </Link>
-                );
-              })}
+                .filter((i) => !i.permission || perms.includes(i.permission))
+                .map((item) => (
+                  <NavItem key={item.href} item={item} />
+                ))}
             </div>
           </>
         )}
       </nav>
 
-      {/* User Profile */}
-      <div className="p-4 border-t border-border">
-        <div
-          className={cn(
-            "flex items-center gap-3",
-            collapsed ? "justify-center" : ""
-          )}
-        >
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full flex items-center justify-center text-white font-medium flex-shrink-0">
-            {userInitials}
+      {/* User */}
+      <div className="border-t border-border py-3">
+        <div className={cn("flex items-center gap-3", collapsed && "justify-center")}>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-primary">
+            {initials}
           </div>
           {!collapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">
-                {userName}
-              </p>
-              <p className="text-xs text-muted-foreground capitalize">
-                {userRole.toLowerCase()}
-              </p>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-foreground">{userName}</p>
+              <p className="truncate text-xs capitalize text-muted-foreground">{userRole.toLowerCase()}</p>
             </div>
           )}
-        </div>
-        <button
-          onClick={() => signOut({ callbackUrl: "/login" })}
-          className={cn(
-            "mt-3 flex items-center gap-2 text-muted-foreground hover:text-red-600 transition-colors",
-            collapsed ? "justify-center w-full" : "px-1"
+          {!collapsed && (
+            <button
+              onClick={() => signOut({ callbackUrl: "/login" })}
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-red-600 transition-colors"
+              aria-label="Sair"
+            >
+              <LogOut size={18} />
+            </button>
           )}
-        >
-          <LogOut size={18} />
-          {!collapsed && <span className="text-sm">Sair</span>}
-        </button>
+        </div>
       </div>
     </aside>
   );
