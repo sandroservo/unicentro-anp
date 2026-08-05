@@ -2,7 +2,8 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Plus, Pencil, Trash2, Layers } from "lucide-react";
 import {
   Table,
   TableHeader,
@@ -72,19 +73,19 @@ export function SubjectsTable({
               <TableHead>Título</TableHead>
               <TableHead>Código</TableHead>
               <TableHead>Módulos</TableHead>
-              {canWrite && <TableHead className="text-right">Ações</TableHead>}
+              <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">
+                <TableCell colSpan={5} className="text-center text-gray-500">
                   Carregando...
                 </TableCell>
               </TableRow>
             ) : subjects.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">
+                <TableCell colSpan={5} className="text-center text-gray-500">
                   Nenhuma disciplina.
                 </TableCell>
               </TableRow>
@@ -95,28 +96,33 @@ export function SubjectsTable({
                   <TableCell className="font-medium">{s.title}</TableCell>
                   <TableCell>{s.code ?? "—"}</TableCell>
                   <TableCell>{s._count.modules}</TableCell>
-                  {canWrite && (
-                    <TableCell className="text-right space-x-1">
-                      <SubjectDialog
-                        mode="edit"
-                        courseId={courseId}
-                        subject={s}
-                        trigger={
-                          <Button variant="ghost" size="icon" aria-label="Editar">
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                        }
-                      />
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label="Remover"
-                        onClick={() => remove.mutate(s.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-red-600" />
-                      </Button>
-                    </TableCell>
-                  )}
+                  <TableCell className="text-right space-x-1">
+                    <Button variant="ghost" size="icon" aria-label="Módulos" render={
+                      <Link href={`/admin/disciplinas/${s.id}`}><Layers className="h-4 w-4" /></Link>
+                    } />
+                    {canWrite && (
+                      <>
+                        <SubjectDialog
+                          mode="edit"
+                          courseId={courseId}
+                          subject={s}
+                          trigger={
+                            <Button variant="ghost" size="icon" aria-label="Editar">
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                          }
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label="Remover"
+                          onClick={() => remove.mutate(s.id)}
+                        >
+                          <Trash2 className="h-4 w-4 text-red-600" />
+                        </Button>
+                      </>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))
             )}
