@@ -25,6 +25,7 @@ export async function PATCH(request: Request, { params }: Ctx) {
         ...(data.videoUrl !== undefined
           ? { videoUrl: data.videoUrl || null, videoId: data.videoUrl ? getYouTubeVideoId(data.videoUrl) : null }
           : {}),
+        ...(data.duration !== undefined ? { duration: data.duration ?? null } : {}),
         ...(data.order !== undefined ? { order: data.order ?? 0 } : {}),
       },
     });

@@ -44,6 +44,7 @@ export async function POST(request: Request, { params }: Ctx) {
         description: data.description || null,
         videoUrl: data.videoUrl || null,
         videoId,
+        duration: data.duration ?? null,
         order: data.order ?? 0,
       },
       select: { id: true },

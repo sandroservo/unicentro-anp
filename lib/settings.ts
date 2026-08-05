@@ -7,6 +7,7 @@ export const SETTING_KEYS = {
   OPENAI_API_KEY: "openai_api_key",
   AI_ANTHROPIC_MODEL: "ai_anthropic_model",
   AI_OPENAI_MODEL: "ai_openai_model",
+  YOUTUBE_API_KEY: "youtube_api_key",
 } as const;
 
 export type AISettings = {
