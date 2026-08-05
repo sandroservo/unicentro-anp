@@ -35,7 +35,7 @@ export function SemanticSearch() {
     <div className="max-w-2xl space-y-4">
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             className="pl-9"
             placeholder="Buscar no material do curso..."
@@ -51,14 +51,14 @@ export function SemanticSearch() {
 
       {results && (
         results.length === 0 ? (
-          <p className="text-gray-500 text-sm">Nenhum resultado.</p>
+          <p className="text-muted-foreground text-sm">Nenhum resultado.</p>
         ) : (
           <ul className="space-y-3">
             {results.map((r, i) => (
               <li key={i} className="rounded-2xl border bg-card shadow-sm p-3">
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant="secondary">{r.source}</Badge>
-                  <span className="text-xs text-gray-400">relevância {r.score.toFixed(2)}</span>
+                  <span className="text-xs text-muted-foreground">relevância {r.score.toFixed(2)}</span>
                 </div>
                 <p className="text-sm">{r.content}</p>
               </li>

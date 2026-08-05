@@ -46,21 +46,21 @@ export function ActivityTake({ activityId }: { activityId: string }) {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  if (isLoading || !data) return <p className="text-gray-500">Carregando...</p>;
+  if (isLoading || !data) return <p className="text-muted-foreground">Carregando...</p>;
 
   return (
     <div className="max-w-2xl space-y-6">
       <div>
         <h2 className="text-lg font-semibold">{data.activity.title}</h2>
-        {data.activity.description && <p className="text-gray-600">{data.activity.description}</p>}
+        {data.activity.description && <p className="text-muted-foreground">{data.activity.description}</p>}
       </div>
 
       {result ? (
-        <div className="rounded-lg border bg-green-50 p-4 space-y-1">
-          <p className="font-medium text-green-800">Enviado!</p>
+        <div className="rounded-lg border bg-primary/10 p-4 space-y-1">
+          <p className="font-medium text-primary">Enviado!</p>
           <p className="text-sm">Pontos objetivos: {result.objectivePoints}</p>
           {result.pendingEssayGrading ? (
-            <p className="text-sm text-gray-600">Questões dissertativas aguardam correção.</p>
+            <p className="text-sm text-muted-foreground">Questões dissertativas aguardam correção.</p>
           ) : (
             <p className="text-sm">Nota final: {result.finalGrade}</p>
           )}
@@ -70,7 +70,7 @@ export function ActivityTake({ activityId }: { activityId: string }) {
           {data.questions.map((q, qi) => (
             <div key={q.id} className="rounded-2xl border bg-card shadow-sm p-4 space-y-2">
               <p className="font-medium">
-                {qi + 1}. {q.statement} <span className="text-gray-400 text-sm">({q.points}pt)</span>
+                {qi + 1}. {q.statement} <span className="text-muted-foreground text-sm">({q.points}pt)</span>
               </p>
               {q.options ? (
                 <div className="space-y-1">

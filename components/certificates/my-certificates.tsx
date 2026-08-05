@@ -12,8 +12,8 @@ export function MyCertificates() {
     queryFn: async () => (await (await fetch("/api/aluno/certificates")).json()).certificates as Cert[],
   });
 
-  if (isLoading) return <p className="text-gray-500">Carregando...</p>;
-  if (certs.length === 0) return <p className="text-gray-500">Você ainda não tem certificados.</p>;
+  if (isLoading) return <p className="text-muted-foreground">Carregando...</p>;
+  if (certs.length === 0) return <p className="text-muted-foreground">Você ainda não tem certificados.</p>;
 
   return (
     <div className="grid gap-3 max-w-2xl">
@@ -22,7 +22,7 @@ export function MyCertificates() {
           <Award className="h-8 w-8 text-yellow-500" />
           <div className="flex-1">
             <p className="font-medium">{c.course.title}</p>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               Emitido em {new Date(c.issuedAt).toLocaleDateString("pt-BR")}
             </p>
           </div>

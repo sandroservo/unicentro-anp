@@ -31,9 +31,9 @@ export function GradebookTable({ courseId, canWrite }: { courseId: string; canWr
     onError: (e: Error) => toast.error(e.message),
   });
 
-  if (isLoading || !data) return <p className="text-gray-500">Carregando...</p>;
-  if (data.activities.length === 0) return <p className="text-gray-500">Nenhuma atividade neste curso.</p>;
-  if (data.rows.length === 0) return <p className="text-gray-500">Nenhuma submissão ainda.</p>;
+  if (isLoading || !data) return <p className="text-muted-foreground">Carregando...</p>;
+  if (data.activities.length === 0) return <p className="text-muted-foreground">Nenhuma atividade neste curso.</p>;
+  if (data.rows.length === 0) return <p className="text-muted-foreground">Nenhuma submissão ainda.</p>;
 
   return (
     <div className="rounded-2xl border bg-card shadow-sm overflow-x-auto">

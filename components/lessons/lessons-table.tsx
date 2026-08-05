@@ -56,16 +56,16 @@ export function LessonsTable({ moduleId, canWrite }: { moduleId: string; canWrit
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={4} className="text-center text-gray-500">Carregando...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
             ) : lessons.length === 0 ? (
-              <TableRow><TableCell colSpan={4} className="text-center text-gray-500">Nenhuma aula.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nenhuma aula.</TableCell></TableRow>
             ) : (
               lessons.map((l) => (
                 <TableRow key={l.id}>
                   <TableCell>{l.order}</TableCell>
                   <TableCell className="font-medium">{l.title}</TableCell>
                   <TableCell>
-                    {l.videoUrl ? <Youtube className="h-4 w-4 text-red-600" /> : <span className="text-gray-400">—</span>}
+                    {l.videoUrl ? <Youtube className="h-4 w-4 text-red-600" /> : <span className="text-muted-foreground">—</span>}
                   </TableCell>
                   <TableCell className="text-right space-x-1">
                     <Button variant="ghost" size="icon" aria-label="Atividades" nativeButton={false} render={

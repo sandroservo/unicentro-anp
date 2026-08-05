@@ -52,7 +52,7 @@ export default function CursosPage() {
             <Link
               key={course.id}
               href={`/aluno/cursos/${course.id}`}
-              className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all group"
+              className="bg-card rounded-xl border border-border overflow-hidden hover:shadow-lg transition-all group"
             >
               <div className={`h-32 bg-gradient-to-br ${colors[index % colors.length]} relative`}>
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -66,35 +66,35 @@ export default function CursosPage() {
               </div>
 
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 text-lg group-hover:text-primary transition-colors">
+                <h3 className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">
                   {course.title}
                 </h3>
-                <p className="text-gray-500 text-sm mt-1 line-clamp-2">
+                <p className="text-muted-foreground text-sm mt-1 line-clamp-2">
                   {course.description}
                 </p>
 
-                <div className="flex items-center gap-2 mt-3 text-sm text-gray-600">
+                <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
                   <Bot size={16} className="text-primary" />
                   <span>{course.aiPersona}</span>
                 </div>
 
-                <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <PlayCircle size={14} />
                     <span>{course.lessons} aulas</span>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <Clock size={14} />
                     <span>{course.duration}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-gray-500">
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
                     <Users size={14} />
                     <span>{course.students}</span>
                   </div>
                 </div>
 
                 <div className="mt-4">
-                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <div
                       className={`h-full bg-gradient-to-r ${colors[index % colors.length]} rounded-full`}
                       style={{ width: `${course.progress}%` }}

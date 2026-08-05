@@ -45,7 +45,7 @@ export function TutorChat() {
     <div className="max-w-2xl space-y-4">
       <div className="space-y-3 min-h-[300px]">
         {messages.length === 0 && (
-          <p className="text-gray-500 text-sm">Pergunte algo sobre o material do curso.</p>
+          <p className="text-muted-foreground text-sm">Pergunte algo sobre o material do curso.</p>
         )}
         {messages.map((m, i) => (
           <div key={i} className={`flex gap-2 ${m.role === "user" ? "justify-end" : ""}`}>
@@ -55,14 +55,14 @@ export function TutorChat() {
             }`}>
               {m.content}
             </div>
-            {m.role === "user" && <User className="h-6 w-6 text-gray-400 shrink-0" />}
+            {m.role === "user" && <User className="h-6 w-6 text-muted-foreground shrink-0" />}
           </div>
         ))}
-        {send.isPending && <p className="text-sm text-gray-400">Pensando...</p>}
+        {send.isPending && <p className="text-sm text-muted-foreground">Pensando...</p>}
       </div>
 
       {sources.length > 0 && (
-        <details className="text-xs text-gray-600 border rounded p-2">
+        <details className="text-xs text-muted-foreground border rounded p-2">
           <summary className="cursor-pointer">Fontes do material ({sources.length})</summary>
           <ul className="mt-2 space-y-1">
             {sources.map((s, i) => (

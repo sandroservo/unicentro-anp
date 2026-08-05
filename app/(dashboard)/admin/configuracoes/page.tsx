@@ -92,17 +92,17 @@ export default function ConfiguracoesPage() {
       <Header />
       <div className="flex-1 p-6 overflow-auto">
         <div className="mb-6 flex items-center gap-2">
-          <Link href="/admin" className="text-gray-500 hover:text-gray-700 text-sm">
+          <Link href="/admin" className="text-muted-foreground hover:text-foreground text-sm">
             Admin
           </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-gray-800 font-medium">Configurações</span>
+          <span className="text-muted-foreground">/</span>
+          <span className="text-foreground font-medium">Configurações</span>
         </div>
-        <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Settings size={28} />
           Configurações do sistema
         </h1>
-        <p className="text-gray-500 mt-1 mb-6">
+        <p className="text-muted-foreground mt-1 mb-6">
           Configure o provedor de IA do Professor Virtual. As chaves ficam salvas no banco de dados (não use .env).
         </p>
 
@@ -112,19 +112,19 @@ export default function ConfiguracoesPage() {
           </div>
         )}
         {saved && (
-          <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm flex items-center gap-2">
+          <div className="mb-4 p-4 bg-primary/10 border border-primary/30 rounded-xl text-green-700 text-sm flex items-center gap-2">
             <Check size={18} />
             Configurações salvas com sucesso.
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="font-semibold text-gray-800 mb-4">Professor Virtual (IA)</h2>
+          <div className="bg-card rounded-xl border border-border p-6">
+            <h2 className="font-semibold text-foreground mb-4">Professor Virtual (IA)</h2>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Provedor de IA
                 </label>
                 <select
@@ -132,19 +132,19 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, provider: e.target.value as Provider }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
                 >
                   <option value="">Selecione...</option>
                   <option value="anthropic">Anthropic (Claude)</option>
                   <option value="openai">OpenAI (GPT)</option>
                 </select>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Se não definir, o sistema usa o primeiro provedor com chave preenchida.
                 </p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Chave API Anthropic (Claude)
                 </label>
                 <input
@@ -154,10 +154,10 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, anthropicApiKey: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
                   autoComplete="off"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Obtenha em{" "}
                   <a
                     href="https://console.anthropic.com"
@@ -172,7 +172,7 @@ export default function ConfiguracoesPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Modelo Anthropic (opcional)
                 </label>
                 <input
@@ -182,12 +182,12 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, anthropicModel: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
                 />
               </div>
 
-              <div className="border-t border-gray-200 pt-4 mt-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="border-t border-border pt-4 mt-4">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Chave API OpenAI (GPT)
                 </label>
                 <input
@@ -197,10 +197,10 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, openaiApiKey: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
                   autoComplete="off"
                 />
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Obtenha em{" "}
                   <a
                     href="https://platform.openai.com/api-keys"
@@ -215,7 +215,7 @@ export default function ConfiguracoesPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-foreground mb-2">
                   Modelo OpenAI (opcional)
                 </label>
                 <input
@@ -225,7 +225,7 @@ export default function ConfiguracoesPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, openaiModel: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
                 />
               </div>
             </div>

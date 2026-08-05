@@ -103,19 +103,19 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
               return (
                 <div
                   key={module.id}
-                  className="bg-white rounded-xl border border-gray-200 overflow-hidden"
+                  className="bg-card rounded-xl border border-border overflow-hidden"
                 >
                   {/* Module Header */}
                   <button
                     onClick={() => toggleModule(module.id)}
-                    className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                    className="w-full p-4 flex items-center justify-between hover:bg-muted transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={cn(
                           "w-8 h-8 rounded-lg flex items-center justify-center",
                           moduleCompleted
-                            ? "bg-green-100 text-green-600"
+                            ? "bg-green-100 text-primary"
                             : "bg-primary/10 text-primary"
                         )}
                       >
@@ -126,36 +126,36 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
                         )}
                       </div>
                       <div className="text-left">
-                        <h3 className="font-semibold text-gray-900">
+                        <h3 className="font-semibold text-foreground">
                           {module.title}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-muted-foreground">
                           {moduleLessonsCompleted}/{module.lessons.length} aulas
                         </p>
                       </div>
                     </div>
                     {isExpanded ? (
-                      <ChevronDown size={20} className="text-gray-400" />
+                      <ChevronDown size={20} className="text-muted-foreground" />
                     ) : (
-                      <ChevronRight size={20} className="text-gray-400" />
+                      <ChevronRight size={20} className="text-muted-foreground" />
                     )}
                   </button>
 
                   {/* Lessons */}
                   {isExpanded && (
-                    <div className="border-t border-gray-100">
+                    <div className="border-t border-border">
                       {module.lessons.map((lesson, index) => (
                         <Link
                           key={lesson.id}
                           href={`/aluno/cursos/${cursoId}/aulas/${lesson.id}`}
-                          className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0"
+                          className="flex items-center gap-4 p-4 hover:bg-muted transition-colors border-b border-border last:border-0"
                         >
                           <div
                             className={cn(
                               "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
                               lesson.completed
-                                ? "bg-green-100 text-green-600"
-                                : "bg-gray-100 text-gray-600"
+                                ? "bg-green-100 text-primary"
+                                : "bg-muted text-muted-foreground"
                             )}
                           >
                             {lesson.completed ? (
@@ -169,14 +169,14 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
                               className={cn(
                                 "font-medium",
                                 lesson.completed
-                                  ? "text-gray-500"
-                                  : "text-gray-900"
+                                  ? "text-muted-foreground"
+                                  : "text-foreground"
                               )}
                             >
                               {lesson.title}
                             </p>
                           </div>
-                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
                             <Clock size={14} />
                             <span>{lesson.duration}</span>
                           </div>
@@ -200,18 +200,18 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
           {/* Sidebar */}
           <div className="space-y-4">
             {/* Progress Card */}
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
-              <h3 className="font-semibold text-gray-900 mb-4">Seu Progresso</h3>
+            <div className="bg-card rounded-xl border border-border p-4">
+              <h3 className="font-semibold text-foreground mb-4">Seu Progresso</h3>
               <div className="relative pt-1">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-600">
+                  <span className="text-sm font-medium text-muted-foreground">
                     {courseData.progress}% concluído
                   </span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-muted-foreground">
                     {completedLessons}/{totalLessons} aulas
                   </span>
                 </div>
-                <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="h-3 bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-primary/100 to-primary rounded-full"
                     style={{ width: `${courseData.progress}%` }}
@@ -223,7 +223,7 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
             {/* Professor Virtual Card */}
             <div className="bg-gradient-to-br from-primary/100 to-purple-600 rounded-xl p-4 text-white">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 bg-card/20 rounded-full flex items-center justify-center">
                   <Bot size={24} />
                 </div>
                 <div>
@@ -236,33 +236,33 @@ export default function CursoDetailPage({ params }: { params: Promise<{ cursoId:
               </p>
               <Link
                 href="/aluno/chat-ia"
-                className="block w-full py-2 bg-white/20 hover:bg-white/30 rounded-lg text-center font-medium transition-colors"
+                className="block w-full py-2 bg-card/20 hover:bg-card/30 rounded-lg text-center font-medium transition-colors"
               >
                 Tirar Dúvida
               </Link>
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
-              <h3 className="font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
+            <div className="bg-card rounded-xl border border-border p-4">
+              <h3 className="font-semibold text-foreground mb-4">Ações Rápidas</h3>
               <div className="space-y-2">
                 <Link
                   href={`/aluno/cursos/${cursoId}/materiais`}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
                 >
                   <FileText size={20} className="text-orange-500" />
-                  <span className="text-gray-700">Ver Materiais</span>
+                  <span className="text-foreground">Ver Materiais</span>
                 </Link>
                 <Link
                   href="/aluno/forum"
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
                 >
                   <MessageSquare size={20} className="text-green-500" />
-                  <span className="text-gray-700">Acessar Fórum</span>
+                  <span className="text-foreground">Acessar Fórum</span>
                 </Link>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted">
                   <Users size={20} className="text-primary" />
-                  <span className="text-gray-700">156 alunos matriculados</span>
+                  <span className="text-foreground">156 alunos matriculados</span>
                 </div>
               </div>
             </div>

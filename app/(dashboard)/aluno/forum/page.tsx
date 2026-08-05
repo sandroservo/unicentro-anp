@@ -77,13 +77,13 @@ export default function ForumPage() {
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <div className="flex-1 relative">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               size={20}
             />
             <input
               type="text"
               placeholder="Buscar discussões..."
-              className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
           <button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium">
@@ -94,27 +94,27 @@ export default function ForumPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{posts.length}</p>
-            <p className="text-sm text-gray-500">Discussões</p>
+          <div className="bg-card rounded-xl border border-border p-4 text-center">
+            <p className="text-2xl font-bold text-foreground">{posts.length}</p>
+            <p className="text-sm text-muted-foreground">Discussões</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <p className="text-2xl font-bold text-green-600">
+          <div className="bg-card rounded-xl border border-border p-4 text-center">
+            <p className="text-2xl font-bold text-primary">
               {posts.filter((p) => p.resolved).length}
             </p>
-            <p className="text-sm text-gray-500">Resolvidas</p>
+            <p className="text-sm text-muted-foreground">Resolvidas</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div className="bg-card rounded-xl border border-border p-4 text-center">
             <p className="text-2xl font-bold text-primary">
               {posts.filter((p) => p.hasAIReply).length}
             </p>
-            <p className="text-sm text-gray-500">Com resposta IA</p>
+            <p className="text-sm text-muted-foreground">Com resposta IA</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div className="bg-card rounded-xl border border-border p-4 text-center">
             <p className="text-2xl font-bold text-purple-600">
               {posts.reduce((acc, p) => acc + p.replies, 0)}
             </p>
-            <p className="text-sm text-gray-500">Respostas</p>
+            <p className="text-sm text-muted-foreground">Respostas</p>
           </div>
         </div>
 
@@ -123,7 +123,7 @@ export default function ForumPage() {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
+              className="bg-card rounded-xl border border-border p-4 hover:shadow-md transition-shadow cursor-pointer"
             >
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-gradient-to-br from-primary to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
@@ -132,21 +132,21 @@ export default function ForumPage() {
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="font-semibold text-gray-900 hover:text-primary">
+                      <h3 className="font-semibold text-foreground hover:text-primary">
                         {post.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mt-1 line-clamp-1">
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
                         {post.content}
                       </p>
                     </div>
                     {post.resolved && (
-                      <span className="flex items-center gap-1 px-2 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium whitespace-nowrap">
+                      <span className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium whitespace-nowrap">
                         <CheckCircle size={12} />
                         Resolvido
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                  <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
                     <span>{post.author}</span>
                     <span>•</span>
                     <span>{post.course}</span>
@@ -157,11 +157,11 @@ export default function ForumPage() {
                     </span>
                   </div>
                   <div className="flex items-center gap-4 mt-3">
-                    <span className="flex items-center gap-1 text-sm text-gray-600">
+                    <span className="flex items-center gap-1 text-sm text-muted-foreground">
                       <ThumbsUp size={14} />
                       {post.upvotes}
                     </span>
-                    <span className="flex items-center gap-1 text-sm text-gray-600">
+                    <span className="flex items-center gap-1 text-sm text-muted-foreground">
                       <MessageSquare size={14} />
                       {post.replies} respostas
                     </span>

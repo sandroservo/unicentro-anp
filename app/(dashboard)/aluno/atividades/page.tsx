@@ -70,10 +70,10 @@ export default function AtividadesPage() {
               <Clock className="text-yellow-500" size={32} />
             </div>
           </div>
-          <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+          <div className="bg-primary/10 border border-primary/30 rounded-xl p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-green-600">Concluídas</p>
+                <p className="text-sm text-primary">Concluídas</p>
                 <p className="text-3xl font-bold text-green-700">{completed}</p>
               </div>
               <CheckCircle className="text-green-500" size={32} />
@@ -81,15 +81,15 @@ export default function AtividadesPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="p-4 border-b border-gray-200">
-            <h2 className="font-semibold text-gray-800">Todas as Atividades</h2>
+        <div className="bg-card rounded-xl border border-border overflow-hidden">
+          <div className="p-4 border-b border-border">
+            <h2 className="font-semibold text-foreground">Todas as Atividades</h2>
           </div>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-border">
             {activities.map((activity) => (
               <div
                 key={activity.id}
-                className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                className="p-4 hover:bg-muted transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-4">
                   <div
@@ -98,7 +98,7 @@ export default function AtividadesPage() {
                         ? "bg-purple-100 text-purple-600"
                         : activity.type === "essay"
                         ? "bg-primary/10 text-primary"
-                        : "bg-green-100 text-green-600"
+                        : "bg-green-100 text-primary"
                     }`}
                   >
                     {activity.type === "quiz" && <ClipboardList size={20} />}
@@ -106,12 +106,12 @@ export default function AtividadesPage() {
                     {activity.type === "forum" && <MessageSquare size={20} />}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-medium text-gray-900">{activity.title}</h3>
-                    <p className="text-sm text-gray-500">{activity.course}</p>
+                    <h3 className="font-medium text-foreground">{activity.title}</h3>
+                    <p className="text-sm text-muted-foreground">{activity.course}</p>
                   </div>
                   <div className="text-right">
                     {activity.status === "completed" ? (
-                      <span className="text-green-600 font-medium">
+                      <span className="text-primary font-medium">
                         Nota: {activity.grade}
                       </span>
                     ) : (
@@ -120,7 +120,7 @@ export default function AtividadesPage() {
                       </span>
                     )}
                   </div>
-                  <ChevronRight size={20} className="text-gray-400" />
+                  <ChevronRight size={20} className="text-muted-foreground" />
                 </div>
               </div>
             ))}

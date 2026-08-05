@@ -56,7 +56,7 @@ export function QuestionsTable({ canWrite }: { canWrite: boolean }) {
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-2 flex-1">
           <div className="relative flex-1 max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input placeholder="Buscar enunciado" value={q} onChange={(e) => setQ(e.target.value)} className="pl-9" />
           </div>
           <select className="h-9 rounded-md border px-2 text-sm" value={type} onChange={(e) => setType(e.target.value)}>
@@ -84,9 +84,9 @@ export function QuestionsTable({ canWrite }: { canWrite: boolean }) {
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">Carregando...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
             ) : questions.length === 0 ? (
-              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">Nenhuma questão.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-muted-foreground">Nenhuma questão.</TableCell></TableRow>
             ) : (
               questions.map((qn) => (
                 <TableRow key={qn.id}>

@@ -28,8 +28,8 @@ export function SubmissionsList({ activityId, canWrite }: { activityId: string; 
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["submissions", activityId] });
 
-  if (isLoading) return <p className="text-gray-500">Carregando...</p>;
-  if (submissions.length === 0) return <p className="text-gray-500">Nenhuma submissão.</p>;
+  if (isLoading) return <p className="text-muted-foreground">Carregando...</p>;
+  if (submissions.length === 0) return <p className="text-muted-foreground">Nenhuma submissão.</p>;
 
   return (
     <div className="space-y-4">
@@ -73,10 +73,10 @@ function SubmissionCard({ sub, canWrite, onChange }: { sub: Sub; canWrite: boole
       <div className="flex items-center justify-between">
         <div>
           <p className="font-medium">{sub.user.name}</p>
-          <p className="text-xs text-gray-500">{sub.user.email} · tentativa {sub.attempt}</p>
+          <p className="text-xs text-muted-foreground">{sub.user.email} · tentativa {sub.attempt}</p>
         </div>
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">objetivo: {sub.aiGrade ?? "—"}</span>
+          <span className="text-muted-foreground">objetivo: {sub.aiGrade ?? "—"}</span>
           <Badge variant={sub.finalGrade != null ? "default" : "secondary"}>
             {sub.finalGrade != null ? `nota ${sub.finalGrade}` : "sem nota"}
           </Badge>
@@ -84,8 +84,8 @@ function SubmissionCard({ sub, canWrite, onChange }: { sub: Sub; canWrite: boole
       </div>
 
       <details className="text-sm">
-        <summary className="cursor-pointer text-gray-600">Respostas</summary>
-        <pre className="mt-1 bg-gray-50 p-2 rounded text-xs overflow-x-auto">{sub.answers}</pre>
+        <summary className="cursor-pointer text-muted-foreground">Respostas</summary>
+        <pre className="mt-1 bg-muted p-2 rounded text-xs overflow-x-auto">{sub.answers}</pre>
       </details>
 
       {canWrite && (
@@ -95,7 +95,7 @@ function SubmissionCard({ sub, canWrite, onChange }: { sub: Sub; canWrite: boole
           </Button>
           <div className="flex items-end gap-2">
             <div className="w-28">
-              <label className="text-xs text-gray-500">Nota final</label>
+              <label className="text-xs text-muted-foreground">Nota final</label>
               <Input type="number" value={grade} onChange={(e) => setGrade(e.target.value)} />
             </div>
             <Button size="sm" onClick={() => manual.mutate()} disabled={manual.isPending}>Salvar nota</Button>
@@ -103,7 +103,7 @@ function SubmissionCard({ sub, canWrite, onChange }: { sub: Sub; canWrite: boole
           <Textarea rows={2} placeholder="Feedback" value={feedback} onChange={(e) => setFeedback(e.target.value)} />
         </div>
       )}
-      {!canWrite && sub.aiFeedback && <p className="text-sm text-gray-600 whitespace-pre-line">{sub.aiFeedback}</p>}
+      {!canWrite && sub.aiFeedback && <p className="text-sm text-muted-foreground whitespace-pre-line">{sub.aiFeedback}</p>}
     </div>
   );
 }

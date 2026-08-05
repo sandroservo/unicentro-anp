@@ -37,7 +37,7 @@ export function TranscriptDialog({ lessonId, trigger }: { lessonId: string; trig
       <DialogContent>
         <DialogHeader><DialogTitle>Transcrição da aula</DialogTitle></DialogHeader>
         <div className="space-y-3">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             Cole a transcrição, ou busque as legendas do YouTube automaticamente.
           </p>
           <Textarea rows={6} placeholder="Transcrição..." value={text} onChange={(e) => setText(e.target.value)} />

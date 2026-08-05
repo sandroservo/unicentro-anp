@@ -117,7 +117,7 @@ export function LessonDialog({ mode, moduleId, lesson, trigger }: Props) {
             </div>
             {errors.videoUrl && <p className="text-sm text-red-600">{errors.videoUrl.message}</p>}
             {ytDuration !== null && (
-              <p className="text-xs text-gray-500">Duração: {formatDuration(ytDuration)}</p>
+              <p className="text-xs text-muted-foreground">Duração: {formatDuration(ytDuration)}</p>
             )}
             <input type="hidden" {...register("duration")} />
           </div>

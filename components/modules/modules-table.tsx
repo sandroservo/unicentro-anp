@@ -57,9 +57,9 @@ export function ModulesTable({ subjectId, canWrite }: { subjectId: string; canWr
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={4} className="text-center text-gray-500">Carregando...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
             ) : modules.length === 0 ? (
-              <TableRow><TableCell colSpan={4} className="text-center text-gray-500">Nenhum módulo.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">Nenhum módulo.</TableCell></TableRow>
             ) : (
               modules.map((m) => (
                 <TableRow key={m.id}>

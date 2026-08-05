@@ -154,35 +154,35 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
 
       <div className="flex-1 flex overflow-hidden">
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col bg-gray-50">
+        <div className="flex-1 flex flex-col bg-muted">
           {/* Course Selector */}
-          <div className="bg-white border-b px-4 py-3">
+          <div className="bg-card border-b px-4 py-3">
             <div className="flex items-center justify-between">
               <div className="relative">
                 <button
                   onClick={() => setShowCourseSelector(!showCourseSelector)}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-muted rounded-lg hover:bg-muted transition-colors"
                 >
                   <BookOpen size={18} className="text-primary" />
-                  <span className="font-medium text-gray-700">
+                  <span className="font-medium text-foreground">
                     {selectedCourse.name}
                   </span>
-                  <ChevronDown size={16} className="text-gray-500" />
+                  <ChevronDown size={16} className="text-muted-foreground" />
                 </button>
 
                 {showCourseSelector && (
-                  <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border z-10">
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-card rounded-lg shadow-lg border z-10">
                     {courses.map((course) => (
                       <button
                         key={course.id}
                         onClick={() => handleCourseChange(course)}
                         className={cn(
-                          "w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors first:rounded-t-lg last:rounded-b-lg",
+                          "w-full px-4 py-3 text-left hover:bg-muted transition-colors first:rounded-t-lg last:rounded-b-lg",
                           selectedCourse.id === course.id && "bg-primary/10"
                         )}
                       >
-                        <p className="font-medium text-gray-900">{course.name}</p>
-                        <p className="text-sm text-gray-500">{course.persona}</p>
+                        <p className="font-medium text-foreground">{course.name}</p>
+                        <p className="text-sm text-muted-foreground">{course.persona}</p>
                       </button>
                     ))}
                   </div>
@@ -191,7 +191,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
 
               <button
                 onClick={clearChat}
-                className="flex items-center gap-2 px-3 py-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
               >
                 <Trash2 size={18} />
                 <span className="text-sm">Limpar</span>
@@ -220,14 +220,14 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                     "max-w-[70%] px-4 py-3 rounded-2xl shadow-sm",
                     msg.role === "user"
                       ? "bg-primary/100 text-white rounded-br-md"
-                      : "bg-white text-gray-800 rounded-bl-md border"
+                      : "bg-card text-foreground rounded-bl-md border"
                   )}
                 >
                   <div className="prose prose-sm max-w-none">
                     {msg.content.split("\n").map((line, i) => (
                       <p key={i} className={msg.role === "user" ? "text-white" : ""}>
                         {line.startsWith("```") ? (
-                          <code className="block bg-gray-100 p-2 rounded mt-2 text-sm font-mono overflow-x-auto">
+                          <code className="block bg-muted p-2 rounded mt-2 text-sm font-mono overflow-x-auto">
                             {line.replace(/```\w*/, "").replace("```", "")}
                           </code>
                         ) : line.startsWith("- ") ? (
@@ -241,7 +241,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                               ) : part.startsWith("`") && part.endsWith("`") ? (
                                 <code
                                   key={j}
-                                  className="bg-gray-100 px-1 rounded text-sm"
+                                  className="bg-muted px-1 rounded text-sm"
                                 >
                                   {part.slice(1, -1)}
                                 </code>
@@ -256,7 +256,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                   <p
                     className={cn(
                       "text-xs mt-2",
-                      msg.role === "user" ? "text-primary-foreground" : "text-gray-400"
+                      msg.role === "user" ? "text-primary-foreground" : "text-muted-foreground"
                     )}
                   >
                     {msg.timestamp.toLocaleTimeString("pt-BR", {
@@ -279,11 +279,11 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/100 to-purple-500 flex items-center justify-center shadow-md">
                   <Bot size={20} className="text-white" />
                 </div>
-                <div className="bg-white px-4 py-3 rounded-2xl rounded-bl-md shadow-sm border">
+                <div className="bg-card px-4 py-3 rounded-2xl rounded-bl-md shadow-sm border">
                   <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-gray-400 rounded-full typing-dot"></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full typing-dot"></span>
-                    <span className="w-2 h-2 bg-gray-400 rounded-full typing-dot"></span>
+                    <span className="w-2 h-2 bg-muted-foreground rounded-full typing-dot"></span>
+                    <span className="w-2 h-2 bg-muted-foreground rounded-full typing-dot"></span>
+                    <span className="w-2 h-2 bg-muted-foreground rounded-full typing-dot"></span>
                   </div>
                 </div>
               </div>
@@ -297,14 +297,14 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
             <div className="px-4 pb-2">
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles size={16} className="text-yellow-500" />
-                <span className="text-sm text-gray-500">Sugestões</span>
+                <span className="text-sm text-muted-foreground">Sugestões</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {suggestions.map((suggestion) => (
                   <button
                     key={suggestion}
                     onClick={() => setInput(suggestion)}
-                    className="px-3 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:bg-primary/90 hover:border-primary/30 hover:text-primary transition-colors"
+                    className="px-3 py-2 bg-card border border-border rounded-full text-sm text-foreground hover:bg-primary/90 hover:border-primary/30 hover:text-primary transition-colors"
                   >
                     {suggestion}
                   </button>
@@ -314,7 +314,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
           )}
 
           {/* Input */}
-          <div className="p-4 bg-white border-t">
+          <div className="p-4 bg-card border-t">
             <div className="flex gap-3">
               <input
                 type="text"
@@ -322,7 +322,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSendMessage()}
                 placeholder="Digite sua dúvida..."
-                className="flex-1 px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all"
+                className="flex-1 px-4 py-3 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:bg-card transition-all"
                 disabled={isLoading}
               />
               <button
@@ -338,15 +338,15 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
         </div>
 
         {/* Sidebar - Tips */}
-        <aside className="hidden lg:block w-80 bg-white border-l p-4 overflow-auto">
+        <aside className="hidden lg:block w-80 bg-card border-l p-4 overflow-auto">
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-3">
               <Brain className="text-primary" size={20} />
-              <h3 className="font-semibold text-gray-900">
+              <h3 className="font-semibold text-foreground">
                 {selectedCourse.persona}
               </h3>
             </div>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Especialista em {selectedCourse.name}. Posso ajudar com dúvidas,
               exercícios e revisões.
             </p>
@@ -362,7 +362,7 @@ Estou aqui para ajudar você com qualquer dúvida sobre o curso. O que gostaria 
               </p>
             </div>
 
-            <div className="p-4 bg-green-50 rounded-xl">
+            <div className="p-4 bg-primary/10 rounded-xl">
               <h4 className="font-medium text-green-900 mb-2">📝 Exercícios</h4>
               <p className="text-sm text-green-700">
                 Peça exercícios práticos para fixar o conteúdo. Exemplo: "Me dê

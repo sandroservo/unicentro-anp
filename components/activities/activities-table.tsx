@@ -60,9 +60,9 @@ export function ActivitiesTable({ lessonId, canWrite }: { lessonId: string; canW
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">Carregando...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-muted-foreground">Carregando...</TableCell></TableRow>
             ) : activities.length === 0 ? (
-              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">Nenhuma atividade.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={canWrite ? 5 : 4} className="text-center text-muted-foreground">Nenhuma atividade.</TableCell></TableRow>
             ) : (
               activities.map((a) => (
                 <TableRow key={a.id}>

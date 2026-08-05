@@ -48,7 +48,7 @@ export function StudentsTable({ canWrite }: { canWrite: boolean }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Buscar por nome, email ou matrícula"
             value={q}
@@ -82,13 +82,13 @@ export function StudentsTable({ canWrite }: { canWrite: boolean }) {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">
+                <TableCell colSpan={canWrite ? 5 : 4} className="text-center text-muted-foreground">
                   Carregando...
                 </TableCell>
               </TableRow>
             ) : students.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={canWrite ? 5 : 4} className="text-center text-gray-500">
+                <TableCell colSpan={canWrite ? 5 : 4} className="text-center text-muted-foreground">
                   Nenhum aluno encontrado.
                 </TableCell>
               </TableRow>

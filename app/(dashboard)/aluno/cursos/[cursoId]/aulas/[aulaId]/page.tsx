@@ -195,27 +195,27 @@ Você gostaria que eu explicasse algum conceito específico como:
           </div>
 
           {/* Video Info & Navigation */}
-          <div className="p-4 bg-white border-b">
+          <div className="p-4 bg-card border-b">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">
+                <h1 className="text-xl font-semibold text-foreground">
                   {lessonData.title}
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {lessonData.description}
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <Link
                   href={`/aluno/cursos/${cursoId}/aulas/${lessonData.prevLesson.id}`}
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="p-2 rounded-lg hover:bg-muted transition-colors"
                   title={lessonData.prevLesson.title}
                 >
                   <ChevronLeft size={20} />
                 </Link>
                 <Link
                   href={`/aluno/cursos/${cursoId}/aulas/${lessonData.nextLesson.id}`}
-                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="p-2 rounded-lg hover:bg-muted transition-colors"
                   title={lessonData.nextLesson.title}
                 >
                   <ChevronRight size={20} />
@@ -225,7 +225,7 @@ Você gostaria que eu explicasse algum conceito específico como:
 
             {/* Action Buttons */}
             <div className="flex items-center gap-2 mt-4">
-              <button className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-primary/100 text-white rounded-lg hover:bg-green-600 transition-colors">
                 <CheckCircle size={18} />
                 Marcar como Concluída
               </button>
@@ -240,7 +240,7 @@ Você gostaria que eu explicasse algum conceito específico como:
           </div>
 
           {/* Tabs for Mobile */}
-          <div className="flex-1 overflow-auto p-4 bg-gray-50 md:hidden">
+          <div className="flex-1 overflow-auto p-4 bg-muted md:hidden">
             <div className="flex gap-2 mb-4">
               {["materials", "transcript"].map((tab) => (
                 <button
@@ -250,7 +250,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                     "px-4 py-2 rounded-lg font-medium transition-colors",
                     activeTab === tab
                       ? "bg-primary/100 text-white"
-                      : "bg-white text-gray-600 hover:bg-gray-100"
+                      : "bg-card text-muted-foreground hover:bg-muted"
                   )}
                 >
                   {tab === "materials" ? "Materiais" : "Transcrição"}
@@ -263,17 +263,17 @@ Você gostaria que eu explicasse algum conceito específico como:
                 {lessonData.materials.map((material) => (
                   <div
                     key={material.id}
-                    className="flex items-center justify-between p-3 bg-white rounded-lg border"
+                    className="flex items-center justify-between p-3 bg-card rounded-lg border"
                   >
                     <div className="flex items-center gap-3">
                       <FileText size={20} className="text-primary" />
                       <div>
-                        <p className="font-medium text-gray-900">{material.title}</p>
-                        <p className="text-xs text-gray-500">{material.size}</p>
+                        <p className="font-medium text-foreground">{material.title}</p>
+                        <p className="text-xs text-muted-foreground">{material.size}</p>
                       </div>
                     </div>
-                    <button className="p-2 hover:bg-gray-100 rounded-lg">
-                      <Download size={18} className="text-gray-500" />
+                    <button className="p-2 hover:bg-muted rounded-lg">
+                      <Download size={18} className="text-muted-foreground" />
                     </button>
                   </div>
                 ))}
@@ -281,8 +281,8 @@ Você gostaria que eu explicasse algum conceito específico como:
             )}
 
             {activeTab === "transcript" && (
-              <div className="bg-white rounded-lg border p-4">
-                <pre className="whitespace-pre-wrap text-sm text-gray-700 font-mono">
+              <div className="bg-card rounded-lg border p-4">
+                <pre className="whitespace-pre-wrap text-sm text-foreground font-mono">
                   {lessonData.transcript}
                 </pre>
               </div>
@@ -291,7 +291,7 @@ Você gostaria que eu explicasse algum conceito específico como:
         </div>
 
         {/* Sidebar - Chat & Materials (Desktop) */}
-        <aside className="hidden md:flex w-96 border-l bg-white flex-col">
+        <aside className="hidden md:flex w-96 border-l bg-card flex-col">
           {/* Tabs */}
           <div className="flex border-b">
             {[
@@ -306,7 +306,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                   "flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors",
                   activeTab === tab.id
                     ? "text-primary border-b-2 border-primary"
-                    : "text-gray-500 hover:text-gray-700"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 <tab.icon size={16} />
@@ -339,7 +339,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                           "max-w-[80%] px-4 py-2 rounded-2xl",
                           msg.role === "user"
                             ? "bg-primary/100 text-white rounded-br-md"
-                            : "bg-gray-100 text-gray-800 rounded-bl-md"
+                            : "bg-muted text-foreground rounded-bl-md"
                         )}
                       >
                         <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -356,11 +356,11 @@ Você gostaria que eu explicasse algum conceito específico como:
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/100 to-purple-500 flex items-center justify-center">
                         <Bot size={16} className="text-white" />
                       </div>
-                      <div className="bg-gray-100 px-4 py-3 rounded-2xl rounded-bl-md">
+                      <div className="bg-muted px-4 py-3 rounded-2xl rounded-bl-md">
                         <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-gray-400 rounded-full typing-dot"></span>
-                          <span className="w-2 h-2 bg-gray-400 rounded-full typing-dot"></span>
-                          <span className="w-2 h-2 bg-gray-400 rounded-full typing-dot"></span>
+                          <span className="w-2 h-2 bg-muted-foreground rounded-full typing-dot"></span>
+                          <span className="w-2 h-2 bg-muted-foreground rounded-full typing-dot"></span>
+                          <span className="w-2 h-2 bg-muted-foreground rounded-full typing-dot"></span>
                         </div>
                       </div>
                     </div>
@@ -393,7 +393,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                       placeholder="Digite sua dúvida..."
-                      className="flex-1 px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="flex-1 px-4 py-2 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                     <button
                       onClick={handleSendMessage}
@@ -412,21 +412,21 @@ Você gostaria que eu explicasse algum conceito específico como:
                 {lessonData.materials.map((material) => (
                   <div
                     key={material.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-3 bg-muted rounded-lg hover:bg-muted transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <FileText size={20} className="text-primary" />
                       <div>
-                        <p className="font-medium text-gray-900 text-sm">
+                        <p className="font-medium text-foreground text-sm">
                           {material.title}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">
                           {material.type.toUpperCase()} • {material.size}
                         </p>
                       </div>
                     </div>
-                    <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
-                      <Download size={18} className="text-gray-500" />
+                    <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+                      <Download size={18} className="text-muted-foreground" />
                     </button>
                   </div>
                 ))}
@@ -435,7 +435,7 @@ Você gostaria que eu explicasse algum conceito específico como:
 
             {activeTab === "transcript" && (
               <div className="p-4 overflow-auto">
-                <pre className="whitespace-pre-wrap text-sm text-gray-700 font-mono leading-relaxed">
+                <pre className="whitespace-pre-wrap text-sm text-foreground font-mono leading-relaxed">
                   {lessonData.transcript}
                 </pre>
               </div>
@@ -447,7 +447,7 @@ Você gostaria que eu explicasse algum conceito específico como:
       {/* Mobile Chat Modal */}
       {chatOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
-          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl h-[80vh] flex flex-col">
+          <div className="absolute bottom-0 left-0 right-0 bg-card rounded-t-2xl h-[80vh] flex flex-col">
             <div className="flex items-center justify-between p-4 border-b">
               <div className="flex items-center gap-2">
                 <Brain className="text-primary" size={20} />
@@ -477,7 +477,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                       "max-w-[80%] px-4 py-2 rounded-2xl",
                       msg.role === "user"
                         ? "bg-primary/100 text-white rounded-br-md"
-                        : "bg-gray-100 text-gray-800 rounded-bl-md"
+                        : "bg-muted text-foreground rounded-bl-md"
                     )}
                   >
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
@@ -494,7 +494,7 @@ Você gostaria que eu explicasse algum conceito específico como:
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
                   placeholder="Digite sua dúvida..."
-                  className="flex-1 px-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="flex-1 px-4 py-2 bg-muted rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <button
                   onClick={handleSendMessage}

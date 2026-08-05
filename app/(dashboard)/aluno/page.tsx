@@ -166,12 +166,12 @@ export default async function AlunoDashboard() {
           {stats.map((stat, i) => (
             <div
               key={i}
-              className="bg-white rounded-xl p-4 border border-gray-200 hover:shadow-md transition-shadow"
+              className="bg-card rounded-xl p-4 border border-border hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-800 mt-1">
+                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <p className="text-2xl font-bold text-foreground mt-1">
                     {stat.value}
                   </p>
                 </div>
@@ -188,9 +188,9 @@ export default async function AlunoDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Cursos */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                <h2 className="font-semibold text-gray-800">Meus Cursos</h2>
+            <div className="bg-card rounded-xl border border-border overflow-hidden">
+              <div className="p-4 border-b border-border flex items-center justify-between">
+                <h2 className="font-semibold text-foreground">Meus Cursos</h2>
                 <Link
                   href="/aluno/cursos"
                   className="text-sm text-primary hover:text-primary"
@@ -198,12 +198,12 @@ export default async function AlunoDashboard() {
                   Ver todos
                 </Link>
               </div>
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-border">
                 {mockCourses.map((enrollment, index) => (
                   <Link
                     key={enrollment.id}
                     href={`/aluno/cursos/${enrollment.course.id}`}
-                    className="block p-4 hover:bg-gray-50 transition-colors"
+                    className="block p-4 hover:bg-muted transition-colors"
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -212,25 +212,25 @@ export default async function AlunoDashboard() {
                         <BookOpen size={24} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-800 truncate">
+                        <h3 className="font-medium text-foreground truncate">
                           {enrollment.course.title}
                         </h3>
                         <div className="flex items-center gap-2 mt-1">
-                          <Bot size={14} className="text-gray-400" />
-                          <span className="text-xs text-gray-500">
+                          <Bot size={14} className="text-muted-foreground" />
+                          <span className="text-xs text-muted-foreground">
                             {enrollment.course.aiPersona || "Professor Virtual"}
                           </span>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-medium text-gray-800">
+                        <p className="text-sm font-medium text-foreground">
                           {enrollment.progress}%
                         </p>
                       </div>
-                      <ChevronRight size={20} className="text-gray-400" />
+                      <ChevronRight size={20} className="text-muted-foreground" />
                     </div>
                     <div className="mt-3">
-                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
                         <div
                           className={`h-full bg-gradient-to-r ${colors[index % colors.length]} rounded-full transition-all`}
                           style={{ width: `${enrollment.progress}%` }}
@@ -256,29 +256,29 @@ export default async function AlunoDashboard() {
                 </div>
                 <Link
                   href="/aluno/cursos/c1/aulas/1"
-                  className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                  className="w-14 h-14 bg-card/20 rounded-full flex items-center justify-center hover:bg-card/30 transition-colors"
                 >
                   <Play size={28} className="text-white ml-1" />
                 </Link>
               </div>
               <div className="mt-4">
-                <div className="h-1 bg-white/20 rounded-full">
-                  <div className="h-full w-3/5 bg-white rounded-full"></div>
+                <div className="h-1 bg-card/20 rounded-full">
+                  <div className="h-full w-3/5 bg-card rounded-full"></div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Próximas Atividades */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden h-fit">
-            <div className="p-4 border-b border-gray-200">
-              <h2 className="font-semibold text-gray-800">Próximas Atividades</h2>
+          <div className="bg-card rounded-xl border border-border overflow-hidden h-fit">
+            <div className="p-4 border-b border-border">
+              <h2 className="font-semibold text-foreground">Próximas Atividades</h2>
             </div>
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-border">
               {mockActivities.map((activity) => (
                 <div
                   key={activity.id}
-                  className="p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="p-4 hover:bg-muted transition-colors cursor-pointer"
                 >
                   <div className="flex items-start gap-3">
                     <div
@@ -287,7 +287,7 @@ export default async function AlunoDashboard() {
                           ? "bg-purple-50 text-purple-500"
                           : activity.type === "trabalho"
                           ? "bg-orange-50 text-orange-500"
-                          : "bg-green-50 text-green-500"
+                          : "bg-primary/10 text-green-500"
                       }`}
                     >
                       {activity.type === "quiz" && <ClipboardList size={20} />}
@@ -295,15 +295,15 @@ export default async function AlunoDashboard() {
                       {activity.type === "forum" && <MessageSquare size={20} />}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-gray-800 text-sm truncate">
+                      <h4 className="font-medium text-foreground text-sm truncate">
                         {activity.title}
                       </h4>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {activity.course}
                       </p>
                       <div className="flex items-center gap-1 mt-2">
-                        <Clock size={12} className="text-gray-400" />
-                        <span className="text-xs text-gray-500">
+                        <Clock size={12} className="text-muted-foreground" />
+                        <span className="text-xs text-muted-foreground">
                           Prazo: {activity.deadline}
                         </span>
                       </div>
@@ -312,7 +312,7 @@ export default async function AlunoDashboard() {
                 </div>
               ))}
             </div>
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t border-border">
               <Link
                 href="/aluno/atividades"
                 className="block w-full py-2 text-sm text-primary hover:text-primary font-medium text-center"

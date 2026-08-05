@@ -60,21 +60,21 @@ export function ActivityQuestionsDialog({
         <DialogHeader><DialogTitle>Questões da atividade</DialogTitle></DialogHeader>
         <div className="space-y-2">
           {bank.length === 0 ? (
-            <p className="text-sm text-gray-500">Nenhuma questão no banco.</p>
+            <p className="text-sm text-muted-foreground">Nenhuma questão no banco.</p>
           ) : (
             bank.map((q) => (
               <label key={q.id} className="flex items-start gap-2 text-sm border rounded p-2">
                 <input type="checkbox" checked={selected.includes(q.id)} onChange={() => toggle(q.id)} className="mt-1" />
                 <span className="flex-1">
                   <span className="font-medium">{q.statement}</span>
-                  <span className="text-gray-500"> · {q.type} · {q.points}pt</span>
+                  <span className="text-muted-foreground"> · {q.type} · {q.points}pt</span>
                 </span>
               </label>
             ))
           )}
         </div>
         <DialogFooter>
-          <span className="text-sm text-gray-500 mr-auto self-center">{selected.length} selecionada(s)</span>
+          <span className="text-sm text-muted-foreground mr-auto self-center">{selected.length} selecionada(s)</span>
           <Button onClick={() => save.mutate()} disabled={save.isPending}>
             {save.isPending ? "Salvando..." : "Salvar"}
           </Button>
