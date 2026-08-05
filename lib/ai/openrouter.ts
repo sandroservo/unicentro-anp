@@ -22,8 +22,10 @@ export function extractGradeJson(text: string): { points: number; feedback: stri
   }
 }
 
-// Chama OpenRouter (compatível OpenAI). Lança Error("NO_API_KEY") sem chave.
-async function callOpenRouter(prompt: string): Promise<string> {
+export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
+
+// Chat completion via OpenRouter. Lança Error("NO_API_KEY") sem chave.
+export async function chatCompletion(messages: ChatMessage[], temperature = 0.3): Promise<string> {
   const key = await getOpenRouterKey();
   if (!key) throw new Error("NO_API_KEY");
   const model = await getModel();
@@ -31,15 +33,16 @@ async function callOpenRouter(prompt: string): Promise<string> {
   const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.2,
-    }),
+    body: JSON.stringify({ model, messages, temperature }),
   });
   if (!res.ok) throw new Error(`OpenRouter ${res.status}`);
   const data = await res.json();
   return data.choices?.[0]?.message?.content ?? "";
+}
+
+// Prompt único (compat). Lança Error("NO_API_KEY") sem chave.
+async function callOpenRouter(prompt: string): Promise<string> {
+  return chatCompletion([{ role: "user", content: prompt }], 0.2);
 }
 
 // Corrige uma dissertativa. Retorna pontos (0..maxPoints) e feedback.

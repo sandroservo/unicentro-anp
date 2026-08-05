@@ -34,7 +34,7 @@ const menuItemsAluno: MenuItem[] = [
   { icon: BookOpen, label: "Meus Cursos", href: "/aluno/cursos" },
   { icon: ClipboardList, label: "Atividades", href: "/aluno/atividades" },
   { icon: MessageSquare, label: "Fórum", href: "/aluno/forum" },
-  { icon: Brain, label: "Professor IA", href: "/aluno/chat-ia" },
+  { icon: Brain, label: "Professor IA", href: "/aluno/tutor" },
   { icon: GraduationCap, label: "Certificados", href: "/aluno/certificados" },
 ];
 
