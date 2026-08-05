@@ -68,12 +68,12 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "bg-white border-r border-gray-200 flex flex-col transition-all duration-300",
+        "bg-card border-r border-border flex flex-col transition-all duration-300",
         collapsed ? "w-20" : "w-64"
       )}
     >
       {/* Logo */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
+      <div className="h-16 flex items-center justify-between px-4 border-b border-border">
         {!collapsed && (
           <Link href="/aluno" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center">
@@ -84,7 +84,7 @@ export function Sidebar() {
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="p-2 rounded-lg hover:bg-muted transition-colors"
         >
           {collapsed ? <Menu size={20} /> : <X size={20} />}
         </button>
@@ -102,7 +102,7 @@ export function Sidebar() {
                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
                 isActive
                   ? "bg-primary/10 text-primary font-medium"
-                  : "text-gray-600 hover:bg-gray-50"
+                  : "text-muted-foreground hover:bg-muted"
               )}
             >
               <item.icon size={20} />
@@ -114,7 +114,7 @@ export function Sidebar() {
         {/* Admin Menu */}
         {isAdminRole(userRole) && (
           <>
-            <div className="pt-4 mt-4 border-t border-gray-200">
+            <div className="pt-4 mt-4 border-t border-border">
               {!collapsed && (
                 <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                   Administração
@@ -132,7 +132,7 @@ export function Sidebar() {
                       "flex items-center gap-3 px-4 py-3 rounded-xl transition-all",
                       isActive
                         ? "bg-primary/10 text-primary font-medium"
-                        : "text-gray-600 hover:bg-gray-50"
+                        : "text-muted-foreground hover:bg-muted"
                     )}
                   >
                     <item.icon size={20} />
@@ -146,7 +146,7 @@ export function Sidebar() {
       </nav>
 
       {/* User Profile */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-border">
         <div
           className={cn(
             "flex items-center gap-3",

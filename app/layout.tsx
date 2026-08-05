@@ -1,12 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, Geist } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ANP - Aulas Não Presenciais",
@@ -19,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={cn("font-sans", geist.variable)}>
-      <body className={inter.className}>
+    <html lang="pt-BR" className="font-sans">
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>

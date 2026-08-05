@@ -71,7 +71,7 @@ export function QuestionsTable({ canWrite }: { canWrite: boolean }) {
         )}
       </div>
 
-      <div className="rounded-lg border bg-white">
+      <div className="rounded-lg border bg-card">
         <Table>
           <TableHeader>
             <TableRow>

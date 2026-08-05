@@ -68,7 +68,7 @@ export function ActivityTake({ activityId }: { activityId: string }) {
       ) : (
         <>
           {data.questions.map((q, qi) => (
-            <div key={q.id} className="rounded-lg border bg-white p-4 space-y-2">
+            <div key={q.id} className="rounded-lg border bg-card p-4 space-y-2">
               <p className="font-medium">
                 {qi + 1}. {q.statement} <span className="text-gray-400 text-sm">({q.points}pt)</span>
               </p>

@@ -51,3 +51,5 @@ generated/
 # Test artifacts
 playwright-report/
 test-results/
+nextui-dashboard-main/
+free-nextjs-admin-dashboard-main/

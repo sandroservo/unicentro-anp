@@ -69,7 +69,7 @@ function SubmissionCard({ sub, canWrite, onChange }: { sub: Sub; canWrite: boole
   });
 
   return (
-    <div className="rounded-lg border bg-white p-4 space-y-3">
+    <div className="rounded-lg border bg-card p-4 space-y-3">
       <div className="flex items-center justify-between">
         <div>
           <p className="font-medium">{sub.user.name}</p>
