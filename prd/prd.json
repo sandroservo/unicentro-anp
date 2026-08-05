@@ -1,0 +1,78 @@
+{
+  "project": {
+    "name": "ANP LMS",
+    "version": "2.0.0",
+    "description": "Plataforma completa de Aprendizagem Não Presencial (ANP) para instituições de ensino superior, integrada com IA, YouTube, gestão acadêmica e analytics.",
+    "type": "web-platform",
+    "status": "development",
+    "repository_structure": {
+      "specs": "/specs",
+      "docs": "/docs",
+      "prd": "/prd",
+      "database": "/database",
+      "tasks": "/tasks"
+    }
+  },
+  "architecture": {
+    "frontend": {
+      "framework": "Next.js 15",
+      "language": "TypeScript",
+      "ui": "Shadcn UI",
+      "css": "TailwindCSS",
+      "state": "TanStack Query",
+      "forms": "React Hook Form + Zod"
+    },
+    "backend": {
+      "framework": "Next.js API",
+      "orm": "Prisma",
+      "database": "PostgreSQL",
+      "storage": "MinIO",
+      "queue": "pg-boss",
+      "authentication": "Auth.js"
+    },
+    "ai": {
+      "provider": "OpenRouter",
+      "rag": true,
+      "transcriptions": true,
+      "embeddings": true
+    }
+  },
+  "roles": [
+    { "name": "SuperAdmin" },
+    { "name": "Administrador" },
+    { "name": "Coordenador" },
+    { "name": "Tutor" },
+    { "name": "Professor" },
+    { "name": "Aluno" }
+  ],
+  "modules": [
+    { "id": "dashboard-admin", "priority": "critical", "status": "pending" },
+    { "id": "student-management", "priority": "critical", "status": "pending" },
+    { "id": "teacher-management", "priority": "high", "status": "pending" },
+    { "id": "tutor-management", "priority": "high", "status": "pending" },
+    { "id": "course-management", "priority": "critical", "status": "pending" },
+    { "id": "subjects", "priority": "critical", "status": "pending" },
+    { "id": "modules-lessons", "priority": "critical", "status": "pending" },
+    { "id": "youtube-manager", "priority": "critical", "status": "pending" },
+    { "id": "materials", "priority": "high", "status": "pending" },
+    { "id": "activities", "priority": "critical", "status": "pending" },
+    { "id": "question-bank", "priority": "high", "status": "pending" },
+    { "id": "assessments", "priority": "high", "status": "pending" },
+    { "id": "gradebook", "priority": "high", "status": "pending" },
+    { "id": "attendance", "priority": "medium", "status": "pending" },
+    { "id": "certificates", "priority": "medium", "status": "pending" },
+    { "id": "forum", "priority": "medium", "status": "pending" },
+    { "id": "notifications", "priority": "medium", "status": "pending" },
+    { "id": "calendar", "priority": "medium", "status": "pending" },
+    { "id": "analytics", "priority": "critical", "status": "pending" },
+    { "id": "audit-log", "priority": "critical", "status": "pending" },
+    { "id": "permissions-rbac", "priority": "critical", "status": "pending" },
+    { "id": "ai-assistant", "priority": "critical", "status": "pending" }
+  ],
+  "roadmap": [
+    { "phase": 1, "name": "Base Acadêmica", "modules": ["RBAC", "Alunos", "Cursos", "Disciplinas", "Aulas", "YouTube"] },
+    { "phase": 2, "name": "Ensino", "modules": ["Atividades", "Banco de Questões", "Correção", "Notas", "Certificados"] },
+    { "phase": 3, "name": "IA", "modules": ["Transcrição", "RAG", "Tutor IA", "Busca Semântica"] },
+    { "phase": 4, "name": "Business Intelligence", "modules": ["Analytics", "Dashboard", "Relatórios", "Auditoria"] }
+  ]
+}
