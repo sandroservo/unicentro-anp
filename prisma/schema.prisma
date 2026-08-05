@@ -250,6 +250,26 @@ model Progress {
   @@unique([userId, lessonId])
 }
 
+model KnowledgeBase {
+  id         String           @id @default(cuid())
+  title      String
+  courseId   String?
+  lessonId   String?
+  sourceType String           @default("manual") // manual | transcript | material
+  createdAt  DateTime         @default(now())
+  chunks     KnowledgeChunk[]
+}
+
+model KnowledgeChunk {
+  id              String        @id @default(cuid())
+  knowledgeBaseId String
+  knowledgeBase   KnowledgeBase @relation(fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
+  content         String
+  order           Int           @default(0)
+  createdAt       DateTime      @default(now())
+  // Coluna `embedding vector(384)` adicionada via SQL raw (Prisma não conhece o tipo).
+}
+
 model Certificate {
   id       String   @id @default(cuid())
   userId   String
