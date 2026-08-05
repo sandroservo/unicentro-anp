@@ -19,25 +19,26 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^25.2.0",
     "@types/react": "^19.2.10",
-    "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.24",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "lucide-react": "^0.563.0",
-    "next": "^14.2.35",
+    "next": "^15.5.22",
     "next-auth": "^4.24.13",
     "pg": "^8.22.0",
     "postcss": "^8.5.6",
     "prisma": "^7.3.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/pg": "^8.20.4"
+    "@types/pg": "^8.20.4",
+    "@types/react-dom": "^19.2.4",
+    "eslint-config-next": "^15.5.22"
   }
 }

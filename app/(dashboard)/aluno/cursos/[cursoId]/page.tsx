@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
 import { Header } from "@/components/layout/header";
 import Link from "next/link";
 import {
@@ -61,7 +61,8 @@ const courseData = {
   ],
 };
 
-export default function CursoDetailPage({ params }: { params: { cursoId: string } }) {
+export default function CursoDetailPage({ params }: { params: Promise<{ cursoId: string }> }) {
+  const { cursoId } = use(params);
   const [expandedModules, setExpandedModules] = useState<string[]>(["m1", "m2"]);
 
   const toggleModule = (moduleId: string) => {
@@ -146,7 +147,7 @@ export default function CursoDetailPage({ params }: { params: { cursoId: string 
                       {module.lessons.map((lesson, index) => (
                         <Link
                           key={lesson.id}
-                          href={`/aluno/cursos/${params.cursoId}/aulas/${lesson.id}`}
+                          href={`/aluno/cursos/${cursoId}/aulas/${lesson.id}`}
                           className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0"
                         >
                           <div
@@ -246,7 +247,7 @@ export default function CursoDetailPage({ params }: { params: { cursoId: string 
               <h3 className="font-semibold text-gray-900 mb-4">Ações Rápidas</h3>
               <div className="space-y-2">
                 <Link
-                  href={`/aluno/cursos/${params.cursoId}/materiais`}
+                  href={`/aluno/cursos/${cursoId}/materiais`}
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <FileText size={20} className="text-orange-500" />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, use } from "react";
 import { Header } from "@/components/layout/header";
 import Link from "next/link";
 import {
@@ -47,10 +47,12 @@ print(mensagem)  # Olá, Maria!`,
   nextLesson: { id: "l8", title: "Módulos e Pacotes" },
 };
 
-const initialMessages = [
+type ChatMessage = { id: number; role: "user" | "assistant"; content: string };
+
+const initialMessages: ChatMessage[] = [
   {
     id: 1,
-    role: "assistant" as const,
+    role: "assistant",
     content: "Olá! Sou o Professor Virtual de Programação. Estou aqui para ajudar com suas dúvidas sobre a aula de Funções em Python. O que gostaria de saber?",
   },
 ];
@@ -58,8 +60,9 @@ const initialMessages = [
 export default function AulaPage({
   params,
 }: {
-  params: { cursoId: string; aulaId: string };
+  params: Promise<{ cursoId: string; aulaId: string }>;
 }) {
+  const { cursoId } = use(params);
   const [activeTab, setActiveTab] = useState<"materials" | "chat" | "transcript">("chat");
   const [messages, setMessages] = useState(initialMessages);
   const [input, setInput] = useState("");
@@ -204,14 +207,14 @@ Você gostaria que eu explicasse algum conceito específico como:
               </div>
               <div className="flex items-center gap-2">
                 <Link
-                  href={`/aluno/cursos/${params.cursoId}/aulas/${lessonData.prevLesson.id}`}
+                  href={`/aluno/cursos/${cursoId}/aulas/${lessonData.prevLesson.id}`}
                   className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
                   title={lessonData.prevLesson.title}
                 >
                   <ChevronLeft size={20} />
                 </Link>
                 <Link
-                  href={`/aluno/cursos/${params.cursoId}/aulas/${lessonData.nextLesson.id}`}
+                  href={`/aluno/cursos/${cursoId}/aulas/${lessonData.nextLesson.id}`}
                   className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
                   title={lessonData.nextLesson.title}
                 >
