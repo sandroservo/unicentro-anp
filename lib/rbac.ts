@@ -9,6 +9,7 @@ export const PERMISSIONS = [
   "subjects.write",
   "lessons.write",
   "youtube.manage",
+  "questions.write",
   "users.manage",
   "settings.manage",
 ] as const;
@@ -45,12 +46,13 @@ export const ROLES: RoleDef[] = [
       "subjects.write",
       "lessons.write",
       "youtube.manage",
+      "questions.write",
     ],
   },
   {
     slug: "PROFESSOR",
     name: "Professor",
-    permissions: ["courses.read", "lessons.write", "youtube.manage", "students.read"],
+    permissions: ["courses.read", "lessons.write", "youtube.manage", "students.read", "questions.write"],
   },
   { slug: "TUTOR", name: "Tutor", permissions: ["students.read", "courses.read"] },
   { slug: "ALUNO", name: "Aluno", permissions: [] },

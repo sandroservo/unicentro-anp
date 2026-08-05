@@ -1,22 +1,32 @@
 # ANP LMS — Índice de Specs
 
-Metodologia **spec-driven**: cada módulo tem seu `spec.md` (+ `schema.md`/`api.md`/`ui.md`/`tasks.md` conforme necessário), aprovado antes da implementação.
+Metodologia **spec-driven**: cada módulo tem seu `spec.md`, aprovado antes da implementação.
 
-Plano mestre da Fundação + Phase 1: ver `docs/superpowers/plans/` e o plano aprovado da Fundação.
-
-## Phase 1 — Base Acadêmica
+## Phase 1 — Base Acadêmica ✅
 
 | Módulo | Dir | Status |
 |--------|-----|--------|
-| RBAC / Permissões | `specs/rbac/` | pending |
-| Alunos | `specs/students/` | pending |
-| Cursos | `specs/courses/` | pending |
-| Disciplinas | `specs/subjects/` | pending |
-| Aulas (Módulos+Lições) | `specs/lessons/` | pending |
-| YouTube Manager | `specs/youtube/` | pending |
+| RBAC / Permissões | (fundação) | ✅ |
+| Alunos | `specs/students/` | ✅ |
+| Cursos | `specs/courses/` | ✅ |
+| Disciplinas | `specs/subjects/` | ✅ |
+| Aulas (Módulos+Lições) | `specs/lessons/` | ✅ |
+| YouTube Manager | `specs/youtube/` | ✅ |
+
+## Phase 2 — Ensino (em andamento)
+
+Decisões: escopo completo (autoria+submissão+correção); correção via **OpenRouter**;
+certificados **PDF on-the-fly** (sem storage) + registro `Certificate`; **banco de questões reusável**.
+
+| # | Módulo | Dir | Status |
+|---|--------|-----|--------|
+| 1 | Banco de Questões | `specs/question-bank/` | draft |
+| 2 | Atividades (autoria + submissão) | `specs/activities/` | pending |
+| 3 | Correção (IA OpenRouter + manual) | `specs/grading/` | pending |
+| 4 | Notas (gradebook) | `specs/gradebook/` | pending |
+| 5 | Certificados | `specs/certificates/` | pending |
 
 ## Fases futuras
 
-- **Phase 2 — Ensino**: atividades, banco de questões, correção, notas, certificados.
-- **Phase 3 — IA**: transcrição, RAG, tutor IA, busca semântica (OpenRouter).
+- **Phase 3 — IA**: RAG, tutor IA, busca semântica, transcrição.
 - **Phase 4 — BI**: analytics, dashboards, relatórios, auditoria.

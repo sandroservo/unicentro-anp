@@ -43,6 +43,7 @@ const adminItems: MenuItem[] = [
   { icon: GraduationCap, label: "Painel Admin", href: "/admin" },
   { icon: Users, label: "Alunos", href: "/admin/alunos", permission: "students.read" },
   { icon: BookOpen, label: "Cursos", href: "/admin/cursos", permission: "courses.read" },
+  { icon: ClipboardList, label: "Banco de Questões", href: "/admin/questoes", permission: "questions.write" },
   { icon: Settings, label: "Configurações", href: "/admin/configuracoes", permission: "settings.manage" },
 ];
 
