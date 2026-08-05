@@ -71,7 +71,7 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="UNICENTROMA" className="h-40 w-auto" />
+            <img src="/logo.png" alt="UNICENTROMA" className="h-52 w-auto" />
             <h1 className="mt-6 text-xl font-semibold text-gray-900">Bem-vindo de volta</h1>
             <p className="text-sm text-gray-500">Entre na sua conta para continuar</p>
           </div>
