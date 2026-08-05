@@ -76,10 +76,8 @@ export function Sidebar() {
       <div className="h-16 flex items-center justify-between px-4 border-b border-border">
         {!collapsed && (
           <Link href="/aluno" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary rounded-xl flex items-center justify-center">
-              <GraduationCap className="text-white" size={24} />
-            </div>
-            <span className="font-bold text-xl text-gray-800">ANP</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="UNICENTROMA" className="h-9 w-auto" />
           </Link>
         )}
         <button
@@ -92,6 +90,11 @@ export function Sidebar() {
 
       {/* Menu Principal */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+        {!collapsed && (
+          <p className="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+            Menu
+          </p>
+        )}
         {menuItems.map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
