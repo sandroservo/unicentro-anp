@@ -67,7 +67,7 @@ export function ModulesTable({ subjectId, canWrite }: { subjectId: string; canWr
                   <TableCell className="font-medium">{m.title}</TableCell>
                   <TableCell>{m._count.lessons}</TableCell>
                   <TableCell className="text-right space-x-1">
-                    <Button variant="ghost" size="icon" aria-label="Aulas" render={
+                    <Button variant="ghost" size="icon" aria-label="Aulas" nativeButton={false} render={
                       <Link href={`/admin/modulos/${m.id}`}><PlayCircle className="h-4 w-4" /></Link>
                     } />
                     {canWrite && (

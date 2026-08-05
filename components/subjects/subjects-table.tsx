@@ -97,7 +97,7 @@ export function SubjectsTable({
                   <TableCell>{s.code ?? "—"}</TableCell>
                   <TableCell>{s._count.modules}</TableCell>
                   <TableCell className="text-right space-x-1">
-                    <Button variant="ghost" size="icon" aria-label="Módulos" render={
+                    <Button variant="ghost" size="icon" aria-label="Módulos" nativeButton={false} render={
                       <Link href={`/admin/disciplinas/${s.id}`}><Layers className="h-4 w-4" /></Link>
                     } />
                     {canWrite && (

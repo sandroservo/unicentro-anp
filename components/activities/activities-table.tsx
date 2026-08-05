@@ -72,7 +72,7 @@ export function ActivitiesTable({ lessonId, canWrite }: { lessonId: string; canW
                   <TableCell>{a.aiGrading ? <Badge>IA</Badge> : "—"}</TableCell>
                   {canWrite && (
                     <TableCell className="text-right space-x-1">
-                      <Button variant="ghost" size="icon" aria-label="Correção" render={
+                      <Button variant="ghost" size="icon" aria-label="Correção" nativeButton={false} render={
                         <Link href={`/admin/atividades/${a.id}/correcao`}><CheckSquare className="h-4 w-4" /></Link>
                       } />
                       <ActivityQuestionsDialog activityId={a.id} lessonId={lessonId}

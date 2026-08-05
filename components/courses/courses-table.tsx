@@ -120,12 +120,12 @@ export function CoursesTable({ canWrite }: { canWrite: boolean }) {
                   </TableCell>
                   {canWrite && (
                     <TableCell className="text-right space-x-1">
-                      <Button variant="ghost" size="icon" aria-label="Disciplinas" render={
+                      <Button variant="ghost" size="icon" aria-label="Disciplinas" nativeButton={false} render={
                         <Link href={`/admin/cursos/${c.id}/disciplinas`}>
                           <Layers className="h-4 w-4" />
                         </Link>
                       } />
-                      <Button variant="ghost" size="icon" aria-label="Notas" render={
+                      <Button variant="ghost" size="icon" aria-label="Notas" nativeButton={false} render={
                         <Link href={`/admin/cursos/${c.id}/notas`}>
                           <GraduationCap className="h-4 w-4" />
                         </Link>

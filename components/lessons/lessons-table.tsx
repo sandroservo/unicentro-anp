@@ -67,7 +67,7 @@ export function LessonsTable({ moduleId, canWrite }: { moduleId: string; canWrit
                     {l.videoUrl ? <Youtube className="h-4 w-4 text-red-600" /> : <span className="text-gray-400">—</span>}
                   </TableCell>
                   <TableCell className="text-right space-x-1">
-                    <Button variant="ghost" size="icon" aria-label="Atividades" render={
+                    <Button variant="ghost" size="icon" aria-label="Atividades" nativeButton={false} render={
                       <Link href={`/admin/aulas/${l.id}/atividades`}><ClipboardList className="h-4 w-4" /></Link>
                     } />
                     {canWrite && (

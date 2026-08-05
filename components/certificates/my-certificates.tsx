@@ -26,7 +26,7 @@ export function MyCertificates() {
               Emitido em {new Date(c.issuedAt).toLocaleDateString("pt-BR")}
             </p>
           </div>
-          <Button variant="outline" size="sm" render={
+          <Button variant="outline" size="sm" nativeButton={false} render={
             <a href={`/api/certificates/${c.id}/pdf`} target="_blank" rel="noreferrer">
               <Download className="h-4 w-4" /> PDF
             </a>
