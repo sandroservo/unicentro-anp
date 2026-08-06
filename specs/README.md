@@ -33,6 +33,7 @@ Cada módulo: `specs/modules/<nome>/spec.md` (+ `tasks.md` / `api.md` / `databas
 | Correção (IA + manual) | [grading](modules/grading/spec.md) | ✅ |
 | Notas (gradebook) | [gradebook](modules/gradebook/spec.md) | ✅ |
 | Certificados | [certificates](modules/certificates/spec.md) | ✅ |
+| Fórum (aluno) | [forum](modules/forum/spec.md) | 🚧 listar + criar |
 
 ### Fase 3 — IA ✅
 | Módulo | Spec | Status |

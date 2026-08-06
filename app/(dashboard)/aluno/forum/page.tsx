@@ -1,181 +1,120 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
+import prisma from "@/lib/prisma";
 import { Header } from "@/components/layout/header";
-import {
-  MessageSquare,
-  ThumbsUp,
-  CheckCircle,
-  Bot,
-  Clock,
-  Plus,
-  Search,
-} from "lucide-react";
+import { canPreviewStudentView } from "@/lib/enrollment-access";
+import { ForumClient, type Thread } from "./forum-client";
 
-const posts = [
-  {
-    id: "p1",
-    title: "Dúvida sobre funções com múltiplos parâmetros",
-    content: "Como faço para criar uma função que aceita um número variável de argumentos?",
-    author: "Maria Silva",
-    course: "Introdução à Programação",
-    lesson: "Funções",
-    replies: 3,
-    upvotes: 5,
-    resolved: true,
-    hasAIReply: true,
-    createdAt: "2 horas atrás",
-  },
-  {
-    id: "p2",
-    title: "Diferença entre lista e tupla",
-    content: "Alguém pode explicar quando usar lista e quando usar tupla?",
-    author: "João Santos",
-    course: "Introdução à Programação",
-    lesson: "Listas e Tuplas",
-    replies: 5,
-    upvotes: 12,
-    resolved: true,
-    hasAIReply: true,
-    createdAt: "5 horas atrás",
-  },
-  {
-    id: "p3",
-    title: "Erro ao executar loop while",
-    content: "Meu código entra em loop infinito, o que pode estar errado?",
-    author: "Ana Costa",
-    course: "Introdução à Programação",
-    lesson: "Estruturas de Controle",
-    replies: 2,
-    upvotes: 3,
-    resolved: false,
-    hasAIReply: false,
-    createdAt: "1 dia atrás",
-  },
-  {
-    id: "p4",
-    title: "Dicas para o projeto final",
-    content: "Quais são as melhores práticas para organizar o código do projeto?",
-    author: "Pedro Lima",
-    course: "Introdução à Programação",
-    lesson: "Projeto Final",
-    replies: 8,
-    upvotes: 15,
-    resolved: false,
-    hasAIReply: true,
-    createdAt: "2 dias atrás",
-  },
-];
+// Aulas às quais o aluno tem acesso (matrícula na turma ou na matéria).
+function enrolledLessonWhere(userId: string) {
+  return {
+    module: {
+      OR: [
+        { subjectId: null, course: { enrollments: { some: { userId } } } },
+        { subject: { enrollments: { some: { userId } } } },
+      ],
+    },
+  };
+}
 
-export default function ForumPage() {
+function relativeTime(date: Date): string {
+  const s = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (s < 60) return "agora";
+  const m = Math.floor(s / 60);
+  if (m < 60) return `há ${m} min`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `há ${h} h`;
+  const d = Math.floor(h / 24);
+  return `há ${d} dia${d > 1 ? "s" : ""}`;
+}
+
+export default async function ForumPage() {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
+
+  const userId = session.user.id;
+  const isPreview = canPreviewStudentView(session.user.role);
+  const lessonScope = isPreview ? {} : enrolledLessonWhere(userId);
+
+  const [posts, lessons] = await Promise.all([
+    prisma.forumPost.findMany({
+      where: { parentId: null, lesson: lessonScope },
+      select: {
+        id: true,
+        content: true,
+        upvotes: true,
+        isResolved: true,
+        isAI: true,
+        createdAt: true,
+        user: { select: { name: true } },
+        lesson: {
+          select: {
+            title: true,
+            module: { select: { course: { select: { title: true } } } },
+          },
+        },
+        replies: { select: { isAI: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: 100,
+    }),
+    prisma.lesson.findMany({
+      where: lessonScope,
+      select: {
+        id: true,
+        title: true,
+        module: { select: { course: { select: { title: true } } } },
+      },
+      orderBy: { title: "asc" },
+      take: 200,
+    }),
+  ]);
+
+  const threads: Thread[] = posts.map((p) => ({
+    id: p.id,
+    content: p.content,
+    author: p.user.name || "Aluno",
+    course: p.lesson.module.course.title,
+    lesson: p.lesson.title,
+    replies: p.replies.length,
+    upvotes: p.upvotes,
+    resolved: p.isResolved,
+    hasAIReply: p.isAI || p.replies.some((r) => r.isAI),
+    createdAt: relativeTime(p.createdAt),
+  }));
+
+  const lessonOptions = lessons.map((l) => ({
+    id: l.id,
+    label: `${l.module.course.title} · ${l.title}`,
+  }));
+
+  const resolved = threads.filter((t) => t.resolved).length;
+  const withAI = threads.filter((t) => t.hasAIReply).length;
+  const totalReplies = threads.reduce((acc, t) => acc + t.replies, 0);
+  const stats = [
+    { value: threads.length, label: "Discussões", tone: "text-foreground" },
+    { value: resolved, label: "Resolvidas", tone: "text-primary" },
+    { value: withAI, label: "Com resposta IA", tone: "text-primary" },
+    { value: totalReplies, label: "Respostas", tone: "text-purple-600" },
+  ];
+
   return (
     <>
-      <Header
-        title="Fórum"
-        subtitle="Discussões e dúvidas dos cursos"
-      />
+      <Header title="Fórum" subtitle="Discussões e dúvidas dos cursos" />
       <div className="space-y-6">
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="flex-1 relative">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
-              size={20}
-            />
-            <input
-              type="text"
-              placeholder="Buscar discussões..."
-              className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-          <button className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 transition-colors font-medium">
-            <Plus size={20} />
-            Nova Discussão
-          </button>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-2xl font-bold text-foreground">{posts.length}</p>
-            <p className="text-sm text-muted-foreground">Discussões</p>
-          </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-2xl font-bold text-primary">
-              {posts.filter((p) => p.resolved).length}
-            </p>
-            <p className="text-sm text-muted-foreground">Resolvidas</p>
-          </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-2xl font-bold text-primary">
-              {posts.filter((p) => p.hasAIReply).length}
-            </p>
-            <p className="text-sm text-muted-foreground">Com resposta IA</p>
-          </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]">
-            <p className="text-2xl font-bold text-purple-600">
-              {posts.reduce((acc, p) => acc + p.replies, 0)}
-            </p>
-            <p className="text-sm text-muted-foreground">Respostas</p>
-          </div>
-        </div>
-
-        {/* Posts List */}
-        <div className="space-y-4">
-          {posts.map((post) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {stats.map((s) => (
             <div
-              key={post.id}
-              className="cursor-pointer rounded-2xl border border-gray-200 bg-white p-4 transition-shadow hover:shadow-theme-md dark:border-gray-800 dark:bg-white/[0.03]"
+              key={s.label}
+              className="rounded-2xl border border-gray-200 bg-white p-4 text-center dark:border-gray-800 dark:bg-white/[0.03]"
             >
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-primary to-purple-500 rounded-full flex items-center justify-center text-white font-medium">
-                  {post.author[0]}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="font-semibold text-foreground hover:text-primary">
-                        {post.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
-                        {post.content}
-                      </p>
-                    </div>
-                    {post.resolved && (
-                      <span className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium whitespace-nowrap">
-                        <CheckCircle size={12} />
-                        Resolvido
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
-                    <span>{post.author}</span>
-                    <span>•</span>
-                    <span>{post.course}</span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={12} />
-                      {post.createdAt}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4 mt-3">
-                    <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <ThumbsUp size={14} />
-                      {post.upvotes}
-                    </span>
-                    <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                      <MessageSquare size={14} />
-                      {post.replies} respostas
-                    </span>
-                    {post.hasAIReply && (
-                      <span className="flex items-center gap-1 text-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                        <Bot size={14} />
-                        Resposta IA
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <p className={`text-2xl font-bold ${s.tone}`}>{s.value}</p>
+              <p className="text-sm text-muted-foreground">{s.label}</p>
             </div>
           ))}
         </div>
+
+        <ForumClient threads={threads} lessons={lessonOptions} />
       </div>
     </>
   );
