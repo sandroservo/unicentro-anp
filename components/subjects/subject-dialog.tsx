@@ -76,7 +76,7 @@ export function SubjectDialog({ mode, courseId, subject, trigger }: Props) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["subjects", courseId] });
-      toast.success(isEdit ? "Disciplina atualizada" : "Disciplina criada");
+      toast.success(isEdit ? "Matéria atualizada" : "Matéria criada");
       setOpen(false);
     },
     onError: (e: Error) => toast.error(e.message),
@@ -87,7 +87,7 @@ export function SubjectDialog({ mode, courseId, subject, trigger }: Props) {
       <DialogTrigger render={trigger} />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{isEdit ? "Editar disciplina" : "Nova disciplina"}</DialogTitle>
+          <DialogTitle>{isEdit ? "Editar matéria" : "Nova matéria"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit((v) => mutation.mutate(v))} className="space-y-4">
           <div className="space-y-1">

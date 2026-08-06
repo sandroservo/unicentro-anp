@@ -71,17 +71,51 @@ export function ActivitiesTable({ lessonId, canWrite }: { lessonId: string; canW
                   <TableCell>{a._count.submissions}</TableCell>
                   <TableCell>{a.aiGrading ? <Badge>IA</Badge> : "—"}</TableCell>
                   {canWrite && (
-                    <TableCell className="text-right space-x-1">
-                      <Button variant="ghost" size="icon" aria-label="Correção" nativeButton={false} render={
-                        <Link href={`/admin/atividades/${a.id}/correcao`}><CheckSquare className="h-4 w-4" /></Link>
-                      } />
-                      <ActivityQuestionsDialog activityId={a.id} lessonId={lessonId}
-                        trigger={<Button variant="ghost" size="icon" aria-label="Questões"><ListChecks className="h-4 w-4" /></Button>} />
-                      <ActivityDialog mode="edit" lessonId={lessonId} activity={a}
-                        trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
-                      <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(a.id)}>
-                        <Trash2 className="h-4 w-4 text-red-600" />
-                      </Button>
+                    <TableCell className="text-right">
+                      <div className="flex flex-wrap items-center justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label="Correção"
+                          nativeButton={false}
+                          render={
+                            <Link href={`/admin/atividades/${a.id}/correcao`}>
+                              <CheckSquare className="h-4 w-4" />
+                              Correção
+                            </Link>
+                          }
+                        />
+                        <ActivityQuestionsDialog
+                          activityId={a.id}
+                          lessonId={lessonId}
+                          trigger={
+                            <Button variant="ghost" size="sm" aria-label="Questões">
+                              <ListChecks className="h-4 w-4" />
+                              Questões
+                            </Button>
+                          }
+                        />
+                        <ActivityDialog
+                          mode="edit"
+                          lessonId={lessonId}
+                          activity={a}
+                          trigger={
+                            <Button variant="ghost" size="sm" aria-label="Editar">
+                              <Pencil className="h-4 w-4" />
+                              Editar
+                            </Button>
+                          }
+                        />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label="Remover"
+                          onClick={() => remove.mutate(a.id)}
+                        >
+                          <Trash2 className="h-4 w-4 text-red-600" />
+                          <span className="text-red-600">Remover</span>
+                        </Button>
+                      </div>
                     </TableCell>
                   )}
                 </TableRow>

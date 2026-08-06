@@ -82,23 +82,24 @@
     --font-sans: var(--font-sans);
   }
   * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
-    @apply font-sans;
-  }
-}
-
-@layer base {
-  * {
     @apply border-border;
+    outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
   }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  html {
+    @apply font-sans;
+  }
+
+  /* Native inputs: avoid invisible text (light text on white browser default) */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="submit"]):not([type="button"]),
+  textarea,
+  select {
+    color: var(--foreground);
+    background-color: var(--card);
+    caret-color: var(--foreground);
   }
 }
 

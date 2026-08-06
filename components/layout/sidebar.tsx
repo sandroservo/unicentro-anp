@@ -1,48 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import {
   BookOpen,
   ClipboardList,
-  MessageSquare,
-  Brain,
   Settings,
   LogOut,
   Users,
-  Search,
   GraduationCap,
-  Award,
-  Eye,
-  ChevronDown,
   MoreHorizontal,
+  Eye,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isAdminRole } from "@/lib/rbac";
 import { useSidebar } from "@/context/sidebar-context";
+import { Logo } from "./logo";
+import type { NavItem } from "./nav-items";
 
-interface MenuItem {
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-  label: string;
-  href: string;
-  permission?: string;
-}
-
-const menuItemsAluno: MenuItem[] = [
-  { icon: BookOpen, label: "Meus Cursos", href: "/aluno/cursos" },
-  { icon: ClipboardList, label: "Atividades", href: "/aluno/atividades" },
-  { icon: MessageSquare, label: "Fórum", href: "/aluno/forum" },
-  { icon: Brain, label: "Professor IA", href: "/aluno/tutor" },
-  { icon: Search, label: "Busca", href: "/aluno/busca" },
-  { icon: Award, label: "Certificados", href: "/aluno/certificados" },
-];
-
-const adminItems: MenuItem[] = [
+const adminItems: NavItem[] = [
   { icon: GraduationCap, label: "Painel Admin", href: "/admin" },
   { icon: Users, label: "Alunos", href: "/admin/alunos", permission: "students.read" },
-  { icon: BookOpen, label: "Cursos", href: "/admin/cursos", permission: "courses.read" },
+  { icon: BookOpen, label: "Turmas", href: "/admin/cursos", permission: "courses.read" },
   {
     icon: ClipboardList,
     label: "Banco de Questões",
@@ -52,7 +33,13 @@ const adminItems: MenuItem[] = [
   { icon: Users, label: "Usuários", href: "/admin/usuarios", permission: "users.manage" },
 ];
 
-const settingsItem: MenuItem = {
+const studentViewItem: NavItem = {
+  icon: Eye,
+  label: "Visão do Aluno",
+  href: "/aluno/cursos",
+};
+
+const settingsItem: NavItem = {
   icon: Settings,
   label: "Configurações",
   href: "/admin/configuracoes",
@@ -81,29 +68,16 @@ export function Sidebar() {
     [pathname]
   );
 
-  const alunoActive = menuItemsAluno.some((i) => isActive(i.href));
-  const [alunoOpen, setAlunoOpen] = useState(true);
-  const [subMenuHeight, setSubMenuHeight] = useState(0);
-  const subMenuRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (alunoActive) setAlunoOpen(true);
-  }, [alunoActive]);
-
-  useEffect(() => {
-    if (alunoOpen && subMenuRef.current) {
-      setSubMenuHeight(subMenuRef.current.scrollHeight);
-    }
-  }, [alunoOpen, showLabels]);
+  // Sidebar só para administração — menu do aluno fica fixo no topo
+  if (!isAdminRole(userRole)) return null;
 
   const filteredAdmin = adminItems.filter(
     (i) => !i.permission || perms.includes(i.permission)
   );
   const showSettings =
-    isAdminRole(userRole) &&
-    (!settingsItem.permission || perms.includes(settingsItem.permission));
+    !settingsItem.permission || perms.includes(settingsItem.permission);
 
-  const NavLink = ({ item }: { item: MenuItem }) => {
+  const NavLink = ({ item }: { item: NavItem }) => {
     const active = isActive(item.href);
     return (
       <Link
@@ -147,24 +121,19 @@ export function Sidebar() {
     >
       <div
         className={cn(
-          "flex py-8",
+          "flex py-6",
           !showLabels ? "lg:justify-center" : "justify-start"
         )}
       >
-        <Link href="/aluno">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo.png"
-            alt="UNICENTROMA"
-            className={cn("w-auto", showLabels ? "h-10" : "h-8")}
-          />
+        <Link href="/admin" className="min-w-0 block">
+          <Logo showWordmark={showLabels} markOnly={!showLabels} />
         </Link>
       </div>
 
       <div className="no-scrollbar flex flex-1 flex-col overflow-y-auto duration-300 ease-linear">
         <nav className="mb-6">
           <div className="flex flex-col gap-6">
-            {isAdminRole(userRole) && filteredAdmin.length > 0 && (
+            {filteredAdmin.length > 0 && (
               <div>
                 <SectionLabel>Administração</SectionLabel>
                 <ul className="flex flex-col gap-1">
@@ -178,74 +147,12 @@ export function Sidebar() {
             )}
 
             <div>
-              <SectionLabel>Aluno</SectionLabel>
-              {showLabels ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setAlunoOpen((o) => !o)}
-                    className={cn(
-                      "menu-item group w-full cursor-pointer",
-                      alunoActive || alunoOpen
-                        ? "menu-item-active"
-                        : "menu-item-inactive"
-                    )}
-                  >
-                    <Eye
-                      size={20}
-                      className={
-                        alunoActive || alunoOpen
-                          ? "menu-item-icon-active"
-                          : "menu-item-icon-inactive"
-                      }
-                    />
-                    <span>Visão do Aluno</span>
-                    <ChevronDown
-                      size={20}
-                      className={cn(
-                        "ml-auto transition-transform duration-200",
-                        alunoOpen
-                          ? "rotate-180 text-brand-500"
-                          : "text-gray-500"
-                      )}
-                    />
-                  </button>
-                  <div
-                    ref={subMenuRef}
-                    className="overflow-hidden transition-all duration-300"
-                    style={{ height: alunoOpen ? `${subMenuHeight}px` : "0px" }}
-                  >
-                    <ul className="ml-9 mt-2 space-y-1">
-                      {menuItemsAluno.map((item) => {
-                        const active = isActive(item.href);
-                        return (
-                          <li key={item.href}>
-                            <Link
-                              href={item.href}
-                              className={cn(
-                                "menu-dropdown-item",
-                                active
-                                  ? "menu-dropdown-item-active"
-                                  : "menu-dropdown-item-inactive"
-                              )}
-                            >
-                              {item.label}
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </>
-              ) : (
-                <ul className="flex flex-col gap-1">
-                  {menuItemsAluno.map((item) => (
-                    <li key={item.href}>
-                      <NavLink item={item} />
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <SectionLabel>Pré-visualização</SectionLabel>
+              <ul className="flex flex-col gap-1">
+                <li>
+                  <NavLink item={studentViewItem} />
+                </li>
+              </ul>
             </div>
 
             {showSettings && (

@@ -4,6 +4,7 @@ import { parseBody, apiError, ApiError } from "@/lib/api";
 import { requireSession } from "@/lib/authz";
 import { submitSchema } from "@/lib/validations/activity";
 import { gradeObjective, type GradableQuestion } from "@/lib/grading";
+import { assertLessonAccess } from "@/lib/enrollment-access";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -11,13 +12,14 @@ type Ctx = { params: Promise<{ id: string }> };
 export async function POST(request: Request, { params }: Ctx) {
   try {
     const session = await requireSession();
-    const userId = session.user.id;
+    const userId = session.user.id!;
     const { id: activityId } = await params;
     const { answers } = await parseBody(submitSchema, request);
 
     const activity = await prisma.activity.findUnique({
       where: { id: activityId },
       select: {
+        lessonId: true,
         maxAttempts: true,
         activityQuestions: {
           include: { question: { select: { id: true, type: true, options: true, points: true } } },
@@ -25,6 +27,8 @@ export async function POST(request: Request, { params }: Ctx) {
       },
     });
     if (!activity) return apiError("Atividade não encontrada", 404);
+
+    await assertLessonAccess(userId, activity.lessonId, session.user.role);
 
     const priorAttempts = await prisma.submission.count({ where: { activityId, userId } });
     if (priorAttempts >= activity.maxAttempts) {

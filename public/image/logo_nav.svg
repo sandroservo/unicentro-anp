@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 106" fill="none" role="img" aria-label="UNICENTROMA">
+  <title>UNICENTROMA  Compromisso com o presente, transformando o futuro</title>
+
+  <!-- moldura -->
+  <rect x="1.5" y="1.5" width="317" height="103" rx="10" ry="10" fill="#FFFFFF" stroke="#77AC40" stroke-width="2.2"/>
+
+  <!-- emblema -->
+  <g transform="translate(14,13)">
+    <defs>
+      <clipPath id="emblemClip">
+        <circle cx="40" cy="40" r="40"/>
+      </clipPath>
+    </defs>
+
+    <g clip-path="url(#emblemClip)">
+      <!-- c�u -->
+      <circle cx="40" cy="40" r="40" fill="#006DB2"/>
+      <!-- campo -->
+      <path d="M-2 48 C18 28, 38 36, 52 42 C66 48, 78 40, 86 36 L86 86 L-2 86 Z" fill="#77AC40"/>
+
+      <!-- caminho branco (S) -->
+      <path
+        d="M-4 52
+           C10 40, 22 34, 34 38
+           C46 42, 54 54, 66 52
+           C76 50, 84 42, 90 38
+           L90 58
+           C82 62, 74 66, 64 64
+           C52 62, 44 50, 32 48
+           C20 46, 8 52, -4 64 Z"
+        fill="#FFFFFF"
+      />
+
+      <!-- rio azul dentro do caminho -->
+      <path
+        d="M0 54
+           C12 44, 24 40, 36 44
+           C48 48, 56 58, 68 56
+           C76 54, 82 48, 88 44"
+        stroke="#006DB2"
+        stroke-width="3.2"
+        stroke-linecap="round"
+        fill="none"
+      />
+
+      <!-- sol (semic�rculo + raios) -->
+      <g transform="translate(18,10)">
+        <path d="M0 16 A16 16 0 0 1 32 16 L32 18 L0 18 Z" fill="#FFFFFF"/>
+        <!-- raios -->
+        <polygon points="16,0 17.6,9 14.4,9" fill="#FFFFFF"/>
+        <polygon points="4,4 10.5,10.5 8.2,12.2" fill="#FFFFFF"/>
+        <polygon points="28,4 23.8,12.2 21.5,10.5" fill="#FFFFFF"/>
+        <polygon points="0,14 9,14.5 8.5,17" fill="#FFFFFF"/>
+        <polygon points="32,14 23.5,17 23,14.5" fill="#FFFFFF"/>
+        <polygon points="8,-1 12.5,7.5 10,8.5" fill="#FFFFFF"/>
+        <polygon points="24,-1 22,8.5 19.5,7.5" fill="#FFFFFF"/>
+      </g>
+    </g>
+
+    <!-- anel limpo -->
+    <circle cx="40" cy="40" r="39.2" stroke="#FFFFFF" stroke-width="0" fill="none"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="108" y="52" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">
+    <tspan fill="#77AC40">UNI</tspan><tspan fill="#006DB2">CENTRO</tspan><tspan fill="#77AC40">MA</tspan>
+  </text>
+
+  <!-- slogan -->
+  <text
+    x="108"
+    y="74"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="6.8"
+    font-weight="600"
+    letter-spacing="0.2"
+    fill="#1A1A1A"
+  >COMPROMISSO COM O PRESENTE, TRANSFORMANDO O FUTURO.</text>
+</svg>

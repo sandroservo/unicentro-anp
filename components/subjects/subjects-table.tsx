@@ -44,7 +44,7 @@ export function SubjectsTable({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["subjects", courseId] });
-      toast.success("Disciplina removida");
+      toast.success("Matéria removida");
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -58,7 +58,7 @@ export function SubjectsTable({
             courseId={courseId}
             trigger={
               <Button>
-                <Plus className="h-4 w-4" /> Nova disciplina
+                <Plus className="h-4 w-4" /> Nova matéria
               </Button>
             }
           />
@@ -96,32 +96,45 @@ export function SubjectsTable({
                   <TableCell className="font-medium">{s.title}</TableCell>
                   <TableCell>{s.code ?? "—"}</TableCell>
                   <TableCell>{s._count.modules}</TableCell>
-                  <TableCell className="text-right space-x-1">
-                    <Button variant="ghost" size="icon" aria-label="Módulos" nativeButton={false} render={
-                      <Link href={`/admin/disciplinas/${s.id}`}><Layers className="h-4 w-4" /></Link>
-                    } />
-                    {canWrite && (
-                      <>
-                        <SubjectDialog
-                          mode="edit"
-                          courseId={courseId}
-                          subject={s}
-                          trigger={
-                            <Button variant="ghost" size="icon" aria-label="Editar">
-                              <Pencil className="h-4 w-4" />
-                            </Button>
-                          }
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          aria-label="Remover"
-                          onClick={() => remove.mutate(s.id)}
-                        >
-                          <Trash2 className="h-4 w-4 text-red-600" />
-                        </Button>
-                      </>
-                    )}
+                  <TableCell className="text-right">
+                    <div className="flex flex-wrap items-center justify-end gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        aria-label="Gerenciar matéria"
+                        nativeButton={false}
+                        render={
+                          <Link href={`/admin/disciplinas/${s.id}`}>
+                            <Layers className="h-4 w-4" />
+                            Gerenciar
+                          </Link>
+                        }
+                      />
+                      {canWrite && (
+                        <>
+                          <SubjectDialog
+                            mode="edit"
+                            courseId={courseId}
+                            subject={s}
+                            trigger={
+                              <Button variant="ghost" size="sm" aria-label="Editar">
+                                <Pencil className="h-4 w-4" />
+                                Editar
+                              </Button>
+                            }
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            aria-label="Remover"
+                            onClick={() => remove.mutate(s.id)}
+                          >
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                            <span className="text-red-600">Remover</span>
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

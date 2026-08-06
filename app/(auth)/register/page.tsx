@@ -84,7 +84,7 @@ export default function RegisterPage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-gray-800 caret-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-brand-300 focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:caret-white"
                 placeholder="Seu nome"
                 required
               />
@@ -104,7 +104,7 @@ export default function RegisterPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-gray-800 caret-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-brand-300 focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:caret-white"
                 placeholder="seu@email.com"
                 required
               />
@@ -124,7 +124,7 @@ export default function RegisterPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-12 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-12 text-gray-800 caret-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-brand-300 focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:caret-white"
                 placeholder="Mínimo 6 caracteres"
                 required
               />
@@ -151,7 +151,7 @@ export default function RegisterPage() {
                 type={showPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-10 pr-4 text-gray-800 caret-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-brand-300 focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:caret-white"
                 placeholder="Digite a senha novamente"
                 required
               />

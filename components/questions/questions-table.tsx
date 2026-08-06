@@ -95,12 +95,28 @@ export function QuestionsTable({ canWrite }: { canWrite: boolean }) {
                   <TableCell>{qn.category?.name ?? "—"}</TableCell>
                   <TableCell>{qn.points}</TableCell>
                   {canWrite && (
-                    <TableCell className="text-right space-x-1">
-                      <QuestionDialog mode="edit" question={qn}
-                        trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
-                      <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(qn.id)}>
-                        <Trash2 className="h-4 w-4 text-red-600" />
-                      </Button>
+                    <TableCell className="text-right">
+                      <div className="flex flex-wrap items-center justify-end gap-1">
+                        <QuestionDialog
+                          mode="edit"
+                          question={qn}
+                          trigger={
+                            <Button variant="ghost" size="sm" aria-label="Editar">
+                              <Pencil className="h-4 w-4" />
+                              Editar
+                            </Button>
+                          }
+                        />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          aria-label="Remover"
+                          onClick={() => remove.mutate(qn.id)}
+                        >
+                          <Trash2 className="h-4 w-4 text-red-600" />
+                          <span className="text-red-600">Remover</span>
+                        </Button>
+                      </div>
                     </TableCell>
                   )}
                 </TableRow>

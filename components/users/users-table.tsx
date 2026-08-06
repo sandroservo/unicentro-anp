@@ -83,12 +83,28 @@ export function UsersTable() {
                   <TableCell className="font-medium">{u.name}</TableCell>
                   <TableCell>{u.email}</TableCell>
                   <TableCell><Badge variant="secondary">{u.roleRel?.name ?? "—"}</Badge></TableCell>
-                  <TableCell className="text-right space-x-1">
-                    <UserDialog mode="edit" user={u}
-                      trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
-                    <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(u.id)}>
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
+                  <TableCell className="text-right">
+                    <div className="flex flex-wrap items-center justify-end gap-1">
+                      <UserDialog
+                        mode="edit"
+                        user={u}
+                        trigger={
+                          <Button variant="ghost" size="sm" aria-label="Editar">
+                            <Pencil className="h-4 w-4" />
+                            Editar
+                          </Button>
+                        }
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        aria-label="Remover"
+                        onClick={() => remove.mutate(u.id)}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-600" />
+                        <span className="text-red-600">Remover</span>
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

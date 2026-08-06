@@ -21,7 +21,12 @@ export default async function DisciplinasPage({
 
   return (
     <>
-      <Header title="Disciplinas" subtitle={course.title} />
+      <Header
+        title="Matérias da turma"
+        subtitle={course.title}
+        backHref="/admin/cursos"
+        backLabel="Voltar"
+      />
       <div className="space-y-6">
         <SubjectsTable courseId={cursoId} canWrite={canWrite} />
       </div>

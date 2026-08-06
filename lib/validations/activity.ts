@@ -9,6 +9,11 @@ export const activityCreateSchema = z.object({
 });
 export const activityUpdateSchema = activityCreateSchema.partial();
 
+/** Cadastro de atividade vinculada a uma matéria (via aula da matéria). */
+export const subjectActivityCreateSchema = activityCreateSchema.extend({
+  lessonId: z.string().trim().min(1, "Selecione a aula da matéria"),
+});
+
 export const setQuestionsSchema = z.object({
   questionIds: z.array(z.string().min(1)),
 });

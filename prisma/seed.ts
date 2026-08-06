@@ -1,4 +1,4 @@
-// prisma/seed.ts
+// prisma/seed.ts — UNICENTROMA: turmas de Enfermagem, Direito e Administração
 import "dotenv/config";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -10,48 +10,445 @@ const adapter = new PrismaPg({
 });
 const prisma = new PrismaClient({ adapter });
 
-async function main() {
-  console.log("🌱 Iniciando seed...");
+type LessonSeed = {
+  id: string;
+  title: string;
+  description: string;
+  videoUrl: string;
+  videoId: string;
+  duration: number;
+  order: number;
+};
 
-  // Criar usuários de demonstração
+type ModuleSeed = {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  lessons: LessonSeed[];
+};
+
+type SubjectSeed = {
+  id: string;
+  title: string;
+  code: string;
+  order: number;
+  modules: ModuleSeed[];
+};
+
+type TurmaSeed = {
+  id: string;
+  title: string;
+  slug: string;
+  code: string;
+  description: string;
+  workloadHours: number;
+  aiPersona: string;
+  aiContext: string;
+  subjects: SubjectSeed[];
+};
+
+const TURMAS: TurmaSeed[] = [
+  {
+    id: "turma-enf",
+    title: "Enfermagem — Turma 2026.1",
+    slug: "enfermagem-2026-1",
+    code: "ENF-2026.1",
+    description:
+      "Turma do curso de Enfermagem. Formação para cuidados clínicos, atenção básica e ética profissional.",
+    workloadHours: 320,
+    aiPersona: "Professora Ana — enfermeira e docente, explica procedimentos com segurança e empatia",
+    aiContext:
+      "Curso de Enfermagem. Foque em anatomia, fundamentos de enfermagem, biossegurança e ética no cuidado ao paciente.",
+    subjects: [
+      {
+        id: "mat-enf-anat",
+        title: "Anatomia e Fisiologia",
+        code: "ENF-101",
+        order: 1,
+        modules: [
+          {
+            id: "mod-enf-anat-1",
+            title: "Módulo 1 — Sistemas do corpo",
+            description: "Visão geral dos sistemas humanos",
+            order: 1,
+            lessons: [
+              {
+                id: "aula-enf-1",
+                title: "Introdução à anatomia humana",
+                description: "Planos, eixos e nomenclatura anatômica",
+                videoUrl: "https://www.youtube.com/watch?v=0FwcLQK4NXE",
+                videoId: "0FwcLQK4NXE",
+                duration: 1200,
+                order: 1,
+              },
+              {
+                id: "aula-enf-2",
+                title: "Sistema cardiovascular",
+                description: "Coração, vasos e circulação",
+                videoUrl: "https://www.youtube.com/watch?v=CWFyxn0qDEU",
+                videoId: "CWFyxn0qDEU",
+                duration: 1500,
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "mat-enf-fund",
+        title: "Fundamentos de Enfermagem",
+        code: "ENF-102",
+        order: 2,
+        modules: [
+          {
+            id: "mod-enf-fund-1",
+            title: "Módulo 1 — Cuidado e biossegurança",
+            description: "Princípios do cuidado de enfermagem",
+            order: 1,
+            lessons: [
+              {
+                id: "aula-enf-3",
+                title: "Higiene das mãos e EPI",
+                description: "Protocolos de biossegurança no ambiente hospitalar",
+                videoUrl: "https://www.youtube.com/watch?v=3PmVJQUCm4E",
+                videoId: "3PmVJQUCm4E",
+                duration: 900,
+                order: 1,
+              },
+              {
+                id: "aula-enf-4",
+                title: "Sinais vitais",
+                description: "Mensuração e interpretação de sinais vitais",
+                videoUrl: "https://www.youtube.com/watch?v=gVu9l1fQq8E",
+                videoId: "gVu9l1fQq8E",
+                duration: 1100,
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "turma-dir",
+    title: "Direito — Turma 2026.1",
+    slug: "direito-2026-1",
+    code: "DIR-2026.1",
+    description:
+      "Turma do curso de Direito. Introdução ao ordenamento jurídico brasileiro e bases constitucionais.",
+    workloadHours: 360,
+    aiPersona: "Professor Ricardo — advogado e professor, explica Direito com exemplos práticos",
+    aiContext:
+      "Curso de Direito. Foque em introdução ao Direito, Constituição Federal e raciocínio jurídico.",
+    subjects: [
+      {
+        id: "mat-dir-intro",
+        title: "Introdução ao Direito",
+        code: "DIR-101",
+        order: 1,
+        modules: [
+          {
+            id: "mod-dir-intro-1",
+            title: "Módulo 1 — Noções gerais",
+            description: "Conceitos fundamentais",
+            order: 1,
+            lessons: [
+              {
+                id: "aula-dir-1",
+                title: "O que é Direito?",
+                description: "Conceito, funções e ramos do Direito",
+                videoUrl: "https://www.youtube.com/watch?v=8jPQjjsBbAc",
+                videoId: "8jPQjjsBbAc",
+                duration: 1400,
+                order: 1,
+              },
+              {
+                id: "aula-dir-2",
+                title: "Fontes do Direito",
+                description: "Lei, doutrina, jurisprudência e costumes",
+                videoUrl: "https://www.youtube.com/watch?v=YqQZ8xJvJzA",
+                videoId: "YqQZ8xJvJzA",
+                duration: 1300,
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "mat-dir-const",
+        title: "Direito Constitucional",
+        code: "DIR-102",
+        order: 2,
+        modules: [
+          {
+            id: "mod-dir-const-1",
+            title: "Módulo 1 — Constituição",
+            description: "Estrutura da CF/88",
+            order: 1,
+            lessons: [
+              {
+                id: "aula-dir-3",
+                title: "Princípios fundamentais da CF/88",
+                description: "Artigos 1º a 4º da Constituição",
+                videoUrl: "https://www.youtube.com/watch?v=pTQ9i4i8x0E",
+                videoId: "pTQ9i4i8x0E",
+                duration: 1600,
+                order: 1,
+              },
+              {
+                id: "aula-dir-4",
+                title: "Direitos e garantias fundamentais",
+                description: "Art. 5º — direitos individuais e coletivos",
+                videoUrl: "https://www.youtube.com/watch?v=kP5n8qYvJcE",
+                videoId: "kP5n8qYvJcE",
+                duration: 1800,
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "turma-adm",
+    title: "Administração — Turma 2026.1",
+    slug: "administracao-2026-1",
+    code: "ADM-2026.1",
+    description:
+      "Turma do curso de Administração. Gestão organizacional, pessoas e planejamento estratégico.",
+    workloadHours: 300,
+    aiPersona: "Professora Camila — administradora e consultora, conecta teoria à prática empresarial",
+    aiContext:
+      "Curso de Administração. Foque em funções administrativas, gestão de pessoas e planejamento.",
+    subjects: [
+      {
+        id: "mat-adm-intro",
+        title: "Introdução à Administração",
+        code: "ADM-101",
+        order: 1,
+        modules: [
+          {
+            id: "mod-adm-intro-1",
+            title: "Módulo 1 — Funções administrativas",
+            description: "Planejar, organizar, dirigir e controlar",
+            order: 1,
+            lessons: [
+              {
+                id: "aula-adm-1",
+                title: "O que é Administração?",
+                description: "Conceitos e evolução do pensamento administrativo",
+                videoUrl: "https://www.youtube.com/watch?v=sZ2qulI6GEk",
+                videoId: "sZ2qulI6GEk",
+                duration: 1200,
+                order: 1,
+              },
+              {
+                id: "aula-adm-2",
+                title: "As 4 funções da Administração",
+                description: "PODC na prática organizacional",
+                videoUrl: "https://www.youtube.com/watch?v=sZ2qulI6GEk",
+                videoId: "sZ2qulI6GEk",
+                duration: 1000,
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "mat-adm-gp",
+        title: "Gestão de Pessoas",
+        code: "ADM-102",
+        order: 2,
+        modules: [
+          {
+            id: "mod-adm-gp-1",
+            title: "Módulo 1 — Pessoas e organizações",
+            description: "RH estratégico",
+            order: 1,
+            lessons: [
+              {
+                id: "aula-adm-3",
+                title: "Recrutamento e seleção",
+                description: "Processos de atração e escolha de talentos",
+                videoUrl: "https://www.youtube.com/watch?v=9bZkp7q19f0",
+                videoId: "9bZkp7q19f0",
+                duration: 1100,
+                order: 1,
+              },
+              {
+                id: "aula-adm-4",
+                title: "Motivação e clima organizacional",
+                description: "Teorias motivacionais aplicadas",
+                videoUrl: "https://www.youtube.com/watch?v=fJ9rUzIMcZQ",
+                videoId: "fJ9rUzIMcZQ",
+                duration: 1250,
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+async function seedTurma(turma: TurmaSeed) {
+  const course = await prisma.course.upsert({
+    where: { id: turma.id },
+    update: {
+      title: turma.title,
+      description: turma.description,
+      slug: turma.slug,
+      code: turma.code,
+      workloadHours: turma.workloadHours,
+      isActive: true,
+      aiPersona: turma.aiPersona,
+      aiContext: turma.aiContext,
+    },
+    create: {
+      id: turma.id,
+      title: turma.title,
+      description: turma.description,
+      slug: turma.slug,
+      code: turma.code,
+      workloadHours: turma.workloadHours,
+      isActive: true,
+      aiPersona: turma.aiPersona,
+      aiContext: turma.aiContext,
+    },
+  });
+
+  for (const sub of turma.subjects) {
+    await prisma.subject.upsert({
+      where: { id: sub.id },
+      update: {
+        title: sub.title,
+        code: sub.code,
+        order: sub.order,
+        courseId: course.id,
+      },
+      create: {
+        id: sub.id,
+        courseId: course.id,
+        title: sub.title,
+        code: sub.code,
+        order: sub.order,
+      },
+    });
+
+    for (const mod of sub.modules) {
+      await prisma.module.upsert({
+        where: { id: mod.id },
+        update: {
+          title: mod.title,
+          description: mod.description,
+          order: mod.order,
+          courseId: course.id,
+          subjectId: sub.id,
+        },
+        create: {
+          id: mod.id,
+          courseId: course.id,
+          subjectId: sub.id,
+          title: mod.title,
+          description: mod.description,
+          order: mod.order,
+        },
+      });
+
+      for (const lesson of mod.lessons) {
+        await prisma.lesson.upsert({
+          where: { id: lesson.id },
+          update: {
+            title: lesson.title,
+            description: lesson.description,
+            videoUrl: lesson.videoUrl,
+            videoId: lesson.videoId,
+            duration: lesson.duration,
+            order: lesson.order,
+            moduleId: mod.id,
+          },
+          create: {
+            id: lesson.id,
+            moduleId: mod.id,
+            title: lesson.title,
+            description: lesson.description,
+            videoUrl: lesson.videoUrl,
+            videoId: lesson.videoId,
+            duration: lesson.duration,
+            order: lesson.order,
+          },
+        });
+      }
+    }
+  }
+
+  return course;
+}
+
+async function ensureStudent(opts: {
+  email: string;
+  name: string;
+  matricula: string;
+  password: string;
+  roleId: string;
+}) {
+  const user = await prisma.user.upsert({
+    where: { email: opts.email },
+    update: {
+      name: opts.name,
+      role: "ALUNO",
+      roleId: opts.roleId,
+    },
+    create: {
+      email: opts.email,
+      name: opts.name,
+      password: opts.password,
+      role: "ALUNO",
+      roleId: opts.roleId,
+    },
+  });
+
+  await prisma.studentProfile.upsert({
+    where: { userId: user.id },
+    update: { matricula: opts.matricula, status: "ATIVO" },
+    create: {
+      userId: user.id,
+      matricula: opts.matricula,
+      status: "ATIVO",
+    },
+  });
+
+  return user;
+}
+
+async function enrollInTurma(userId: string, courseId: string, progress = 0) {
+  await prisma.enrollment.upsert({
+    where: { userId_courseId: { userId, courseId } },
+    update: { progress },
+    create: { userId, courseId, role: "STUDENT", progress },
+  });
+}
+
+async function linkToSubject(userId: string, subjectId: string) {
+  await prisma.subjectEnrollment.upsert({
+    where: { userId_subjectId: { userId, subjectId } },
+    update: {},
+    create: { userId, subjectId },
+  });
+}
+
+async function main() {
+  console.log("🌱 Seed UNICENTROMA — Enfermagem, Direito e Administração...");
+
   const hashedPassword = await hash("123456", 12);
 
-  const aluno = await prisma.user.upsert({
-    where: { email: "aluno@anp.com" },
-    update: {},
-    create: {
-      email: "aluno@anp.com",
-      name: "João Silva",
-      password: hashedPassword,
-      role: "STUDENT",
-    },
-  });
-
-  const professor = await prisma.user.upsert({
-    where: { email: "professor@anp.com" },
-    update: {},
-    create: {
-      email: "professor@anp.com",
-      name: "Maria Santos",
-      password: hashedPassword,
-      role: "TEACHER",
-    },
-  });
-
-  const admin = await prisma.user.upsert({
-    where: { email: "admin@anp.com" },
-    update: {},
-    create: {
-      email: "admin@anp.com",
-      name: "Carlos Admin",
-      password: hashedPassword,
-      role: "ADMIN",
-    },
-  });
-
-  console.log("✅ Usuários criados");
-
-  // RBAC: roles, permissões e matriz (idempotente)
+  // RBAC
   const permIds = new Map<string, string>();
   for (const slug of PERMISSIONS) {
     const p = await prisma.permission.upsert({
@@ -70,7 +467,6 @@ async function main() {
       create: { slug: def.slug, name: def.name },
     });
     roleIdBySlug.set(def.slug, r.id);
-    // (re)vincula permissões da role
     await prisma.rolePermission.deleteMany({ where: { roleId: r.id } });
     if (def.permissions.length) {
       await prisma.rolePermission.createMany({
@@ -83,244 +479,124 @@ async function main() {
     }
   }
 
-  // Backfill: mapeia User.role (string legada) -> roleId
-  const allUsers = await prisma.user.findMany({ select: { id: true, role: true } });
-  for (const u of allUsers) {
-    const slug = toRoleSlug(u.role);
+  const admin = await prisma.user.upsert({
+    where: { email: "admin@anp.com" },
+    update: {
+      name: "Carlos Admin",
+      role: "ADMIN",
+      roleId: roleIdBySlug.get("ADMINISTRADOR")!,
+    },
+    create: {
+      email: "admin@anp.com",
+      name: "Carlos Admin",
+      password: hashedPassword,
+      role: "ADMIN",
+      roleId: roleIdBySlug.get("ADMINISTRADOR")!,
+    },
+  });
+
+  const professor = await prisma.user.upsert({
+    where: { email: "professor@anp.com" },
+    update: {
+      name: "Maria Santos",
+      role: "TEACHER",
+      roleId: roleIdBySlug.get("PROFESSOR")!,
+    },
+    create: {
+      email: "professor@anp.com",
+      name: "Maria Santos",
+      password: hashedPassword,
+      role: "TEACHER",
+      roleId: roleIdBySlug.get("PROFESSOR")!,
+    },
+  });
+
+  const alunoRoleId = roleIdBySlug.get("ALUNO")!;
+
+  const alunoEnf = await ensureStudent({
+    email: "aluno@anp.com",
+    name: "João Silva",
+    matricula: "ENF2026001",
+    password: hashedPassword,
+    roleId: alunoRoleId,
+  });
+
+  const alunoDir = await ensureStudent({
+    email: "aluno.direito@anp.com",
+    name: "Ana Oliveira",
+    matricula: "DIR2026001",
+    password: hashedPassword,
+    roleId: alunoRoleId,
+  });
+
+  const alunoAdm = await ensureStudent({
+    email: "aluno.adm@anp.com",
+    name: "Pedro Costa",
+    matricula: "ADM2026001",
+    password: hashedPassword,
+    roleId: alunoRoleId,
+  });
+
+  // Backfill roles
+  for (const u of await prisma.user.findMany({ select: { id: true, role: true } })) {
     await prisma.user.update({
       where: { id: u.id },
-      data: { roleId: roleIdBySlug.get(slug)! },
+      data: { roleId: roleIdBySlug.get(toRoleSlug(u.role))! },
     });
   }
 
-  console.log(`✅ RBAC: ${ROLES.length} roles, ${PERMISSIONS.length} permissões, ${allUsers.length} usuários vinculados`);
+  console.log("✅ Usuários e RBAC");
 
-  // Criar curso de Programação
-  const cursoProgramacao = await prisma.course.upsert({
-    where: { id: "c1" },
-    update: {},
-    create: {
-      id: "c1",
-      title: "Introdução à Programação",
-      description:
-        "Aprenda os fundamentos da programação com Python. Este curso abrange desde conceitos básicos até a criação do seu primeiro projeto completo.",
-      aiPersona: "Professor Python - especialista em ensinar programação para iniciantes de forma didática e prática",
-      aiContext: `Este é um curso introdutório de programação usando Python.
-      
-Tópicos abordados:
-- Variáveis e tipos de dados
-- Operadores e expressões
-- Estruturas de controle (if, for, while)
-- Funções
-- Listas, tuplas e dicionários
-- Programação orientada a objetos básica
-
-O aluno deve aprender a lógica de programação e ser capaz de criar programas simples ao final do curso.`,
-    },
-  });
-
-  // Criar módulos do curso
-  const modulo1 = await prisma.module.upsert({
-    where: { id: "m1" },
-    update: {},
-    create: {
-      id: "m1",
-      courseId: cursoProgramacao.id,
-      title: "Módulo 1: Fundamentos",
-      description: "Conceitos básicos de programação",
-      order: 1,
-    },
-  });
-
-  const modulo2 = await prisma.module.upsert({
-    where: { id: "m2" },
-    update: {},
-    create: {
-      id: "m2",
-      courseId: cursoProgramacao.id,
-      title: "Módulo 2: Estruturas de Dados",
-      description: "Listas, tuplas e dicionários",
-      order: 2,
-    },
-  });
-
-  console.log("✅ Curso e módulos criados");
-
-  // Criar aulas
-  const aulas = [
-    {
-      id: "l1",
-      moduleId: modulo1.id,
-      title: "Introdução ao Python",
-      description: "Conhecendo a linguagem Python e seu ambiente",
-      videoUrl: "https://www.youtube.com/watch?v=rfscVS0vtbw",
-      videoId: "rfscVS0vtbw",
-      duration: 900,
-      order: 1,
-    },
-    {
-      id: "l2",
-      moduleId: modulo1.id,
-      title: "Variáveis e Tipos de Dados",
-      description: "Entendendo variáveis, strings, números e booleanos",
-      videoUrl: "https://www.youtube.com/watch?v=kqtD5dpn9C8",
-      videoId: "kqtD5dpn9C8",
-      duration: 1200,
-      order: 2,
-    },
-    {
-      id: "l3",
-      moduleId: modulo1.id,
-      title: "Operadores",
-      description: "Operadores aritméticos, lógicos e de comparação",
-      videoUrl: "https://www.youtube.com/watch?v=v5MR5JnKcZI",
-      videoId: "v5MR5JnKcZI",
-      duration: 1080,
-      order: 3,
-    },
-    {
-      id: "l4",
-      moduleId: modulo1.id,
-      title: "Estruturas de Controle",
-      description: "if, elif, else e loops",
-      videoUrl: "https://www.youtube.com/watch?v=Zp5MuPOtsSY",
-      videoId: "Zp5MuPOtsSY",
-      duration: 1500,
-      order: 4,
-    },
-    {
-      id: "l5",
-      moduleId: modulo2.id,
-      title: "Listas",
-      description: "Criando e manipulando listas em Python",
-      videoUrl: "https://www.youtube.com/watch?v=ohCDWZgNIU0",
-      videoId: "ohCDWZgNIU0",
-      duration: 1320,
-      order: 1,
-    },
-    {
-      id: "l6",
-      moduleId: modulo2.id,
-      title: "Dicionários",
-      description: "Trabalhando com pares chave-valor",
-      videoUrl: "https://www.youtube.com/watch?v=daefaLgNkw0",
-      videoId: "daefaLgNkw0",
-      duration: 1200,
-      order: 2,
-    },
-    {
-      id: "l7",
-      moduleId: modulo2.id,
-      title: "Funções",
-      description: "Criando funções reutilizáveis",
-      videoUrl: "https://www.youtube.com/watch?v=9Os0o3wzS_I",
-      videoId: "9Os0o3wzS_I",
-      duration: 1800,
-      order: 3,
-    },
-  ];
-
-  for (const aula of aulas) {
-    await prisma.lesson.upsert({
-      where: { id: aula.id },
-      update: {},
-      create: aula,
-    });
+  for (const turma of TURMAS) {
+    await seedTurma(turma);
   }
+  console.log("✅ Turmas: Enfermagem, Direito e Administração");
 
-  console.log("✅ Aulas criadas");
+  // Vínculos de exemplo
+  // João (Enfermagem): turma + as 2 matérias
+  await enrollInTurma(alunoEnf.id, "turma-enf", 25);
+  await linkToSubject(alunoEnf.id, "mat-enf-anat");
+  await linkToSubject(alunoEnf.id, "mat-enf-fund");
 
-  // Matricular aluno no curso
-  await prisma.enrollment.upsert({
-    where: {
-      userId_courseId: {
-        userId: aluno.id,
-        courseId: cursoProgramacao.id,
-      },
-    },
-    update: {},
-    create: {
-      userId: aluno.id,
-      courseId: cursoProgramacao.id,
-      role: "STUDENT",
-      progress: 42.85, // 3 de 7 aulas
-    },
-  });
+  // Ana (Direito): turma + Introdução ao Direito (não Constitucional ainda)
+  await enrollInTurma(alunoDir.id, "turma-dir", 10);
+  await linkToSubject(alunoDir.id, "mat-dir-intro");
 
-  // Criar progresso em algumas aulas
-  const progressData = [
-    { lessonId: "l1", completed: true, videoProgress: 100 },
-    { lessonId: "l2", completed: true, videoProgress: 100 },
-    { lessonId: "l3", completed: true, videoProgress: 100 },
-    { lessonId: "l4", completed: false, videoProgress: 65 },
-  ];
+  // Pedro (Administração): turma + as 2 matérias
+  await enrollInTurma(alunoAdm.id, "turma-adm", 0);
+  await linkToSubject(alunoAdm.id, "mat-adm-intro");
+  await linkToSubject(alunoAdm.id, "mat-adm-gp");
 
-  for (const p of progressData) {
+  // João também experimenta uma matéria de Administração (cenário multi-turma)
+  await enrollInTurma(alunoEnf.id, "turma-adm", 0);
+  await linkToSubject(alunoEnf.id, "mat-adm-intro");
+
+  // Progresso de João em Enfermagem
+  for (const lessonId of ["aula-enf-1", "aula-enf-2"]) {
     await prisma.progress.upsert({
-      where: {
-        userId_lessonId: {
-          userId: aluno.id,
-          lessonId: p.lessonId,
-        },
-      },
-      update: {},
+      where: { userId_lessonId: { userId: alunoEnf.id, lessonId } },
+      update: { completed: true, videoProgress: 100 },
       create: {
-        userId: aluno.id,
-        lessonId: p.lessonId,
-        completed: p.completed,
-        videoProgress: p.videoProgress,
-        timeSpent: Math.floor(Math.random() * 3600),
+        userId: alunoEnf.id,
+        lessonId,
+        completed: true,
+        videoProgress: 100,
+        timeSpent: 900,
       },
     });
   }
 
-  console.log("✅ Matrículas e progresso criados");
-
-  // Criar segundo curso (Banco de Dados)
-  const cursoBD = await prisma.course.upsert({
-    where: { id: "c2" },
-    update: {},
-    create: {
-      id: "c2",
-      title: "Banco de Dados",
-      description:
-        "Aprenda modelagem de dados, SQL e sistemas gerenciadores de banco de dados.",
-      aiPersona: "Professor SQL - especialista em bancos de dados relacionais",
-      aiContext: `Curso de introdução a bancos de dados.
-      
-Tópicos:
-- Modelagem de dados
-- Modelo Entidade-Relacionamento
-- SQL básico e avançado
-- Normalização
-- Índices e otimização`,
-    },
-  });
-
-  // Matricular aluno no curso de BD também
-  await prisma.enrollment.upsert({
-    where: {
-      userId_courseId: {
-        userId: aluno.id,
-        courseId: cursoBD.id,
-      },
-    },
-    update: {},
-    create: {
-      userId: aluno.id,
-      courseId: cursoBD.id,
-      role: "STUDENT",
-      progress: 0,
-    },
-  });
-
-  console.log("✅ Segundo curso criado");
-
-  console.log("🎉 Seed concluído com sucesso!");
-  console.log("\n📋 Credenciais de teste:");
-  console.log("   Aluno: aluno@anp.com / 123456");
-  console.log("   Professor: professor@anp.com / 123456");
-  console.log("   Admin: admin@anp.com / 123456");
+  console.log("✅ Matrículas, vínculos de matérias e progresso");
+  console.log("\n🎉 Seed concluído!\n");
+  console.log("📋 Credenciais:");
+  console.log("   Admin:            admin@anp.com / 123456");
+  console.log("   Professor:        professor@anp.com / 123456");
+  console.log("   Aluno Enfermagem: aluno@anp.com / 123456");
+  console.log("   Aluna Direito:    aluno.direito@anp.com / 123456");
+  console.log("   Aluno Adm:        aluno.adm@anp.com / 123456");
+  console.log("\n🏫 Turmas: Enfermagem, Direito, Administração (2026.1)");
+  void admin;
+  void professor;
 }
 
 main()

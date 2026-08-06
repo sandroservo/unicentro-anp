@@ -67,21 +67,54 @@ export function LessonsTable({ moduleId, canWrite }: { moduleId: string; canWrit
                   <TableCell>
                     {l.videoUrl ? <Youtube className="h-4 w-4 text-red-600" /> : <span className="text-muted-foreground">—</span>}
                   </TableCell>
-                  <TableCell className="text-right space-x-1">
-                    <Button variant="ghost" size="icon" aria-label="Atividades" nativeButton={false} render={
-                      <Link href={`/admin/aulas/${l.id}/atividades`}><ClipboardList className="h-4 w-4" /></Link>
-                    } />
-                    {canWrite && (
-                      <>
-                        <TranscriptDialog lessonId={l.id}
-                          trigger={<Button variant="ghost" size="icon" aria-label="Transcrição"><FileText className="h-4 w-4" /></Button>} />
-                        <LessonDialog mode="edit" moduleId={moduleId} lesson={l}
-                          trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
-                        <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(l.id)}>
-                          <Trash2 className="h-4 w-4 text-red-600" />
-                        </Button>
-                      </>
-                    )}
+                  <TableCell className="text-right">
+                    <div className="flex flex-wrap items-center justify-end gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        aria-label="Atividades"
+                        nativeButton={false}
+                        render={
+                          <Link href={`/admin/aulas/${l.id}/atividades`}>
+                            <ClipboardList className="h-4 w-4" />
+                            Atividades
+                          </Link>
+                        }
+                      />
+                      {canWrite && (
+                        <>
+                          <TranscriptDialog
+                            lessonId={l.id}
+                            trigger={
+                              <Button variant="ghost" size="sm" aria-label="Transcrição">
+                                <FileText className="h-4 w-4" />
+                                Transcrição
+                              </Button>
+                            }
+                          />
+                          <LessonDialog
+                            mode="edit"
+                            moduleId={moduleId}
+                            lesson={l}
+                            trigger={
+                              <Button variant="ghost" size="sm" aria-label="Editar">
+                                <Pencil className="h-4 w-4" />
+                                Editar
+                              </Button>
+                            }
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            aria-label="Remover"
+                            onClick={() => remove.mutate(l.id)}
+                          >
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                            <span className="text-red-600">Remover</span>
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

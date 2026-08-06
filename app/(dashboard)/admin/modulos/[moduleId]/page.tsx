@@ -15,13 +15,26 @@ export default async function AulasPage({
 
   const mod = await prisma.module.findUnique({
     where: { id: moduleId },
-    select: { title: true, subject: { select: { title: true } } },
+    select: {
+      title: true,
+      subjectId: true,
+      subject: { select: { id: true, title: true } },
+    },
   });
   if (!mod) notFound();
 
   return (
     <>
-      <Header title={`Aulas · ${mod.title}`} subtitle={mod.subject?.title ?? undefined} />
+      <Header
+        title={`Aulas · ${mod.title}`}
+        subtitle={mod.subject?.title ?? undefined}
+        backHref={
+          mod.subjectId
+            ? `/admin/disciplinas/${mod.subjectId}`
+            : "/admin/cursos"
+        }
+        backLabel="Voltar"
+      />
       <div className="space-y-6">
         <LessonsTable moduleId={moduleId} canWrite={canWrite} />
       </div>

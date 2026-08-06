@@ -107,7 +107,7 @@ export function LessonDialog({ mode, moduleId, lesson, trigger }: Props) {
             {errors.title && <p className="text-sm text-red-600">{errors.title.message}</p>}
           </div>
           <div className="space-y-1">
-            <Label htmlFor="videoUrl">URL do vídeo (YouTube)</Label>
+            <Label htmlFor="videoUrl">Link do YouTube *</Label>
             <div className="flex gap-2">
               <Input id="videoUrl" placeholder="https://youtube.com/watch?v=..." {...register("videoUrl")} />
               <Button type="button" variant="outline" onClick={fetchYouTube} disabled={fetchingYt}>

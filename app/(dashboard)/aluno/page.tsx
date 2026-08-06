@@ -66,9 +66,9 @@ export default async function AlunoDashboard() {
 
         <div className="rounded-2xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]">
           <div className="p-5 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
-            <h2 className="font-semibold text-foreground">Meus Cursos</h2>
+            <h2 className="font-semibold text-foreground">Minhas Turmas</h2>
             <Link href="/aluno/cursos" className="text-sm text-primary hover:underline">
-              Ver todos
+              Ver todas
             </Link>
           </div>
           {enrollments.length === 0 ? (

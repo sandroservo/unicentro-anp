@@ -1,3 +1,8 @@
+/** CSS vars hold full oklch() colors; color-mix enables Tailwind opacity (/50 etc). */
+function cssColor(variable) {
+  return `color-mix(in oklab, var(${variable}) calc(100% * <alpha-value>), transparent)`;
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -16,34 +21,38 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: cssColor("--border"),
+        input: cssColor("--input"),
+        ring: cssColor("--ring"),
+        background: cssColor("--background"),
+        foreground: cssColor("--foreground"),
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: cssColor("--primary"),
+          foreground: cssColor("--primary-foreground"),
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: cssColor("--secondary"),
+          foreground: cssColor("--secondary-foreground"),
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: cssColor("--destructive"),
+          foreground: cssColor("--destructive-foreground"),
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: cssColor("--muted"),
+          foreground: cssColor("--muted-foreground"),
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: cssColor("--accent"),
+          foreground: cssColor("--accent-foreground"),
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: cssColor("--card"),
+          foreground: cssColor("--card-foreground"),
+        },
+        popover: {
+          DEFAULT: cssColor("--popover"),
+          foreground: cssColor("--popover-foreground"),
         },
         // TailAdmin brand + gray tokens
         brand: {

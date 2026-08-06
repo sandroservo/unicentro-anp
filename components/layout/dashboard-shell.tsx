@@ -1,23 +1,36 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { SidebarProvider, useSidebar } from "@/context/sidebar-context";
+import { isAdminRole } from "@/lib/rbac";
 import { Sidebar } from "./sidebar";
 import { Topbar } from "./topbar";
 import { Backdrop } from "./backdrop";
 
 function Shell({ children }: { children: React.ReactNode }) {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
+  const { data: session } = useSession();
+  const pathname = usePathname();
+  const role = (session?.user?.role as string) || "ALUNO";
+  const showSidebar = isAdminRole(role) && !pathname.startsWith("/aluno");
 
-  const mainContentMargin = isMobileOpen
+  const mainContentMargin = !showSidebar
     ? "ml-0"
-    : isExpanded || isHovered
-      ? "lg:ml-[290px]"
-      : "lg:ml-[90px]";
+    : isMobileOpen
+      ? "ml-0"
+      : isExpanded || isHovered
+        ? "lg:ml-[290px]"
+        : "lg:ml-[90px]";
 
   return (
     <div className="min-h-screen bg-gray-50 xl:flex dark:bg-gray-900">
-      <Sidebar />
-      <Backdrop />
+      {showSidebar && (
+        <>
+          <Sidebar />
+          <Backdrop />
+        </>
+      )}
       <div
         className={`flex min-h-screen flex-1 flex-col transition-all duration-300 ease-in-out ${mainContentMargin}`}
       >

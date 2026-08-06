@@ -25,14 +25,15 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  enrollments   Enrollment[]
-  forumPosts    ForumPost[]
-  submissions   Submission[]
-  aiChats       AIChat[]
-  progress      Progress[]
-  studentProfile StudentProfile?
-  coordinatedCourses Course[] @relation("CourseCoordinator")
-  certificates  Certificate[]
+  enrollments          Enrollment[]
+  subjectEnrollments   SubjectEnrollment[]
+  forumPosts           ForumPost[]
+  submissions          Submission[]
+  aiChats              AIChat[]
+  progress             Progress[]
+  studentProfile       StudentProfile?
+  coordinatedCourses   Course[] @relation("CourseCoordinator")
+  certificates         Certificate[]
 }
 
 model StudentProfile {
@@ -105,6 +106,19 @@ model Enrollment {
   @@unique([userId, courseId])
 }
 
+/// Vínculo aluno ↔ matéria (Subject). Só quem está aqui assiste aulas e vê notas da matéria.
+model SubjectEnrollment {
+  id         String   @id @default(cuid())
+  userId     String
+  subjectId  String
+  enrolledAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subjectId])
+}
+
 model Module {
   id            String    @id @default(cuid())
   courseId      String
@@ -119,13 +133,14 @@ model Module {
 }
 
 model Subject {
-  id       String   @id @default(cuid())
-  courseId String
-  title    String
-  code     String?
-  order    Int      @default(0)
-  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  modules  Module[]
+  id         String   @id @default(cuid())
+  courseId   String
+  title      String
+  code       String?
+  order      Int      @default(0)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  modules    Module[]
+  enrollments SubjectEnrollment[]
 }
 
 model Lesson {

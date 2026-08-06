@@ -1,272 +1,152 @@
-"use client";
-
-import { useState, use } from "react";
-import { Header } from "@/components/layout/header";
 import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
+import { ChevronRight, PlayCircle } from "lucide-react";
+import { auth } from "@/auth";
+import prisma from "@/lib/prisma";
+import { Header } from "@/components/layout/header";
 import {
-  BookOpen,
-  PlayCircle,
-  FileText,
-  CheckCircle,
-  Clock,
-  ChevronDown,
-  ChevronRight,
-  Bot,
-  Users,
-  MessageSquare,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+  assertCourseEnrollment,
+  canPreviewStudentView,
+} from "@/lib/enrollment-access";
+import { ApiError } from "@/lib/api";
 
-// Dados mockados
-const courseData = {
-  id: "c1",
-  title: "Introdução à Programação",
-  description:
-    "Aprenda os fundamentos da programação com Python. Este curso abrange desde conceitos básicos até a criação do seu primeiro projeto completo.",
-  aiPersona: "Professor Python",
-  aiDescription:
-    "Sou especialista em Python e programação para iniciantes. Posso te ajudar com dúvidas sobre sintaxe, lógica de programação e boas práticas.",
-  progress: 75,
-  modules: [
-    {
-      id: "m1",
-      title: "Módulo 1: Fundamentos",
-      lessons: [
-        { id: "l1", title: "Introdução ao Python", duration: "15min", completed: true },
-        { id: "l2", title: "Variáveis e Tipos de Dados", duration: "20min", completed: true },
-        { id: "l3", title: "Operadores", duration: "18min", completed: true },
-        { id: "l4", title: "Estruturas de Controle", duration: "25min", completed: true },
-      ],
+type Props = { params: Promise<{ cursoId: string }> };
+
+export default async function TurmaAlunoPage({ params }: Props) {
+  const session = await auth();
+  if (!session?.user?.id) redirect("/login");
+  const { cursoId } = await params;
+  const isPreview = canPreviewStudentView(session.user.role);
+
+  try {
+    await assertCourseEnrollment(session.user.id, cursoId, session.user.role);
+  } catch (e) {
+    if (e instanceof ApiError && e.status === 403) redirect("/aluno/cursos");
+    throw e;
+  }
+
+  const course = await prisma.course.findUnique({
+    where: { id: cursoId },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      subjects: {
+        ...(isPreview
+          ? {}
+          : {
+              where: { enrollments: { some: { userId: session.user.id } } },
+            }),
+        orderBy: { order: "asc" },
+        select: {
+          id: true,
+          title: true,
+          code: true,
+          modules: {
+            orderBy: { order: "asc" },
+            select: {
+              id: true,
+              title: true,
+              lessons: {
+                orderBy: { order: "asc" },
+                select: {
+                  id: true,
+                  title: true,
+                  duration: true,
+                  videoId: true,
+                  videoUrl: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
-    {
-      id: "m2",
-      title: "Módulo 2: Funções e Estruturas",
-      lessons: [
-        { id: "l5", title: "Listas e Tuplas", duration: "22min", completed: true },
-        { id: "l6", title: "Dicionários", duration: "20min", completed: true },
-        { id: "l7", title: "Funções", duration: "30min", completed: false },
-        { id: "l8", title: "Módulos e Pacotes", duration: "25min", completed: false },
-      ],
-    },
-    {
-      id: "m3",
-      title: "Módulo 3: Programação Orientada a Objetos",
-      lessons: [
-        { id: "l9", title: "Classes e Objetos", duration: "35min", completed: false },
-        { id: "l10", title: "Herança", duration: "28min", completed: false },
-        { id: "l11", title: "Polimorfismo", duration: "25min", completed: false },
-        { id: "l12", title: "Projeto Final", duration: "45min", completed: false },
-      ],
-    },
-  ],
-};
-
-export default function CursoDetailPage({ params }: { params: Promise<{ cursoId: string }> }) {
-  const { cursoId } = use(params);
-  const [expandedModules, setExpandedModules] = useState<string[]>(["m1", "m2"]);
-
-  const toggleModule = (moduleId: string) => {
-    setExpandedModules((prev) =>
-      prev.includes(moduleId)
-        ? prev.filter((id) => id !== moduleId)
-        : [...prev, moduleId]
-    );
-  };
-
-  const totalLessons = courseData.modules.reduce(
-    (acc, m) => acc + m.lessons.length,
-    0
-  );
-  const completedLessons = courseData.modules.reduce(
-    (acc, m) => acc + m.lessons.filter((l) => l.completed).length,
-    0
-  );
+  });
+  if (!course) notFound();
 
   return (
     <>
       <Header
-        title={courseData.title}
-        subtitle={`${completedLessons} de ${totalLessons} aulas concluídas`}
+        title={course.title}
+        subtitle={
+          isPreview
+            ? "Pré-visualização: todas as matérias e aulas desta turma"
+            : "Matérias e aulas liberadas para você"
+        }
       />
       <div className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Módulos e Aulas */}
-          <div className="lg:col-span-2 space-y-4">
-            {courseData.modules.map((module) => {
-              const isExpanded = expandedModules.includes(module.id);
-              const moduleCompleted = module.lessons.every((l) => l.completed);
-              const moduleLessonsCompleted = module.lessons.filter(
-                (l) => l.completed
-              ).length;
-
-              return (
-                <div
-                  key={module.id}
-                  className="rounded-2xl border border-gray-200 bg-white overflow-hidden dark:border-gray-800 dark:bg-white/[0.03]"
-                >
-                  {/* Module Header */}
-                  <button
-                    onClick={() => toggleModule(module.id)}
-                    className="w-full p-4 flex items-center justify-between hover:bg-muted transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={cn(
-                          "w-8 h-8 rounded-lg flex items-center justify-center",
-                          moduleCompleted
-                            ? "bg-green-100 text-primary"
-                            : "bg-primary/10 text-primary"
-                        )}
-                      >
-                        {moduleCompleted ? (
-                          <CheckCircle size={18} />
-                        ) : (
-                          <BookOpen size={18} />
-                        )}
-                      </div>
-                      <div className="text-left">
-                        <h3 className="font-semibold text-foreground">
-                          {module.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {moduleLessonsCompleted}/{module.lessons.length} aulas
-                        </p>
-                      </div>
-                    </div>
-                    {isExpanded ? (
-                      <ChevronDown size={20} className="text-muted-foreground" />
-                    ) : (
-                      <ChevronRight size={20} className="text-muted-foreground" />
-                    )}
-                  </button>
-
-                  {/* Lessons */}
-                  {isExpanded && (
-                    <div className="border-t border-gray-100 dark:border-gray-800">
-                      {module.lessons.map((lesson, index) => (
-                        <Link
-                          key={lesson.id}
-                          href={`/aluno/cursos/${cursoId}/aulas/${lesson.id}`}
-                          className="flex items-center gap-4 p-4 hover:bg-muted transition-colors border-b border-gray-100 dark:border-gray-800 last:border-0"
-                        >
-                          <div
-                            className={cn(
-                              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
-                              lesson.completed
-                                ? "bg-green-100 text-primary"
-                                : "bg-muted text-muted-foreground"
-                            )}
-                          >
-                            {lesson.completed ? (
-                              <CheckCircle size={16} />
-                            ) : (
-                              index + 1
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <p
-                              className={cn(
-                                "font-medium",
-                                lesson.completed
-                                  ? "text-muted-foreground"
-                                  : "text-foreground"
-                              )}
+        {course.subjects.length === 0 ? (
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center text-sm text-gray-500 dark:border-gray-800 dark:bg-white/[0.03]">
+            {isPreview
+              ? "Nenhuma matéria cadastrada nesta turma ainda."
+              : "Você ainda não está vinculado a nenhuma matéria desta turma. Peça ao administrador para vincular você às matérias."}
+          </div>
+        ) : (
+          course.subjects.map((subject) => (
+            <section
+              key={subject.id}
+              className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+            >
+              <div className="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
+                <h3 className="font-semibold text-gray-800 dark:text-white/90">
+                  {subject.title}
+                  {subject.code ? (
+                    <span className="ml-2 text-sm font-normal text-gray-500">
+                      ({subject.code})
+                    </span>
+                  ) : null}
+                </h3>
+              </div>
+              <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                {subject.modules.length === 0 ? (
+                  <p className="p-4 text-sm text-gray-500">Sem módulos nesta matéria.</p>
+                ) : (
+                  subject.modules.map((mod) => (
+                    <div key={mod.id} className="p-4">
+                      <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {mod.title}
+                      </p>
+                      <ul className="space-y-1">
+                        {mod.lessons.map((lesson) => (
+                          <li key={lesson.id}>
+                            <Link
+                              href={`/aluno/cursos/${cursoId}/aulas/${lesson.id}`}
+                              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-gray-50 dark:hover:bg-white/5"
                             >
-                              {lesson.title}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Clock size={14} />
-                            <span>{lesson.duration}</span>
-                          </div>
-                          <PlayCircle
-                            size={20}
-                            className={cn(
-                              lesson.completed
-                                ? "text-green-500"
-                                : "text-primary"
-                            )}
-                          />
-                        </Link>
-                      ))}
+                              <PlayCircle
+                                size={18}
+                                className={
+                                  lesson.videoId || lesson.videoUrl
+                                    ? "text-brand-500"
+                                    : "text-gray-400"
+                                }
+                              />
+                              <span className="flex-1 text-gray-800 dark:text-white/90">
+                                {lesson.title}
+                              </span>
+                              {lesson.duration ? (
+                                <span className="text-xs text-gray-400">
+                                  {Math.round(lesson.duration / 60)} min
+                                </span>
+                              ) : null}
+                              <ChevronRight size={16} className="text-gray-400" />
+                            </Link>
+                          </li>
+                        ))}
+                        {mod.lessons.length === 0 && (
+                          <li className="px-3 py-2 text-xs text-gray-400">
+                            Nenhuma aula cadastrada.
+                          </li>
+                        )}
+                      </ul>
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-4">
-            {/* Progress Card */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
-              <h3 className="font-semibold text-foreground mb-4">Seu Progresso</h3>
-              <div className="relative pt-1">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {courseData.progress}% concluído
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {completedLessons}/{totalLessons} aulas
-                  </span>
-                </div>
-                <div className="h-3 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-primary/100 to-primary rounded-full"
-                    style={{ width: `${courseData.progress}%` }}
-                  ></div>
-                </div>
+                  ))
+                )}
               </div>
-            </div>
-
-            {/* Professor Virtual Card */}
-            <div className="bg-gradient-to-br from-primary/100 to-purple-600 rounded-xl p-4 text-white">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 bg-card/20 rounded-full flex items-center justify-center">
-                  <Bot size={24} />
-                </div>
-                <div>
-                  <h3 className="font-semibold">{courseData.aiPersona}</h3>
-                  <p className="text-sm text-primary-foreground">Professor Virtual</p>
-                </div>
-              </div>
-              <p className="text-sm text-primary-foreground mb-4">
-                {courseData.aiDescription}
-              </p>
-              <Link
-                href="/aluno/chat-ia"
-                className="block w-full py-2 bg-card/20 hover:bg-card/30 rounded-lg text-center font-medium transition-colors"
-              >
-                Tirar Dúvida
-              </Link>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-white/[0.03]">
-              <h3 className="font-semibold text-foreground mb-4">Ações Rápidas</h3>
-              <div className="space-y-2">
-                <Link
-                  href={`/aluno/cursos/${cursoId}/materiais`}
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                >
-                  <FileText size={20} className="text-orange-500" />
-                  <span className="text-foreground">Ver Materiais</span>
-                </Link>
-                <Link
-                  href="/aluno/forum"
-                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                >
-                  <MessageSquare size={20} className="text-green-500" />
-                  <span className="text-foreground">Acessar Fórum</span>
-                </Link>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted">
-                  <Users size={20} className="text-primary" />
-                  <span className="text-foreground">156 alunos matriculados</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+            </section>
+          ))
+        )}
       </div>
     </>
   );

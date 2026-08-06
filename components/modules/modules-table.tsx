@@ -66,19 +66,45 @@ export function ModulesTable({ subjectId, canWrite }: { subjectId: string; canWr
                   <TableCell>{m.order}</TableCell>
                   <TableCell className="font-medium">{m.title}</TableCell>
                   <TableCell>{m._count.lessons}</TableCell>
-                  <TableCell className="text-right space-x-1">
-                    <Button variant="ghost" size="icon" aria-label="Aulas" nativeButton={false} render={
-                      <Link href={`/admin/modulos/${m.id}`}><PlayCircle className="h-4 w-4" /></Link>
-                    } />
-                    {canWrite && (
-                      <>
-                        <ModuleDialog mode="edit" subjectId={subjectId} module={m}
-                          trigger={<Button variant="ghost" size="icon" aria-label="Editar"><Pencil className="h-4 w-4" /></Button>} />
-                        <Button variant="ghost" size="icon" aria-label="Remover" onClick={() => remove.mutate(m.id)}>
-                          <Trash2 className="h-4 w-4 text-red-600" />
-                        </Button>
-                      </>
-                    )}
+                  <TableCell className="text-right">
+                    <div className="flex flex-wrap items-center justify-end gap-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        aria-label="Aulas"
+                        nativeButton={false}
+                        render={
+                          <Link href={`/admin/modulos/${m.id}`}>
+                            <PlayCircle className="h-4 w-4" />
+                            Aulas
+                          </Link>
+                        }
+                      />
+                      {canWrite && (
+                        <>
+                          <ModuleDialog
+                            mode="edit"
+                            subjectId={subjectId}
+                            module={m}
+                            trigger={
+                              <Button variant="ghost" size="sm" aria-label="Editar">
+                                <Pencil className="h-4 w-4" />
+                                Editar
+                              </Button>
+                            }
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            aria-label="Remover"
+                            onClick={() => remove.mutate(m.id)}
+                          >
+                            <Trash2 className="h-4 w-4 text-red-600" />
+                            <span className="text-red-600">Remover</span>
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))

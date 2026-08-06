@@ -104,26 +104,30 @@ export function StudentsTable({ canWrite }: { canWrite: boolean }) {
                     </Badge>
                   </TableCell>
                   {canWrite && (
-                    <TableCell className="text-right space-x-1">
-                      <StudentDialog
-                        mode="edit"
-                        student={s}
-                        trigger={
-                          <Button variant="ghost" size="icon" aria-label="Editar">
-                            <Pencil className="h-4 w-4" />
+                    <TableCell className="text-right">
+                      <div className="flex flex-wrap items-center justify-end gap-1">
+                        <StudentDialog
+                          mode="edit"
+                          student={s}
+                          trigger={
+                            <Button variant="ghost" size="sm" aria-label="Editar">
+                              <Pencil className="h-4 w-4" />
+                              Editar
+                            </Button>
+                          }
+                        />
+                        {s.status === "ATIVO" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            aria-label="Inativar"
+                            onClick={() => inactivate.mutate(s.id)}
+                          >
+                            <UserX className="h-4 w-4 text-red-600" />
+                            <span className="text-red-600">Inativar</span>
                           </Button>
-                        }
-                      />
-                      {s.status === "ATIVO" && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          aria-label="Inativar"
-                          onClick={() => inactivate.mutate(s.id)}
-                        >
-                          <UserX className="h-4 w-4 text-red-600" />
-                        </Button>
-                      )}
+                        )}
+                      </div>
                     </TableCell>
                   )}
                 </TableRow>

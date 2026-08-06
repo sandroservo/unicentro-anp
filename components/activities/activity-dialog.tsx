@@ -55,6 +55,7 @@ export function ActivityDialog({ mode, lessonId, activity, trigger }: Props) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["activities", lessonId] });
+      queryClient.invalidateQueries({ queryKey: ["subject-activities"] });
       toast.success(isEdit ? "Atividade atualizada" : "Atividade criada");
       setOpen(false);
     },
