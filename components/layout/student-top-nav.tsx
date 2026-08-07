@@ -2,11 +2,28 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { menuItemsAluno } from "./nav-items";
 
 export function StudentTopNav({ className }: { className?: string }) {
   const pathname = usePathname();
+
+  const { data: certVisible } = useQuery({
+    queryKey: ["certificates-menu-visible"],
+    queryFn: async () => {
+      const res = await fetch("/api/aluno/certificates");
+      if (!res.ok) return false;
+      const d = await res.json();
+      return d.visible === true;
+    },
+    staleTime: 60_000,
+  });
+
+  const items = menuItemsAluno.filter((item) => {
+    if (item.href === "/aluno/certificados") return certVisible === true;
+    return true;
+  });
 
   return (
     <nav
@@ -16,7 +33,7 @@ export function StudentTopNav({ className }: { className?: string }) {
       )}
       aria-label="Menu do aluno"
     >
-      {menuItemsAluno.map((item) => {
+      {items.map((item) => {
         const active =
           pathname === item.href || pathname.startsWith(item.href + "/");
         return (
