@@ -84,6 +84,8 @@ model Course {
   coordinator   User?     @relation("CourseCoordinator", fields: [coordinatorId], references: [id])
   aiPersona     String?   // Persona do Professor Virtual
   aiContext     String?   // Contexto/Ementa para a IA
+  /// Quando false, a turma não emite nem exibe certificados ao aluno.
+  certificatesEnabled Boolean @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

@@ -24,6 +24,9 @@ export async function PATCH(request: Request, { params }: Ctx) {
         ...(data.code !== undefined ? { code: data.code || null } : {}),
         ...(data.workloadHours !== undefined ? { workloadHours: data.workloadHours ?? null } : {}),
         ...(data.isActive !== undefined ? { isActive: data.isActive } : {}),
+        ...(data.certificatesEnabled !== undefined
+          ? { certificatesEnabled: data.certificatesEnabled }
+          : {}),
         ...(data.aiPersona !== undefined ? { aiPersona: data.aiPersona || null } : {}),
         ...(data.aiContext !== undefined ? { aiContext: data.aiContext || null } : {}),
       },

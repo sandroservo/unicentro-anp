@@ -8,7 +8,10 @@ export async function GET() {
   try {
     const session = await requireSession();
     const certificates = await prisma.certificate.findMany({
-      where: { userId: session.user.id },
+      where: {
+        userId: session.user.id,
+        course: { certificatesEnabled: true },
+      },
       select: { id: true, issuedAt: true, course: { select: { title: true } } },
       orderBy: { issuedAt: "desc" },
     });

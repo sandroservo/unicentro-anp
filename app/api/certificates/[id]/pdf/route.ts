@@ -13,9 +13,15 @@ export async function GET(_request: Request, { params }: Ctx) {
 
     const cert = await prisma.certificate.findUnique({
       where: { id },
-      include: { user: { select: { name: true } }, course: { select: { title: true } } },
+      include: {
+        user: { select: { name: true } },
+        course: { select: { title: true, certificatesEnabled: true } },
+      },
     });
     if (!cert) return apiError("Certificado não encontrado", 404);
+    if (!cert.course.certificatesEnabled) {
+      return apiError("Certificados desativados para esta turma", 403);
+    }
 
     const dateStr = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" }).format(cert.issuedAt);
     const bytes = await generateCertificatePdf({

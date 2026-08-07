@@ -25,6 +25,7 @@ export type CourseRow = {
   code: string | null;
   workloadHours: number | null;
   isActive: boolean;
+  certificatesEnabled?: boolean;
 };
 
 type Props = {
@@ -40,6 +41,7 @@ type FormValues = {
   workloadHours?: number;
   aiPersona?: string;
   aiContext?: string;
+  certificatesEnabled?: boolean;
 };
 
 export function CourseDialog({ mode, course, trigger }: Props) {
@@ -51,10 +53,15 @@ export function CourseDialog({ mode, course, trigger }: Props) {
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(isEdit ? courseUpdateSchema : courseCreateSchema) as Resolver<FormValues>,
+    defaultValues: { certificatesEnabled: false },
   });
+
+  const certificatesEnabled = watch("certificatesEnabled") ?? false;
 
   useEffect(() => {
     if (open) {
@@ -65,6 +72,7 @@ export function CourseDialog({ mode, course, trigger }: Props) {
         workloadHours: course?.workloadHours ?? undefined,
         aiPersona: course?.aiPersona ?? "",
         aiContext: course?.aiContext ?? "",
+        certificatesEnabled: course?.certificatesEnabled ?? false,
       });
     }
   }, [open, course, reset]);
@@ -129,6 +137,27 @@ export function CourseDialog({ mode, course, trigger }: Props) {
             <Label htmlFor="aiContext">Contexto/Ementa para a IA</Label>
             <Textarea id="aiContext" rows={3} {...register("aiContext")} />
           </div>
+          <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-muted/30 px-3 py-3">
+            <input
+              type="checkbox"
+              className="mt-1 h-4 w-4 rounded border-border text-brand-500 focus:ring-brand-500"
+              checked={certificatesEnabled}
+              onChange={(e) =>
+                setValue("certificatesEnabled", e.target.checked, {
+                  shouldDirty: true,
+                })
+              }
+            />
+            <span className="space-y-0.5">
+              <span className="block text-sm font-medium text-foreground">
+                Emitir certificado nesta turma
+              </span>
+              <span className="block text-xs text-muted-foreground">
+                Quando desativado, alunos não veem certificados desta turma e a
+                emissão nas Notas fica bloqueada.
+              </span>
+            </span>
+          </label>
           <DialogFooter>
             <Button type="submit" disabled={mutation.isPending}>
               {mutation.isPending ? "Salvando..." : "Salvar"}

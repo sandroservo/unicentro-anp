@@ -21,7 +21,9 @@ async function getStudentData(userId: string) {
   });
   const [progress, certificates, submissions] = await Promise.all([
     prisma.progress.findMany({ where: { userId }, select: { completed: true } }),
-    prisma.certificate.count({ where: { userId } }),
+    prisma.certificate.count({
+      where: { userId, course: { certificatesEnabled: true } },
+    }),
     prisma.submission.count({ where: { userId } }),
   ]);
   return { enrollments, progress, certificates, submissions };

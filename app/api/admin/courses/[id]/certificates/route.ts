@@ -20,6 +20,12 @@ export async function POST(request: Request, { params }: Ctx) {
     ]);
     if (!course) return apiError("Curso não encontrado", 404);
     if (!user) return apiError("Aluno não encontrado", 404);
+    if (!course.certificatesEnabled) {
+      return apiError(
+        "Certificados desativados para esta turma. Ative em Editar turma.",
+        403
+      );
+    }
 
     const existing = await prisma.certificate.findUnique({
       where: { userId_courseId: { userId, courseId } },

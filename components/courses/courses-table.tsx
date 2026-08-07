@@ -25,6 +25,7 @@ type CourseListItem = {
   code: string | null;
   workloadHours: number | null;
   isActive: boolean;
+  certificatesEnabled: boolean;
   aiPersona: string | null;
   aiContext: string | null;
   _count: { modules: number; enrollments: number };
@@ -90,19 +91,20 @@ export function CoursesTable({ canWrite }: { canWrite: boolean }) {
               <TableHead>Carga</TableHead>
               <TableHead>Alunos</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Certificado</TableHead>
               <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
+                <TableCell colSpan={7} className="text-center text-muted-foreground">
                   Carregando...
                 </TableCell>
               </TableRow>
             ) : courses.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center text-muted-foreground">
+                <TableCell colSpan={7} className="text-center text-muted-foreground">
                   Nenhuma turma encontrada.
                 </TableCell>
               </TableRow>
@@ -116,6 +118,11 @@ export function CoursesTable({ canWrite }: { canWrite: boolean }) {
                   <TableCell>
                     <Badge variant={c.isActive ? "default" : "secondary"}>
                       {c.isActive ? "ATIVO" : "INATIVO"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={c.certificatesEnabled ? "default" : "secondary"}>
+                      {c.certificatesEnabled ? "Ativo" : "Off"}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">

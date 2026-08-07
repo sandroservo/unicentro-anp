@@ -6,6 +6,7 @@ export const courseCreateSchema = z.object({
   code: z.string().trim().optional().or(z.literal("")),
   workloadHours: z.coerce.number().int().positive().optional(),
   isActive: z.boolean().optional(),
+  certificatesEnabled: z.boolean().optional(),
   aiPersona: z.string().trim().optional().or(z.literal("")),
   aiContext: z.string().trim().optional().or(z.literal("")),
 });

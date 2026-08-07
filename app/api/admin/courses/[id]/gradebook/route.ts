@@ -12,6 +12,12 @@ export async function GET(_request: Request, { params }: Ctx) {
     await requirePermission("courses.read");
     const { id: courseId } = await params;
 
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      select: { certificatesEnabled: true },
+    });
+    if (!course) return apiError("Curso não encontrado", 404);
+
     const activities = await prisma.activity.findMany({
       where: { lesson: { module: { courseId } } },
       select: { id: true, title: true },
@@ -36,7 +42,10 @@ export async function GET(_request: Request, { params }: Ctx) {
       }))
     );
 
-    return NextResponse.json(gb);
+    return NextResponse.json({
+      ...gb,
+      certificatesEnabled: course.certificatesEnabled,
+    });
   } catch (error) {
     if (error instanceof ApiError) return apiError(error.message, error.status);
     console.error("Erro ao montar notas:", error);
