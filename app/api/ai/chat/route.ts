@@ -141,5 +141,5 @@ Como Professor Virtual, estou aqui para ajudar com o conteúdo do curso. Posso e
 
 Por favor, me diga especificamente sobre qual tema você gostaria de aprender ou qual dúvida você tem sobre a aula atual.
 
-*Nota: Esta é uma resposta simulada. Configure AI_PROVIDER e uma chave (ANTHROPIC_API_KEY ou OPENAI_API_KEY) no .env para respostas reais.*`;
+*Nota: Esta é uma resposta simulada. Configure o OmniRoute em Admin → Configurações (ou OMNIROUTE_* no .env) para respostas reais.*`;
 }

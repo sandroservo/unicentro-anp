@@ -11,7 +11,7 @@ interface SettingsForm {
 }
 
 const defaultForm: SettingsForm = {
-  baseUrl: "http://localhost:20128/v1",
+  baseUrl: "http://127.0.0.1:20128/v1",
   apiKey: "",
   model: "auto",
 };
@@ -119,7 +119,7 @@ export default function ConfiguracoesPage() {
                 </label>
                 <input
                   type="text"
-                  placeholder="http://localhost:20128/v1"
+                  placeholder="http://127.0.0.1:20128/v1"
                   value={form.baseUrl}
                   onChange={(e) =>
                     setForm((f) => ({ ...f, baseUrl: e.target.value }))

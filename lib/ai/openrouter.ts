@@ -1,8 +1,9 @@
 import { getSetting } from "@/lib/settings";
 
-// Motor do Professor IA. OmniRoute (gateway self-hosted, OpenAI-compatible) é o
-// alvo padrão quando OMNIROUTE_* está setado; senão cai no OpenRouter público.
-// ponytail: OmniRoute fala o mesmo wire OpenAI — só troca base URL/key/model, sem SDK novo.
+// Motor do Professor IA via gateway OpenAI-compatible.
+// Preferência: OmniRoute (self-hosted) → OpenRouter público.
+// ponytail: mesmo wire OpenAI — só troca base URL/key/model.
+
 export async function getApiKey(): Promise<string | null> {
   return (
     (await getSetting("ai_base_key")) ||
@@ -29,10 +30,12 @@ async function getModel(): Promise<string> {
     process.env.OMNIROUTE_MODEL ||
     process.env.OPENROUTER_MODEL;
   if (configured) return configured;
-  // Sem model explícito: se a base NÃO é o OpenRouter público, assume OmniRoute e usa
-  // "auto" (roteia pelos provedores grátis primeiro, conforme a estratégia do dashboard).
   const baseUrl = await getBaseUrl();
   return baseUrl.includes("openrouter.ai") ? "openai/gpt-4o-mini" : "auto";
+}
+
+function isOpenRouterPublic(baseUrl: string): boolean {
+  return baseUrl.includes("openrouter.ai");
 }
 
 // Extrai o primeiro bloco JSON { ... } de um texto (tolera ruído/markdown).
@@ -50,25 +53,91 @@ export function extractGradeJson(text: string): { points: number; feedback: stri
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
-// Chat completion via OpenRouter. Lança Error("NO_API_KEY") sem chave.
-export async function chatCompletion(messages: ChatMessage[], temperature = 0.3): Promise<string> {
+async function resolveGateway(): Promise<{
+  key: string | null;
+  model: string;
+  baseUrl: string;
+}> {
   const key = await getApiKey();
-  if (!key) throw new Error("NO_API_KEY");
-  const model = await getModel();
   const baseUrl = await getBaseUrl();
+  const model = await getModel();
+  // OpenRouter público exige chave; OmniRoute pode rodar com REQUIRE_API_KEY=false.
+  if (!key && isOpenRouterPublic(baseUrl)) throw new Error("NO_API_KEY");
+  return { key, model, baseUrl };
+}
+
+function buildHeaders(key: string | null): Record<string, string> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (key) headers.Authorization = `Bearer ${key}`;
+  return headers;
+}
+
+// Chat completion (não-stream). Lança Error("NO_API_KEY") sem chave no OpenRouter.
+export async function chatCompletion(
+  messages: ChatMessage[],
+  temperature = 0.3
+): Promise<string> {
+  const { key, model, baseUrl } = await resolveGateway();
 
   const res = await fetch(`${baseUrl}/chat/completions`, {
     method: "POST",
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model, messages, temperature }),
+    headers: buildHeaders(key),
+    body: JSON.stringify({ model, messages, temperature, stream: false }),
   });
   if (!res.ok) throw new Error(`AI gateway ${res.status}`);
   const data = await res.json();
   return data.choices?.[0]?.message?.content ?? "";
 }
 
-// Prompt único (compat). Lança Error("NO_API_KEY") sem chave.
-async function callOpenRouter(prompt: string): Promise<string> {
+/** Stream SSE do gateway; yielda deltas de texto. */
+export async function* chatCompletionStream(
+  messages: ChatMessage[],
+  temperature = 0.3
+): AsyncGenerator<string, void, unknown> {
+  const { key, model, baseUrl } = await resolveGateway();
+
+  const res = await fetch(`${baseUrl}/chat/completions`, {
+    method: "POST",
+    headers: buildHeaders(key),
+    body: JSON.stringify({ model, messages, temperature, stream: true }),
+  });
+  if (!res.ok) throw new Error(`AI gateway ${res.status}`);
+  if (!res.body) throw new Error("AI gateway sem corpo de stream");
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith("data:")) continue;
+      const payload = trimmed.slice(5).trim();
+      if (!payload || payload === "[DONE]") continue;
+      try {
+        const json = JSON.parse(payload);
+        const delta =
+          json.choices?.[0]?.delta?.content ??
+          json.choices?.[0]?.message?.content ??
+          "";
+        if (delta) yield String(delta);
+      } catch {
+        // ignora chunks malformados
+      }
+    }
+  }
+}
+
+// Prompt único (compat).
+async function callGateway(prompt: string): Promise<string> {
   return chatCompletion([{ role: "user", content: prompt }], 0.2);
 }
 
@@ -88,7 +157,7 @@ PONTUAÇÃO MÁXIMA: ${maxPoints}
 
 points deve ser um número entre 0 e ${maxPoints}. feedback deve ser construtivo e em português.`;
 
-  const raw = await callOpenRouter(prompt);
+  const raw = await callGateway(prompt);
   const parsed = extractGradeJson(raw);
   if (!parsed) return { points: 0, feedback: "Não foi possível interpretar a correção da IA." };
   const points = Math.max(0, Math.min(maxPoints, parsed.points));

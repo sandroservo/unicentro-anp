@@ -6,7 +6,7 @@ import { gradeEssayWithAI } from "@/lib/ai/openrouter";
 
 type Ctx = { params: Promise<{ id: string }> };
 
-// POST /api/admin/submissions/[id]/grade-ai  (lessons.write) — corrige dissertativas via OpenRouter
+// POST /api/admin/submissions/[id]/grade-ai  (lessons.write) — corrige dissertativas via OmniRoute
 export async function POST(_request: Request, { params }: Ctx) {
   try {
     await requirePermission("lessons.write");
@@ -57,7 +57,10 @@ export async function POST(_request: Request, { params }: Ctx) {
   } catch (error) {
     if (error instanceof ApiError) return apiError(error.message, error.status);
     if (error instanceof Error && error.message === "NO_API_KEY") {
-      return apiError("OPENROUTER_API_KEY não configurada", 503);
+      return apiError(
+        "Gateway de IA não configurado (OmniRoute / OMNIROUTE_API_KEY)",
+        503
+      );
     }
     console.error("Erro na correção IA:", error);
     return apiError("Erro ao corrigir com IA", 502);

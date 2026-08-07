@@ -298,7 +298,16 @@ export function LessonViewer({
           </div>
         </div>
         <div className="p-4">
-          <TutorChat courseId={cursoId} compact />
+          <TutorChat
+            courseId={cursoId}
+            subjectTitle={subjectTitle || undefined}
+            lessonTitle={lesson.title}
+            lessonContent={[conceito, lesson.transcript?.trim()]
+              .filter(Boolean)
+              .join("\n\n")
+              .slice(0, 4000)}
+            compact
+          />
         </div>
       </section>
     </div>

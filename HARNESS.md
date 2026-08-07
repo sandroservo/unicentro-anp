@@ -58,7 +58,7 @@ Cada papel é um subagente especializado (invocável via Task/`@agente`):
 | **qa-engineer** | Vitest, Playwright, qualidade |
 | **security-engineer** | auditoria, LGPD, auth, vulnerabilidades |
 | **database-engineer** | modelagem, índices, migrações |
-| **ai-engineer** | LLMs/OpenRouter, prompts, RAG, embeddings |
+| **ai-engineer** | LLMs/OmniRoute, prompts, RAG, embeddings |
 
 ## 5. Uso de IA — Codex é o Tech Lead
 

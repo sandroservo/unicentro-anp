@@ -16,5 +16,23 @@ services:
       timeout: 5s
       retries: 5
 
+  # Professor IA — gateway OpenAI-compatible (opcional em local)
+  # Alternativa sem Docker: npm i -g omniroute && omniroute serve
+  omniroute:
+    image: diegosouzapw/omniroute:latest
+    restart: unless-stopped
+    stop_grace_period: 40s
+    ports:
+      - "20128:20128"
+    environment:
+      PORT: "20128"
+      REQUIRE_API_KEY: "false"
+      INITIAL_PASSWORD: "${OMNIROUTE_INITIAL_PASSWORD:-changeme-local}"
+    volumes:
+      - omniroute_data:/app/data
+    profiles:
+      - ai
+
 volumes:
   anp_pgdata:
+  omniroute_data:

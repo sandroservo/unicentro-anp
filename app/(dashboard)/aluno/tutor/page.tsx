@@ -1,14 +1,38 @@
 import { requireSession } from "@/lib/authz";
 import { Header } from "@/components/layout/header";
-import { TutorChat } from "@/components/tutor/tutor-chat";
+import { canPreviewStudentView } from "@/lib/enrollment-access";
+import prisma from "@/lib/prisma";
+import { TutorPageClient } from "./tutor-page-client";
 
 export default async function TutorPage() {
-  await requireSession();
+  const session = await requireSession();
+  const userId = session.user!.id!;
+  const preview = canPreviewStudentView(session.user?.role);
+
+  const courses = preview
+    ? await prisma.course.findMany({
+        where: { isActive: true },
+        select: { id: true, title: true },
+        orderBy: { title: "asc" },
+        take: 50,
+      })
+    : (
+        await prisma.enrollment.findMany({
+          where: { userId },
+          select: { course: { select: { id: true, title: true } } },
+          orderBy: { enrolledAt: "desc" },
+          take: 50,
+        })
+      ).map((e) => e.course);
+
   return (
     <>
-      <Header title="Professor IA" subtitle="Tutor com base no material (RAG)" />
+      <Header
+        title="Professor IA"
+        subtitle="Tutor com base no material da turma (RAG + OmniRoute)"
+      />
       <div className="space-y-6">
-        <TutorChat />
+        <TutorPageClient courses={courses} />
       </div>
     </>
   );

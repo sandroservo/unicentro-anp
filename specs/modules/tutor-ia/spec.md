@@ -1,26 +1,29 @@
 # Spec — Tutor IA com RAG — Phase 3 M4
 
-**Depende de:** RAG, OpenRouter · **Status:** ✅ implementado
+**Depende de:** RAG, OmniRoute · **Status:** ✅ implementado
 
 ## Objetivo
 
 Chat do Professor Virtual que responde com base no material do curso (RAG):
-recupera contexto da KnowledgeBase, aumenta o prompt e chama o LLM (OpenRouter).
+recupera contexto da KnowledgeBase, aumenta o prompt com persona da turma e chama o LLM via OmniRoute.
 
 ## API
 
-`POST /api/aluno/tutor` (sessão), body `{ message, courseId?, history? }`:
+`POST /api/aluno/tutor` (sessão), body `{ message, courseId?, lessonTitle?, lessonContent?, subjectTitle?, history?, stream? }`:
+- Carrega `Course.aiPersona` / título / descrição quando `courseId` presente.
 - `retrieveContext(message, courseId)` → contexto + fontes.
-- `augmentSystemPrompt` + histórico + pergunta → `chatCompletion` (OpenRouter).
-- Sem chave (`NO_API_KEY`) → **degrada**: 200 com aviso + fontes do material (RAG funciona sem LLM).
-- Retorna `{ answer, sources }`.
+- `buildSystemPrompt` + `augmentSystemPrompt` + histórico + pergunta → gateway.
+- `stream: true` → SSE (`sources` / `delta` / `done` / `error`).
+- Sem chave no OpenRouter público (`NO_API_KEY`) → **degrada**: aviso + fontes do material.
+- Retorno JSON: `{ answer, sources }`.
 
 ## UI
 
-- `app/(dashboard)/aluno/tutor/page.tsx` + `components/tutor/tutor-chat.tsx` (chat + fontes).
+- `app/(dashboard)/aluno/tutor/page.tsx` + `components/tutor/tutor-chat.tsx` (stream + fontes).
+- Em aula: `LessonViewer` passa título/conceito/transcrição para o chat.
 - Menu "Professor IA" aponta pra `/aluno/tutor`.
 
 ## Verificação
 
-- **Live:** aluno pergunta sobre conteúdo indexado → resposta degradada (sem chave) traz fontes RAG
-  relevantes; sem sessão → 401. (Com OPENROUTER_API_KEY: resposta gerada.)
+- Aluno pergunta sobre conteúdo indexado → resposta com fontes RAG; sem sessão → 401.
+- Com OmniRoute (`OMNIROUTE_BASE_URL` ou Admin → Configurações): resposta gerada em stream.

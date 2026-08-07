@@ -42,12 +42,11 @@ npm install
 cp .env.example .env
 ```
 
-Edite o arquivo `.env`:
-```env
-DATABASE_URL="file:./dev.db"
-NEXTAUTH_SECRET="sua-chave-secreta-aqui"
-NEXTAUTH_URL="http://localhost:3000"
-ANTHROPIC_API_KEY="sk-ant-..." # Opcional - para Professor Virtual real
+Edite o arquivo `.env` (veja `.env.example`). Para o Professor IA, suba o OmniRoute:
+
+```bash
+npm i -g omniroute && omniroute serve
+# API em http://127.0.0.1:20128/v1
 ```
 
 4. **Configure o banco de dados**
@@ -104,30 +103,25 @@ anp-mvp/
 
 ## 🤖 Professor Virtual (IA)
 
-O Professor Virtual aceita **qualquer API de IA** configurada no `.env`. Suporta **Anthropic (Claude)** e **OpenAI (GPT)**.
+Motor: **OmniRoute** (gateway OpenAI-compatible com roteamento entre provedores).
+Configuração em Admin → Configurações ou via `OMNIROUTE_*` no `.env`.
 
 ### Configuração
 
-1. Escolha o provedor e obtenha uma API key:
-   - **Anthropic (Claude):** [console.anthropic.com](https://console.anthropic.com)
-   - **OpenAI (GPT):** [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
-2. No `.env`, defina o provedor (opcional) e a chave:
 ```env
-# Opcional: anthropic | openai (se omitido, usa o primeiro com chave)
-AI_PROVIDER=openai
-
-# Use a chave do provedor desejado
-ANTHROPIC_API_KEY="sk-ant-..."
-# ou
-OPENAI_API_KEY="sk-..."
+OMNIROUTE_BASE_URL=http://127.0.0.1:20128/v1
+OMNIROUTE_MODEL=auto
+# OMNIROUTE_API_KEY=...   # se o OmniRoute exigir chave
 ```
+
+No dashboard do OmniRoute, use a estratégia **Free** / cost-optimized para priorizar free tiers.
 
 ### Funcionamento
 
-- Cada curso pode ter sua própria "persona" de professor
-- O contexto da aula atual é enviado automaticamente
-- Respostas são baseadas no conteúdo do curso
-- Sem chave configurada (ou em caso de erro da API), usa respostas simuladas
+- Cada turma pode ter `aiPersona` própria
+- Na aula, o chat recebe título, conceito e trecho da transcrição
+- RAG busca trechos da KnowledgeBase do curso
+- Respostas em streaming (SSE); sem gateway, devolve fontes RAG + aviso
 
 ## 🛠️ Scripts Disponíveis
 
@@ -146,7 +140,7 @@ npm run db:generate # Gera cliente Prisma
 - **Banco de Dados**: SQLite (dev) / PostgreSQL (prod)
 - **ORM**: Prisma
 - **Autenticação**: NextAuth.js
-- **IA**: Claude API (Anthropic)
+- **IA**: OmniRoute (gateway OpenAI-compatible)
 
 ## 🚀 Deploy
 
@@ -165,7 +159,8 @@ npm run db:generate # Gera cliente Prisma
 DATABASE_URL="postgresql://..."
 NEXTAUTH_SECRET="gere-uma-chave-forte"
 NEXTAUTH_URL="https://seu-dominio.com"
-ANTHROPIC_API_KEY="sk-ant-..."
+OMNIROUTE_BASE_URL=http://127.0.0.1:20128/v1
+OMNIROUTE_MODEL=auto
 ```
 
 ## 📄 Licença

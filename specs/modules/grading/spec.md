@@ -4,14 +4,14 @@
 
 ## Objetivo
 
-Corrigir dissertativas de submissões: por **IA (OpenRouter)** e **manual** pelo professor.
+Corrigir dissertativas de submissões: por **IA (OmniRoute)** e **manual** pelo professor.
 Fecha `Submission.finalGrade` e grava `aiFeedback`.
 
-## OpenRouter
+## OmniRoute (gateway)
 
-`lib/ai/openrouter.ts` — endpoint compatível OpenAI (`https://openrouter.ai/api/v1/chat/completions`).
-Chave: `getSetting("openrouter_api_key")` → env `OPENROUTER_API_KEY`. Sem chave → erro `NO_API_KEY` → **503**.
-Modelo default configurável (`getSetting("openrouter_model")`, fallback `openai/gpt-4o-mini`).
+`lib/ai/openrouter.ts` — endpoint OpenAI-compatible (OmniRoute preferencial; fallback OpenRouter).
+Config: settings `ai_base_*` → env `OMNIROUTE_*` → legado `OPENROUTER_*`.
+Sem chave no OpenRouter público → `NO_API_KEY` → **503**. Modelo default: `auto` (OmniRoute) ou `openai/gpt-4o-mini` (OpenRouter).
 
 ## Correção IA
 
@@ -27,7 +27,7 @@ Professor define `finalGrade` (número) e `aiFeedback` (texto) direto — sobrep
 ## API (`lessons.write`; GET = `courses.read`)
 
 | GET | `/api/admin/activities/[id]/submissions` | lista submissões (aluno, notas, status) |
-| POST | `/api/admin/submissions/[id]/grade-ai` | corrige dissertativas via OpenRouter |
+| POST | `/api/admin/submissions/[id]/grade-ai` | corrige dissertativas via OmniRoute |
 | PATCH | `/api/admin/submissions/[id]` | nota/feedback manual |
 
 ## UI

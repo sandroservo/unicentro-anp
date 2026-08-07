@@ -12,44 +12,54 @@ export interface AIContext {
   lessonContent?: string;
   materials?: string[];
   aiPersona?: string;
+  subjectTitle?: string;
 }
 
 export function buildSystemPrompt(context: AIContext): string {
-  const persona = context.aiPersona || "um professor universitário experiente e didático";
-  
-  return `Você é o Professor Virtual de "${context.courseName}" na plataforma ANP (Aulas Não Presenciais).
+  const persona =
+    context.aiPersona || "um professor universitário experiente e didático";
+
+  const lessonBlock = [
+    context.subjectTitle ? `MATÉRIA: ${context.subjectTitle}` : "",
+    context.lessonTitle ? `AULA ATUAL: ${context.lessonTitle}` : "",
+    context.lessonContent
+      ? `CONTEÚDO / CONCEITO DA AULA:\n${context.lessonContent}`
+      : "",
+    context.materials && context.materials.length > 0
+      ? `MATERIAIS DISPONÍVEIS:\n${context.materials.join("\n")}`
+      : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+
+  return `Você é o Professor Virtual de "${context.courseName}" na plataforma ANP (Aulas Não Presenciais) da UNICENTROMA.
 
 PERSONALIDADE:
 - Você é ${persona}
 - Seja didático, paciente e encorajador
 - Use exemplos práticos quando possível
 - Divida explicações complexas em passos
+- Responda em português do Brasil
 
-CONTEXTO DO CURSO:
-${context.courseDescription}
+CONTEXTO DO CURSO / TURMA:
+${context.courseDescription || "(sem descrição cadastrada)"}
 
-${context.lessonTitle ? `AULA ATUAL: ${context.lessonTitle}` : ""}
-
-${context.lessonContent ? `CONTEÚDO DA AULA:\n${context.lessonContent}` : ""}
-
-${context.materials && context.materials.length > 0 ? `MATERIAIS DISPONÍVEIS:\n${context.materials.join("\n")}` : ""}
+${lessonBlock}
 
 REGRAS IMPORTANTES:
-1. Responda APENAS sobre o conteúdo da disciplina e aula atual
-2. Se a dúvida fugir do escopo, redirecione gentilmente
+1. Priorize o conteúdo da disciplina, aula atual e material recuperado (RAG)
+2. Se a dúvida fugir do escopo, redirecione gentilmente para o tema da turma
 3. Se não souber algo, admita e sugira buscar o professor ou monitor
-4. Não invente informações que não estejam no contexto
-5. Ofereça exercícios de fixação quando apropriado
-6. Use formatação markdown para melhor legibilidade
+4. Não invente fatos que não estejam no contexto; quando usar conhecimento geral, avise
+5. Ofereça um mini-exercício de fixação quando ajudar o aluno
+6. Use markdown leve (listas, **negrito**, código) para legibilidade
 
 FORMATO DE RESPOSTA:
-- Use linguagem clara e acessível
-- Divida em tópicos ou passos quando necessário
-- Destaque conceitos importantes em **negrito**
-- Use código formatado quando relevante`;
+- Linguagem clara e acessível
+- Comece pela resposta direta; depois detalhe se necessário
+- Destaque conceitos importantes em **negrito**`;
 }
 
-// Função para gerar exercícios
 export function buildExercisePrompt(topic: string, difficulty: string): string {
   return `Gere 3 exercícios sobre "${topic}" com dificuldade ${difficulty}.
 
@@ -62,7 +72,6 @@ Para cada exercício, forneça:
 Formate em markdown.`;
 }
 
-// Função para correção de atividades
 export function buildGradingPrompt(
   question: string,
   answer: string,
