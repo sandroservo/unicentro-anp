@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
   AlertCircle,
+  Award,
   CheckCircle,
   ChevronRight,
   ClipboardList,
@@ -12,23 +13,37 @@ import {
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { Header } from "@/components/layout/header";
+import { Badge } from "@/components/ui/badge";
 import { canPreviewStudentView } from "@/lib/enrollment-access";
 import { cn } from "@/lib/utils";
 
-function formatDeadline(dueDate: Date | null) {
-  if (!dueDate) return "Sem prazo";
+type Deadline = { text: string; tone: "over" | "soon" | "ok" | "none" };
+
+function formatDeadline(dueDate: Date | null): Deadline {
+  if (!dueDate) return { text: "Sem prazo", tone: "none" };
   const diff = dueDate.getTime() - Date.now();
-  if (diff < 0) return "Prazo encerrado";
+  if (diff < 0) return { text: "Prazo encerrado", tone: "over" };
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
-  if (days <= 1) return "Até amanhã";
-  return `${days} dias`;
+  if (days <= 1) return { text: "Até amanhã", tone: "soon" };
+  if (days <= 3) return { text: `${days} dias`, tone: "soon" };
+  return { text: `${days} dias`, tone: "ok" };
 }
 
-function typeIcon(type: string) {
+function typeMeta(type: string) {
   const t = type.toUpperCase();
-  if (t === "ESSAY") return FileText;
-  if (t === "FORUM") return MessageSquare;
-  return ClipboardList;
+  if (t === "ESSAY")
+    return { icon: FileText, label: "Redação", chip: "bg-primary/10 text-primary" };
+  if (t === "FORUM")
+    return {
+      icon: MessageSquare,
+      label: "Fórum",
+      chip: "bg-green-100 text-primary dark:bg-green-500/15",
+    };
+  return {
+    icon: ClipboardList,
+    label: "Quiz",
+    chip: "bg-purple-100 text-purple-600 dark:bg-purple-500/15 dark:text-purple-300",
+  };
 }
 
 export default async function AtividadesPage() {
@@ -101,6 +116,31 @@ export default async function AtividadesPage() {
 
   const pending = rows.filter((a) => a.status === "pending").length;
   const completed = rows.filter((a) => a.status === "completed").length;
+  const graded = rows.filter((a) => a.grade != null);
+  const avgGrade = graded.length
+    ? (graded.reduce((s, a) => s + (a.grade ?? 0), 0) / graded.length).toFixed(1)
+    : "—";
+
+  const stats = [
+    {
+      label: "Pendentes",
+      value: pending,
+      icon: Clock,
+      chip: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    },
+    {
+      label: "Concluídas",
+      value: completed,
+      icon: CheckCircle,
+      chip: "bg-primary/10 text-primary",
+    },
+    {
+      label: "Nota média",
+      value: avgGrade,
+      icon: Award,
+      chip: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    },
+  ];
 
   return (
     <>
@@ -113,31 +153,33 @@ export default async function AtividadesPage() {
         }
       />
       <div className="space-y-6">
-        <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-500/30 dark:bg-yellow-500/10">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-yellow-600 dark:text-yellow-400">
-                  Pendentes
-                </p>
-                <p className="text-3xl font-bold text-yellow-700 dark:text-yellow-300">
-                  {pending}
-                </p>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {stats.map((s) => {
+            const Icon = s.icon;
+            return (
+              <div
+                key={s.label}
+                className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
+              >
+                <div className="flex items-center gap-4">
+                  <div
+                    className={cn(
+                      "flex h-12 w-12 items-center justify-center rounded-xl",
+                      s.chip
+                    )}
+                  >
+                    <Icon size={22} />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-foreground">
+                      {s.value}
+                    </p>
+                    <p className="text-sm text-muted-foreground">{s.label}</p>
+                  </div>
+                </div>
               </div>
-              <Clock className="text-yellow-500" size={32} />
-            </div>
-          </div>
-          <div className="rounded-xl border border-primary/30 bg-primary/10 p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-primary">Concluídas</p>
-                <p className="text-3xl font-bold text-green-700 dark:text-green-400">
-                  {completed}
-                </p>
-              </div>
-              <CheckCircle className="text-green-500" size={32} />
-            </div>
-          </div>
+            );
+          })}
         </div>
 
         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -153,45 +195,56 @@ export default async function AtividadesPage() {
           ) : (
             <div className="divide-y divide-border">
               {rows.map((activity) => {
-                const Icon = typeIcon(activity.type);
+                const meta = typeMeta(activity.type);
+                const Icon = meta.icon;
                 return (
                   <Link
                     key={activity.id}
                     href={`/aluno/atividades/${activity.id}`}
-                    className="flex items-center gap-4 p-4 transition-colors hover:bg-muted"
+                    className="group flex items-center gap-4 p-4 transition-colors hover:bg-muted"
                   >
                     <div
                       className={cn(
-                        "flex h-10 w-10 items-center justify-center rounded-lg",
-                        activity.type.toUpperCase() === "ESSAY"
-                          ? "bg-primary/10 text-primary"
-                          : activity.type.toUpperCase() === "FORUM"
-                            ? "bg-green-100 text-primary dark:bg-green-500/15"
-                            : "bg-purple-100 text-purple-600 dark:bg-purple-500/15 dark:text-purple-300"
+                        "flex h-11 w-11 items-center justify-center rounded-xl",
+                        meta.chip
                       )}
                     >
                       <Icon size={20} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-medium text-foreground">
-                        {activity.title}
-                      </h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="truncate font-medium text-foreground">
+                          {activity.title}
+                        </h3>
+                        <Badge variant="outline" className="shrink-0">
+                          {meta.label}
+                        </Badge>
+                      </div>
                       <p className="truncate text-sm text-muted-foreground">
                         {activity.course}
                         {activity.subject ? ` · ${activity.subject}` : ""}
                         {` · ${activity.lesson}`}
                       </p>
                     </div>
-                    <div className="shrink-0 text-right">
+                    <div className="flex shrink-0 flex-col items-end gap-1">
                       {activity.status === "completed" ? (
-                        <span className="font-medium text-primary">
-                          {activity.grade != null
-                            ? `Nota: ${activity.grade}`
-                            : "Enviada"}
-                        </span>
+                        activity.grade != null ? (
+                          <Badge variant="default">Nota {activity.grade}</Badge>
+                        ) : (
+                          <Badge variant="secondary">Enviada</Badge>
+                        )
                       ) : (
-                        <span className="text-sm text-yellow-600 dark:text-yellow-400">
-                          Prazo: {activity.deadline}
+                        <span
+                          className={cn(
+                            "text-sm font-medium",
+                            activity.deadline.tone === "over"
+                              ? "text-destructive"
+                              : activity.deadline.tone === "soon"
+                                ? "text-amber-600 dark:text-amber-400"
+                                : "text-muted-foreground"
+                          )}
+                        >
+                          {activity.deadline.text}
                         </span>
                       )}
                       <p className="text-xs text-muted-foreground">
@@ -200,7 +253,7 @@ export default async function AtividadesPage() {
                     </div>
                     <ChevronRight
                       size={20}
-                      className="shrink-0 text-muted-foreground"
+                      className="shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
                     />
                   </Link>
                 );

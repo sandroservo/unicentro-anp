@@ -3,12 +3,11 @@
 import { useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import {
   BookOpen,
   ClipboardList,
   Settings,
-  LogOut,
   Users,
   GraduationCap,
   MoreHorizontal,
@@ -53,13 +52,6 @@ export function Sidebar() {
 
   const userRole = (session?.user?.role as string) || "ALUNO";
   const perms = (session?.user?.permissions as string[] | undefined) ?? [];
-  const userName = session?.user?.name || "Usuário";
-  const initials = userName
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
 
   const showLabels = isExpanded || isHovered || isMobileOpen;
 
@@ -169,37 +161,6 @@ export function Sidebar() {
         </nav>
       </div>
 
-      <div className="border-t border-gray-200 py-4 dark:border-gray-800">
-        <div
-          className={cn(
-            "flex items-center gap-3",
-            !showLabels && "lg:justify-center"
-          )}
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-500 dark:bg-brand-500/15">
-            {initials}
-          </div>
-          {showLabels && (
-            <>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-gray-800 dark:text-white/90">
-                  {userName}
-                </p>
-                <p className="truncate text-xs capitalize text-gray-500 dark:text-gray-400">
-                  {userRole.toLowerCase()}
-                </p>
-              </div>
-              <button
-                onClick={() => signOut({ callbackUrl: "/login" })}
-                className="rounded-lg p-1.5 text-gray-500 transition-colors hover:text-red-600"
-                aria-label="Sair"
-              >
-                <LogOut size={18} />
-              </button>
-            </>
-          )}
-        </div>
-      </div>
     </aside>
   );
 }

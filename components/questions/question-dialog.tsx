@@ -142,9 +142,19 @@ export function QuestionDialog({ mode, question, trigger }: Props) {
                   <Plus className="h-3 w-3" /> Alternativa
                 </Button>
               </div>
+              <p className="text-xs text-muted-foreground">
+                Marque <span className="font-medium text-foreground">Correta</span> na(s) alternativa(s) certa(s) — usadas na correção automática.
+              </p>
               {fields.map((f, i) => (
                 <div key={f.id} className="flex items-center gap-2">
-                  <input type="checkbox" {...register(`options.${i}.correct`)} title="Correta" />
+                  <label className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 accent-primary"
+                      {...register(`options.${i}.correct`)}
+                    />
+                    Correta
+                  </label>
                   <Input placeholder={`Alternativa ${i + 1}`} {...register(`options.${i}.text`)} />
                   <Button type="button" variant="ghost" size="icon" onClick={() => remove(i)} aria-label="Remover">
                     <X className="h-4 w-4 text-red-600" />

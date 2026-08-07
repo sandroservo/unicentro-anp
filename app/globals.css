@@ -7,7 +7,7 @@
 @layer base {
   :root {
     --radius: 0.5rem;
-    --font-sans: Outfit, ui-sans-serif, sans-serif, system-ui;
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     --background: oklch(0.9911 0 0);
     --foreground: oklch(0.22 0.025 265);
     --card: oklch(0.9911 0 0);
@@ -91,6 +91,7 @@
   }
   html {
     @apply font-sans;
+    font-size: 106.25%; /* 16px -> 17px base; rem escala a UI toda */
   }
 
   /* Native inputs: avoid invisible text (light text on white browser default) */
