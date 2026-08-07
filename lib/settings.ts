@@ -2,20 +2,17 @@
 import type { PrismaClient } from "../generated/prisma/client";
 
 export const SETTING_KEYS = {
-  AI_PROVIDER: "ai_provider",
-  ANTHROPIC_API_KEY: "anthropic_api_key",
-  OPENAI_API_KEY: "openai_api_key",
-  AI_ANTHROPIC_MODEL: "ai_anthropic_model",
-  AI_OPENAI_MODEL: "ai_openai_model",
+  // Motor do Professor IA: gateway OmniRoute (OpenAI-compatible). Chaves lidas em lib/ai/openrouter.ts.
+  AI_BASE_URL: "ai_base_url",
+  AI_BASE_KEY: "ai_base_key",
+  AI_MODEL: "ai_model",
   YOUTUBE_API_KEY: "youtube_api_key",
 } as const;
 
 export type AISettings = {
-  provider: "anthropic" | "openai" | null;
-  anthropicApiKey: string | null;
-  openaiApiKey: string | null;
-  anthropicModel: string | null;
-  openaiModel: string | null;
+  baseUrl: string | null;
+  apiKey: string | null;
+  model: string | null;
 };
 
 async function getDb(): Promise<PrismaClient> {
@@ -41,38 +38,28 @@ export async function setSetting(key: string, value: string): Promise<void> {
 }
 
 export async function getAISettings(): Promise<AISettings> {
-  const [provider, anthropicKey, openaiKey, anthropicModel, openaiModel] =
-    await Promise.all([
-      getSetting(SETTING_KEYS.AI_PROVIDER),
-      getSetting(SETTING_KEYS.ANTHROPIC_API_KEY),
-      getSetting(SETTING_KEYS.OPENAI_API_KEY),
-      getSetting(SETTING_KEYS.AI_ANTHROPIC_MODEL),
-      getSetting(SETTING_KEYS.AI_OPENAI_MODEL),
-    ]);
+  const [baseUrl, apiKey, model] = await Promise.all([
+    getSetting(SETTING_KEYS.AI_BASE_URL),
+    getSetting(SETTING_KEYS.AI_BASE_KEY),
+    getSetting(SETTING_KEYS.AI_MODEL),
+  ]);
 
   return {
-    provider: (provider === "anthropic" || provider === "openai" ? provider : null) ?? null,
-    anthropicApiKey: anthropicKey?.trim() || null,
-    openaiApiKey: openaiKey?.trim() || null,
-    anthropicModel: anthropicModel?.trim() || null,
-    openaiModel: openaiModel?.trim() || null,
+    baseUrl: baseUrl?.trim() || null,
+    apiKey: apiKey?.trim() || null,
+    model: model?.trim() || null,
   };
 }
 
 export async function setAISettings(settings: Partial<AISettings>): Promise<void> {
-  const updates: Array<{ key: string; value: string }> = [];
-  if (settings.provider !== undefined)
-    updates.push({ key: SETTING_KEYS.AI_PROVIDER, value: settings.provider || "" });
-  if (settings.anthropicApiKey !== undefined)
-    updates.push({ key: SETTING_KEYS.ANTHROPIC_API_KEY, value: settings.anthropicApiKey || "" });
-  if (settings.openaiApiKey !== undefined)
-    updates.push({ key: SETTING_KEYS.OPENAI_API_KEY, value: settings.openaiApiKey || "" });
-  if (settings.anthropicModel !== undefined)
-    updates.push({ key: SETTING_KEYS.AI_ANTHROPIC_MODEL, value: settings.anthropicModel || "" });
-  if (settings.openaiModel !== undefined)
-    updates.push({ key: SETTING_KEYS.AI_OPENAI_MODEL, value: settings.openaiModel || "" });
-
-  for (const { key, value } of updates) {
-    await setSetting(key, value);
+  const map: Array<[keyof AISettings, string]> = [
+    ["baseUrl", SETTING_KEYS.AI_BASE_URL],
+    ["apiKey", SETTING_KEYS.AI_BASE_KEY],
+    ["model", SETTING_KEYS.AI_MODEL],
+  ];
+  for (const [field, key] of map) {
+    if (settings[field] !== undefined) {
+      await setSetting(key, settings[field] || "");
+    }
   }
 }

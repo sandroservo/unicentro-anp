@@ -4,22 +4,16 @@ import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/header";
 import { Save, Loader2, Check } from "lucide-react";
 
-type Provider = "anthropic" | "openai" | "";
-
 interface SettingsForm {
-  provider: Provider;
-  anthropicApiKey: string;
-  openaiApiKey: string;
-  anthropicModel: string;
-  openaiModel: string;
+  baseUrl: string;
+  apiKey: string;
+  model: string;
 }
 
 const defaultForm: SettingsForm = {
-  provider: "",
-  anthropicApiKey: "",
-  openaiApiKey: "",
-  anthropicModel: "claude-sonnet-4-20250514",
-  openaiModel: "gpt-4o-mini",
+  baseUrl: "http://localhost:20128/v1",
+  apiKey: "",
+  model: "auto",
 };
 
 export default function ConfiguracoesPage() {
@@ -37,11 +31,9 @@ export default function ConfiguracoesPage() {
       })
       .then((data) => {
         setForm({
-          provider: data.provider || "",
-          anthropicApiKey: data.anthropicApiKey || "",
-          openaiApiKey: data.openaiApiKey || "",
-          anthropicModel: data.anthropicModel || defaultForm.anthropicModel,
-          openaiModel: data.openaiModel || defaultForm.openaiModel,
+          baseUrl: data.baseUrl || defaultForm.baseUrl,
+          apiKey: data.apiKey || "",
+          model: data.model || defaultForm.model,
         });
       })
       .catch(() => setError("Erro ao carregar configurações"))
@@ -58,11 +50,9 @@ export default function ConfiguracoesPage() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          provider: form.provider || null,
-          anthropicApiKey: form.anthropicApiKey || null,
-          openaiApiKey: form.openaiApiKey || null,
-          anthropicModel: form.anthropicModel || null,
-          openaiModel: form.openaiModel || null,
+          baseUrl: form.baseUrl || null,
+          apiKey: form.apiKey || null,
+          model: form.model || null,
         }),
       });
       if (!res.ok) throw new Error("Erro ao salvar");
@@ -91,7 +81,17 @@ export default function ConfiguracoesPage() {
       <Header title="Configurações" subtitle="Sistema e integrações" />
       <div className="space-y-6">
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          Configure o provedor de IA do Professor Virtual. As chaves ficam salvas no banco de dados (não use .env).
+          O Professor Virtual usa o{" "}
+          <a
+            href="https://github.com/diegosouzapw/OmniRoute"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            OmniRoute
+          </a>{" "}
+          como motor — um gateway OpenAI-compatible que roteia entre 291+ provedores
+          (90+ com free tier). As configs ficam no banco (têm prioridade sobre o .env).
         </p>
 
         {error && (
@@ -109,114 +109,68 @@ export default function ConfiguracoesPage() {
         <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
           <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
             <h2 className="mb-4 font-semibold text-gray-800 dark:text-white/90">
-              Professor Virtual (IA)
+              Professor Virtual (OmniRoute)
             </h2>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Provedor de IA
-                </label>
-                <select
-                  value={form.provider}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, provider: e.target.value as Provider }))
-                  }
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
-                >
-                  <option value="">Selecione...</option>
-                  <option value="anthropic">Anthropic (Claude)</option>
-                  <option value="openai">OpenAI (GPT)</option>
-                </select>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Se não definir, o sistema usa o primeiro provedor com chave preenchida.
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Chave API Anthropic (Claude)
+                  Base URL do gateway
                 </label>
                 <input
-                  type="password"
-                  placeholder="sk-ant-..."
-                  value={form.anthropicApiKey}
+                  type="text"
+                  placeholder="http://localhost:20128/v1"
+                  value={form.baseUrl}
                   onChange={(e) =>
-                    setForm((f) => ({ ...f, anthropicApiKey: e.target.value }))
+                    setForm((f) => ({ ...f, baseUrl: e.target.value }))
                   }
                   className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
                   autoComplete="off"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Obtenha em{" "}
-                  <a
-                    href="https://console.anthropic.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    console.anthropic.com
-                  </a>
-                  . Deixe em branco para não alterar a chave atual.
+                  Endpoint OpenAI-compatible do OmniRoute. Suba com{" "}
+                  <code className="rounded bg-muted px-1">npm i -g omniroute</code>{" "}
+                  (localhost:20128).
                 </p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Modelo Anthropic (opcional)
-                </label>
-                <input
-                  type="text"
-                  placeholder="claude-sonnet-4-20250514"
-                  value={form.anthropicModel}
-                  onChange={(e) =>
-                    setForm((f) => ({ ...f, anthropicModel: e.target.value }))
-                  }
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
-                />
-              </div>
-
-              <div className="border-t border-gray-100 dark:border-gray-800 pt-4 mt-4">
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Chave API OpenAI (GPT)
+                  Token de acesso
                 </label>
                 <input
                   type="password"
-                  placeholder="sk-..."
-                  value={form.openaiApiKey}
+                  placeholder="token do dashboard do OmniRoute"
+                  value={form.apiKey}
                   onChange={(e) =>
-                    setForm((f) => ({ ...f, openaiApiKey: e.target.value }))
+                    setForm((f) => ({ ...f, apiKey: e.target.value }))
                   }
                   className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
                   autoComplete="off"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Obtenha em{" "}
-                  <a
-                    href="https://platform.openai.com/api-keys"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    platform.openai.com/api-keys
-                  </a>
-                  . Deixe em branco para não alterar a chave atual.
+                  Pegue no dashboard do OmniRoute. Deixe em branco para não alterar o token atual.
                 </p>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Modelo OpenAI (opcional)
+                  Modelo
                 </label>
                 <input
                   type="text"
-                  placeholder="gpt-4o-mini"
-                  value={form.openaiModel}
+                  placeholder="auto"
+                  value={form.model}
                   onChange={(e) =>
-                    setForm((f) => ({ ...f, openaiModel: e.target.value }))
+                    setForm((f) => ({ ...f, model: e.target.value }))
                   }
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300"
+                  className="w-full px-4 py-2 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary/300 font-mono text-sm"
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  <code className="rounded bg-muted px-1">auto</code> deixa o OmniRoute
+                  rotear sozinho. Para usar só IA grátis, selecione a estratégia
+                  <strong> Free</strong> (ou cost-optimized) no dashboard dele.
+                </p>
               </div>
             </div>
           </div>

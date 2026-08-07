@@ -1,12 +1,38 @@
 import { getSetting } from "@/lib/settings";
 
-export async function getOpenRouterKey(): Promise<string | null> {
-  const fromDb = await getSetting("openrouter_api_key");
-  return fromDb || process.env.OPENROUTER_API_KEY || null;
+// Motor do Professor IA. OmniRoute (gateway self-hosted, OpenAI-compatible) é o
+// alvo padrão quando OMNIROUTE_* está setado; senão cai no OpenRouter público.
+// ponytail: OmniRoute fala o mesmo wire OpenAI — só troca base URL/key/model, sem SDK novo.
+export async function getApiKey(): Promise<string | null> {
+  return (
+    (await getSetting("ai_base_key")) ||
+    process.env.OMNIROUTE_API_KEY ||
+    (await getSetting("openrouter_api_key")) ||
+    process.env.OPENROUTER_API_KEY ||
+    null
+  );
+}
+
+async function getBaseUrl(): Promise<string> {
+  const url =
+    (await getSetting("ai_base_url")) ||
+    process.env.OMNIROUTE_BASE_URL ||
+    process.env.OPENROUTER_BASE_URL ||
+    "https://openrouter.ai/api/v1";
+  return url.replace(/\/+$/, "");
 }
 
 async function getModel(): Promise<string> {
-  return (await getSetting("openrouter_model")) || "openai/gpt-4o-mini";
+  const configured =
+    (await getSetting("ai_model")) ||
+    (await getSetting("openrouter_model")) ||
+    process.env.OMNIROUTE_MODEL ||
+    process.env.OPENROUTER_MODEL;
+  if (configured) return configured;
+  // Sem model explícito: se a base NÃO é o OpenRouter público, assume OmniRoute e usa
+  // "auto" (roteia pelos provedores grátis primeiro, conforme a estratégia do dashboard).
+  const baseUrl = await getBaseUrl();
+  return baseUrl.includes("openrouter.ai") ? "openai/gpt-4o-mini" : "auto";
 }
 
 // Extrai o primeiro bloco JSON { ... } de um texto (tolera ruído/markdown).
@@ -26,16 +52,17 @@ export type ChatMessage = { role: "system" | "user" | "assistant"; content: stri
 
 // Chat completion via OpenRouter. Lança Error("NO_API_KEY") sem chave.
 export async function chatCompletion(messages: ChatMessage[], temperature = 0.3): Promise<string> {
-  const key = await getOpenRouterKey();
+  const key = await getApiKey();
   if (!key) throw new Error("NO_API_KEY");
   const model = await getModel();
+  const baseUrl = await getBaseUrl();
 
-  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const res = await fetch(`${baseUrl}/chat/completions`, {
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model, messages, temperature }),
   });
-  if (!res.ok) throw new Error(`OpenRouter ${res.status}`);
+  if (!res.ok) throw new Error(`AI gateway ${res.status}`);
   const data = await res.json();
   return data.choices?.[0]?.message?.content ?? "";
 }

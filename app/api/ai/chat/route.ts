@@ -3,11 +3,9 @@ import { auth } from "@/auth";
 import { z } from "zod";
 import {
   buildSystemPrompt,
-  type AIMessage,
   type AIContext,
 } from "@/lib/ai/professor-virtual";
-import { callChatAPI, getActiveProvider } from "@/lib/ai/providers";
-import { getAISettings } from "@/lib/settings";
+import { chatCompletion, type ChatMessage } from "@/lib/ai/openrouter";
 import { parseBody, apiError, ApiError } from "@/lib/api";
 
 const chatSchema = z.object({
@@ -24,16 +22,6 @@ export async function POST(request: Request) {
 
     const { messages, context } = await parseBody(chatSchema, request);
 
-    const aiSettings = await getAISettings();
-    const activeProvider = getActiveProvider(aiSettings);
-
-    if (!activeProvider) {
-      return NextResponse.json({
-        response: getSimulatedResponse(messages[messages.length - 1]?.content || ""),
-        simulated: true,
-      });
-    }
-
     const ctx = context as Partial<AIContext> | undefined;
     const aiContext: AIContext = {
       courseName: ctx?.courseName || "Curso",
@@ -43,20 +31,23 @@ export async function POST(request: Request) {
       materials: ctx?.materials,
       aiPersona: ctx?.aiPersona,
     };
-
     const systemPrompt = buildSystemPrompt(aiContext);
+    const lastQuestion = messages[messages.length - 1]?.content || "";
 
+    // Motor: OmniRoute (gateway OpenAI-compatible). NO_API_KEY / erro → resposta simulada.
     try {
-      const response = await callChatAPI(
-        messages as AIMessage[],
-        systemPrompt,
-        aiSettings
-      );
+      const gwMessages: ChatMessage[] = [
+        { role: "system", content: systemPrompt },
+        ...(messages as ChatMessage[]),
+      ];
+      const response = await chatCompletion(gwMessages, 0.5);
       return NextResponse.json({ response });
-    } catch (providerError: any) {
-      console.warn(`API ${activeProvider.provider} indisponível, usando resposta simulada:`, providerError?.message);
+    } catch (e: any) {
+      if (!(e instanceof Error && e.message === "NO_API_KEY")) {
+        console.warn("OmniRoute indisponível, usando resposta simulada:", e?.message);
+      }
       return NextResponse.json({
-        response: getSimulatedResponse(messages[messages.length - 1]?.content || ""),
+        response: getSimulatedResponse(lastQuestion),
         simulated: true,
       });
     }
