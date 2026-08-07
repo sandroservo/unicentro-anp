@@ -29,9 +29,9 @@ export default async function TutorPage() {
     <>
       <Header
         title="Professor IA"
-        subtitle="Tutor com base no material da turma (RAG + OmniRoute)"
+        subtitle="Tutoria inteligente com base no material da sua turma"
       />
-      <div className="space-y-6">
+      <div className="pb-4">
         <TutorPageClient courses={courses} />
       </div>
     </>

@@ -40,7 +40,15 @@ export async function retrieveContext(
   query: string,
   opts?: { courseId?: string | null; k?: number }
 ): Promise<{ context: string; sources: SearchHit[] }> {
-  const hits = await searchKnowledge(query, opts?.k ?? 6, { courseId: opts?.courseId });
-  const selected = selectContext(hits);
-  return { context: formatContext(selected), sources: selected };
+  try {
+    const hits = await searchKnowledge(query, opts?.k ?? 6, {
+      courseId: opts?.courseId,
+    });
+    const selected = selectContext(hits);
+    return { context: formatContext(selected), sources: selected };
+  } catch (e) {
+    // Sem coluna embedding / pgvector: tutor ainda responde via OmniRoute.
+    console.warn("RAG indisponível:", e instanceof Error ? e.message : e);
+    return { context: "", sources: [] };
+  }
 }

@@ -7,7 +7,6 @@ import { toast } from "sonner";
 import {
   ArrowLeft,
   BookOpen,
-  Brain,
   CheckCircle2,
   Download,
   FileText,
@@ -283,32 +282,18 @@ export function LessonViewer({
         </aside>
       </div>
 
-      <section className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-        <div className="flex items-center gap-2 border-b border-gray-100 px-4 py-3 dark:border-gray-800">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-50 text-brand-500 dark:bg-brand-500/15">
-            <Brain size={16} />
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-white/90">
-              Professor IA
-            </h3>
-            <p className="text-xs text-gray-500">
-              Tire dúvidas sobre esta aula e o material do curso
-            </p>
-          </div>
-        </div>
-        <div className="p-4">
-          <TutorChat
-            courseId={cursoId}
-            subjectTitle={subjectTitle || undefined}
-            lessonTitle={lesson.title}
-            lessonContent={[conceito, lesson.transcript?.trim()]
-              .filter(Boolean)
-              .join("\n\n")
-              .slice(0, 4000)}
-            compact
-          />
-        </div>
+      <section>
+        <TutorChat
+          courseId={cursoId}
+          courseTitle={courseTitle}
+          subjectTitle={subjectTitle || undefined}
+          lessonTitle={lesson.title}
+          lessonContent={[conceito, lesson.transcript?.trim()]
+            .filter(Boolean)
+            .join("\n\n")
+            .slice(0, 4000)}
+          compact
+        />
       </section>
     </div>
   );
