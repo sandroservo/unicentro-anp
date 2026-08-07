@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
 import { z } from "zod";
 import { getAISettings, setAISettings, type AISettings } from "@/lib/settings";
 import { parseBody, apiError, ApiError } from "@/lib/api";
-
-const ADMIN_ROLES = ["ADMIN", "SUPER"];
+import { auth } from "@/auth";
+import { isAdminRole } from "@/lib/rbac";
 
 const settingsSchema = z.object({
   baseUrl: z.string().optional(),
@@ -29,24 +28,30 @@ function toResponse(settings: {
   };
 }
 
-export async function GET() {
+async function requireSettingsAccess() {
   const session = await auth();
-  const role = session?.user?.role;
-  if (!session || !role || !ADMIN_ROLES.includes(role)) {
-    return apiError("Não autorizado", 401);
-  }
+  if (!session?.user) throw new ApiError(401, "Não autorizado");
+  const canManage =
+    isAdminRole(session.user.role) ||
+    session.user.permissions?.includes("settings.manage");
+  if (!canManage) throw new ApiError(403, "Acesso negado");
+  return session;
+}
 
-  return NextResponse.json(toResponse(await getAISettings()));
+export async function GET() {
+  try {
+    await requireSettingsAccess();
+    return NextResponse.json(toResponse(await getAISettings()));
+  } catch (error) {
+    if (error instanceof ApiError) return apiError(error.message, error.status);
+    console.error("Erro ao carregar settings:", error);
+    return apiError("Erro interno do servidor", 500);
+  }
 }
 
 export async function PATCH(request: Request) {
-  const session = await auth();
-  const role = session?.user?.role;
-  if (!session || !role || !ADMIN_ROLES.includes(role)) {
-    return apiError("Não autorizado", 401);
-  }
-
   try {
+    await requireSettingsAccess();
     const body = await parseBody(settingsSchema, request);
     const updates: Partial<AISettings> = {};
 

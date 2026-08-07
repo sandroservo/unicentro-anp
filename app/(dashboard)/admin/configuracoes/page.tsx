@@ -25,9 +25,12 @@ export default function ConfiguracoesPage() {
 
   useEffect(() => {
     fetch("/api/admin/settings")
-      .then((res) => {
-        if (!res.ok) throw new Error("Não autorizado");
-        return res.json();
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(data.error || `Erro ${res.status}`);
+        }
+        return data;
       })
       .then((data) => {
         setForm({
@@ -36,7 +39,9 @@ export default function ConfiguracoesPage() {
           model: data.model || defaultForm.model,
         });
       })
-      .catch(() => setError("Erro ao carregar configurações"))
+      .catch((e: Error) =>
+        setError(e.message || "Erro ao carregar configurações")
+      )
       .finally(() => setLoading(false));
   }, []);
 
