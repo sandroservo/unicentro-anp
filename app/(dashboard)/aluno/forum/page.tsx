@@ -5,7 +5,6 @@ import { Header } from "@/components/layout/header";
 import { canPreviewStudentView } from "@/lib/enrollment-access";
 import { ForumClient, type Thread } from "./forum-client";
 
-// Aulas às quais o aluno tem acesso (matrícula na turma ou na matéria).
 function enrolledLessonWhere(userId: string) {
   return {
     module: {
@@ -53,7 +52,16 @@ export default async function ForumPage() {
             module: { select: { course: { select: { title: true } } } },
           },
         },
-        replies: { select: { isAI: true } },
+        replies: {
+          orderBy: { createdAt: "asc" },
+          select: {
+            id: true,
+            content: true,
+            isAI: true,
+            createdAt: true,
+            user: { select: { name: true } },
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
       take: 100,
@@ -65,7 +73,7 @@ export default async function ForumPage() {
         title: true,
         module: { select: { course: { select: { title: true } } } },
       },
-      orderBy: { title: "asc" },
+      orderBy: [{ module: { course: { title: "asc" } } }, { title: "asc" }],
       take: 200,
     }),
   ]);
@@ -76,7 +84,13 @@ export default async function ForumPage() {
     author: p.user.name || "Aluno",
     course: p.lesson.module.course.title,
     lesson: p.lesson.title,
-    replies: p.replies.length,
+    replies: p.replies.map((r) => ({
+      id: r.id,
+      content: r.content,
+      author: r.user.name || "Usuário",
+      isAI: r.isAI,
+      createdAt: relativeTime(r.createdAt),
+    })),
     upvotes: p.upvotes,
     resolved: p.isResolved,
     hasAIReply: p.isAI || p.replies.some((r) => r.isAI),
@@ -90,7 +104,7 @@ export default async function ForumPage() {
 
   const resolved = threads.filter((t) => t.resolved).length;
   const withAI = threads.filter((t) => t.hasAIReply).length;
-  const totalReplies = threads.reduce((acc, t) => acc + t.replies, 0);
+  const totalReplies = threads.reduce((acc, t) => acc + t.replies.length, 0);
   const stats = [
     { value: threads.length, label: "Discussões", tone: "text-foreground" },
     { value: resolved, label: "Resolvidas", tone: "text-primary" },
@@ -100,9 +114,16 @@ export default async function ForumPage() {
 
   return (
     <>
-      <Header title="Fórum" subtitle="Discussões e dúvidas dos cursos" />
+      <Header
+        title="Fórum"
+        subtitle={
+          isPreview
+            ? "Pré-visualização: discussões da plataforma"
+            : "Discussões e dúvidas das suas turmas"
+        }
+      />
       <div className="space-y-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {stats.map((s) => (
             <div
               key={s.label}

@@ -12,6 +12,7 @@ import {
   GraduationCap,
   MoreHorizontal,
   Eye,
+  MessageSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { isAdminRole } from "@/lib/rbac";
@@ -23,6 +24,12 @@ const adminItems: NavItem[] = [
   { icon: GraduationCap, label: "Painel Admin", href: "/admin" },
   { icon: Users, label: "Alunos", href: "/admin/alunos", permission: "students.read" },
   { icon: BookOpen, label: "Turmas", href: "/admin/cursos", permission: "courses.read" },
+  {
+    icon: MessageSquare,
+    label: "Fórum",
+    href: "/admin/forum",
+    permission: "courses.read",
+  },
   {
     icon: ClipboardList,
     label: "Banco de Questões",
