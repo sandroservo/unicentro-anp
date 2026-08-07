@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { ArrowLeft, Bell, LogOut, MoreHorizontal, Search } from "lucide-react";
+import { ArrowLeft, LogOut, MoreHorizontal, Search } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,6 +13,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "./theme-toggle";
+import { NotificationBell } from "./notification-bell";
 import { useSidebar } from "@/context/sidebar-context";
 import { Logo } from "./logo";
 import { StudentTopNav } from "./student-top-nav";
@@ -162,14 +163,7 @@ export function Topbar() {
                 </Link>
               )}
               <ThemeToggle />
-              <button
-                type="button"
-                className="relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                aria-label="Notificações"
-              >
-                <Bell className="h-5 w-5" />
-                <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-brand-500" />
-              </button>
+              {isAdmin && <NotificationBell />}
             </div>
 
             <DropdownMenu>
@@ -205,7 +199,13 @@ export function Topbar() {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={() => signOut({ callbackUrl: "/login" })}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    void (async () => {
+                      await signOut({ redirect: false });
+                      window.location.assign("/login");
+                    })();
+                  }}
                 >
                   <LogOut className="h-4 w-4" /> Sair
                 </DropdownMenuItem>
