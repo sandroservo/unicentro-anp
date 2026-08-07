@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
@@ -27,7 +26,9 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError(result.error);
+        setError(
+          "Email ou senha inválidos. Use email @unicentroma.edu.br — aluno: senha = CPF."
+        );
       } else {
         router.refresh();
         // Pegar sessão após login para redirecionar admin ao painel admin
@@ -57,7 +58,7 @@ export default function LoginPage() {
       {/* Esquerda: foto full-height com overlay (dropar public/login-bg.jpg; fallback gradiente da marca) */}
       <div
         className="hidden md:flex md:w-1/2 lg:w-3/5 bg-slate-900 bg-cover bg-center relative flex-col justify-end p-12"
-        style={{ backgroundImage: "url('/login-bg.jpg')" }}
+        style={{ backgroundImage: "url('/futu.png')" }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-slate-900/80 to-slate-950/90" />
         <div className="relative text-white max-w-md">
@@ -78,7 +79,9 @@ export default function LoginPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo.png" alt="UNICENTROMA" className="h-52 w-auto" />
             <h1 className="mt-6 text-xl font-semibold text-foreground">Bem-vindo de volta</h1>
-            <p className="text-sm text-muted-foreground">Entre na sua conta para continuar</p>
+            <p className="text-sm text-muted-foreground text-center">
+              Acesso com email institucional @unicentroma.edu.br
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -89,23 +92,29 @@ export default function LoginPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                Email institucional
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="nome@unicentroma.edu.br"
                 className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-800 caret-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-brand-300 focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:caret-white"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Senha</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                Senha
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Aluno: CPF · Usuário: sua senha"
                   className="w-full rounded-lg border border-gray-200 bg-white px-4 py-3 pr-11 text-gray-800 caret-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-brand-300 focus:ring-2 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:caret-white"
                   required
                 />
@@ -134,11 +143,10 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            Não tem uma conta?{" "}
-            <Link href="/register" className="text-primary font-medium hover:underline">
-              Cadastre-se
-            </Link>
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Aluno: email @unicentroma.edu.br e senha = CPF.
+            <br />
+            Equipe: email institucional e senha cadastrada.
           </p>
         </div>
       </div>

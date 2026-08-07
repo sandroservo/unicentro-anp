@@ -395,20 +395,24 @@ async function ensureStudent(opts: {
   email: string;
   name: string;
   matricula: string;
-  password: string;
+  cpf: string;
   roleId: string;
 }) {
+  // Senha do aluno = CPF (dígitos)
+  const password = await hash(opts.cpf, 12);
+
   const user = await prisma.user.upsert({
     where: { email: opts.email },
     update: {
       name: opts.name,
+      password,
       role: "ALUNO",
       roleId: opts.roleId,
     },
     create: {
       email: opts.email,
       name: opts.name,
-      password: opts.password,
+      password,
       role: "ALUNO",
       roleId: opts.roleId,
     },
@@ -416,10 +420,11 @@ async function ensureStudent(opts: {
 
   await prisma.studentProfile.upsert({
     where: { userId: user.id },
-    update: { matricula: opts.matricula, status: "ATIVO" },
+    update: { matricula: opts.matricula, cpf: opts.cpf, status: "ATIVO" },
     create: {
       userId: user.id,
       matricula: opts.matricula,
+      cpf: opts.cpf,
       status: "ATIVO",
     },
   });
@@ -480,14 +485,15 @@ async function main() {
   }
 
   const admin = await prisma.user.upsert({
-    where: { email: "admin@anp.com" },
+    where: { email: "admin@unicentroma.edu.br" },
     update: {
       name: "Carlos Admin",
+      password: hashedPassword,
       role: "ADMIN",
       roleId: roleIdBySlug.get("ADMINISTRADOR")!,
     },
     create: {
-      email: "admin@anp.com",
+      email: "admin@unicentroma.edu.br",
       name: "Carlos Admin",
       password: hashedPassword,
       role: "ADMIN",
@@ -496,14 +502,15 @@ async function main() {
   });
 
   const professor = await prisma.user.upsert({
-    where: { email: "professor@anp.com" },
+    where: { email: "professor@unicentroma.edu.br" },
     update: {
       name: "Maria Santos",
+      password: hashedPassword,
       role: "TEACHER",
       roleId: roleIdBySlug.get("PROFESSOR")!,
     },
     create: {
-      email: "professor@anp.com",
+      email: "professor@unicentroma.edu.br",
       name: "Maria Santos",
       password: hashedPassword,
       role: "TEACHER",
@@ -514,26 +521,26 @@ async function main() {
   const alunoRoleId = roleIdBySlug.get("ALUNO")!;
 
   const alunoEnf = await ensureStudent({
-    email: "aluno@anp.com",
+    email: "aluno@unicentroma.edu.br",
     name: "João Silva",
     matricula: "ENF2026001",
-    password: hashedPassword,
+    cpf: "52998224725",
     roleId: alunoRoleId,
   });
 
   const alunoDir = await ensureStudent({
-    email: "aluno.direito@anp.com",
+    email: "aluno.direito@unicentroma.edu.br",
     name: "Ana Oliveira",
     matricula: "DIR2026001",
-    password: hashedPassword,
+    cpf: "39053344705",
     roleId: alunoRoleId,
   });
 
   const alunoAdm = await ensureStudent({
-    email: "aluno.adm@anp.com",
+    email: "aluno.adm@unicentroma.edu.br",
     name: "Pedro Costa",
     matricula: "ADM2026001",
-    password: hashedPassword,
+    cpf: "15350946056",
     roleId: alunoRoleId,
   });
 
@@ -588,12 +595,12 @@ async function main() {
 
   console.log("✅ Matrículas, vínculos de matérias e progresso");
   console.log("\n🎉 Seed concluído!\n");
-  console.log("📋 Credenciais:");
-  console.log("   Admin:            admin@anp.com / 123456");
-  console.log("   Professor:        professor@anp.com / 123456");
-  console.log("   Aluno Enfermagem: aluno@anp.com / 123456");
-  console.log("   Aluna Direito:    aluno.direito@anp.com / 123456");
-  console.log("   Aluno Adm:        aluno.adm@anp.com / 123456");
+  console.log("📋 Credenciais (@unicentroma.edu.br):");
+  console.log("   Admin:            admin@unicentroma.edu.br / 123456");
+  console.log("   Professor:        professor@unicentroma.edu.br / 123456");
+  console.log("   Aluno Enfermagem: aluno@unicentroma.edu.br / CPF 52998224725");
+  console.log("   Aluna Direito:    aluno.direito@unicentroma.edu.br / CPF 39053344705");
+  console.log("   Aluno Adm:        aluno.adm@unicentroma.edu.br / CPF 15350946056");
   console.log("\n🏫 Turmas: Enfermagem, Direito, Administração (2026.1)");
   void admin;
   void professor;

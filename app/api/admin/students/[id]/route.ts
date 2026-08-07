@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { hash } from "bcryptjs";
 import prisma from "@/lib/prisma";
 import { parseBody, apiError, ApiError } from "@/lib/api";
 import { requirePermission } from "@/lib/authz";
@@ -22,14 +23,36 @@ export async function PATCH(request: Request, { params }: Ctx) {
       });
       if (dup) return apiError("Esta matrícula já existe", 409);
     }
+    if (data.cpf && data.cpf !== profile.cpf) {
+      const dup = await prisma.studentProfile.findUnique({
+        where: { cpf: data.cpf },
+      });
+      if (dup) return apiError("Este CPF já está cadastrado", 409);
+    }
+
+    // Se o CPF mudar, a senha de login do aluno também muda (senha = CPF)
+    const passwordUpdate =
+      data.cpf && data.cpf !== profile.cpf
+        ? { password: await hash(data.cpf, 12) }
+        : {};
 
     await prisma.studentProfile.update({
       where: { id },
       data: {
         ...(data.matricula ? { matricula: data.matricula } : {}),
+        ...(data.cpf ? { cpf: data.cpf } : {}),
         ...(data.phone !== undefined ? { phone: data.phone || null } : {}),
         ...(data.status ? { status: data.status } : {}),
-        ...(data.name ? { user: { update: { name: data.name } } } : {}),
+        ...((data.name || Object.keys(passwordUpdate).length > 0)
+          ? {
+              user: {
+                update: {
+                  ...(data.name ? { name: data.name } : {}),
+                  ...passwordUpdate,
+                },
+              },
+            }
+          : {}),
       },
     });
 

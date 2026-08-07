@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { userCreateSchema, userUpdateSchema, ROLE_OPTIONS } from "@/lib/validations/user";
+import { userCreateSchema, userUpdateSchema, ASSIGNABLE_ROLE_OPTIONS } from "@/lib/validations/user";
 
 export type UserRow = {
   id: string;
@@ -37,7 +37,7 @@ export function UserDialog({ mode, user, trigger }: Props) {
         name: user?.name ?? "",
         email: user?.email ?? "",
         password: "",
-        role: user?.roleRel?.slug ?? "ALUNO",
+        role: user?.roleRel?.slug ?? ASSIGNABLE_ROLE_OPTIONS[0].slug,
       });
     }
   }, [open, user, reset]);
@@ -79,23 +79,40 @@ export function UserDialog({ mode, user, trigger }: Props) {
           </div>
           {!isEdit && (
             <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" {...register("email")} />
-              {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
+              <Label htmlFor="email">Email institucional</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="nome@unicentroma.edu.br"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-600">{errors.email.message}</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Apenas @unicentroma.edu.br
+              </p>
             </div>
           )}
           <div className="space-y-1">
             <Label htmlFor="role">Tipo de usuário</Label>
             <select id="role" className="w-full h-9 rounded-md border border-border bg-background px-2 text-sm" {...register("role")}>
-              {ROLE_OPTIONS.map((r) => (
+              {ASSIGNABLE_ROLE_OPTIONS.map((r) => (
                 <option key={r.slug} value={r.slug}>{r.name}</option>
               ))}
             </select>
           </div>
           <div className="space-y-1">
             <Label htmlFor="password">{isEdit ? "Nova senha (opcional)" : "Senha"}</Label>
-            <Input id="password" type="password" {...register("password")} />
-            {errors.password && <p className="text-sm text-red-600">{errors.password.message}</p>}
+            <Input
+              id="password"
+              type="password"
+              placeholder="Senha de acesso"
+              {...register("password")}
+            />
+            {errors.password && (
+              <p className="text-sm text-red-600">{errors.password.message}</p>
+            )}
           </div>
           <DialogFooter>
             <Button type="submit" disabled={mutation.isPending}>

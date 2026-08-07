@@ -17,10 +17,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { studentCreateSchema, studentUpdateSchema } from "@/lib/validations/student";
+import { maskCPF, maskPhone } from "@/lib/masks";
 
 export type StudentRow = {
   id: string;
   matricula: string;
+  cpf: string | null;
   phone: string | null;
   status: string;
   user: { id: string; name: string; email: string };
@@ -36,8 +38,8 @@ type FormValues = {
   name: string;
   email: string;
   matricula: string;
+  cpf: string;
   phone?: string;
-  password?: string;
 };
 
 export function StudentDialog({ mode, student, trigger }: Props) {
@@ -49,6 +51,7 @@ export function StudentDialog({ mode, student, trigger }: Props) {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(
@@ -64,9 +67,10 @@ export function StudentDialog({ mode, student, trigger }: Props) {
               name: student.user.name,
               email: student.user.email,
               matricula: student.matricula,
-              phone: student.phone ?? "",
+              cpf: maskCPF(student.cpf ?? ""),
+              phone: maskPhone(student.phone ?? ""),
             }
-          : { name: "", email: "", matricula: "", phone: "", password: "" }
+          : { name: "", email: "", matricula: "", cpf: "", phone: "" }
       );
     }
   }, [open, isEdit, student, reset]);
@@ -76,8 +80,14 @@ export function StudentDialog({ mode, student, trigger }: Props) {
       const url = isEdit ? `/api/admin/students/${student!.id}` : "/api/admin/students";
       const method = isEdit ? "PATCH" : "POST";
       const body = isEdit
-        ? { name: values.name, matricula: values.matricula, phone: values.phone }
-        : values;
+        ? { name: values.name, matricula: values.matricula, cpf: values.cpf, phone: values.phone }
+        : {
+            name: values.name,
+            email: values.email,
+            matricula: values.matricula,
+            cpf: values.cpf,
+            phone: values.phone,
+          };
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -110,36 +120,65 @@ export function StudentDialog({ mode, student, trigger }: Props) {
         >
           <div className="space-y-1">
             <Label htmlFor="name">Nome</Label>
-            <Input id="name" {...register("name")} />
+            <Input id="name" placeholder="Nome completo do aluno" {...register("name")} />
             {errors.name && <p className="text-sm text-red-600">{errors.name.message}</p>}
           </div>
           {!isEdit && (
             <div className="space-y-1">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" {...register("email")} />
-              {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
+              <Label htmlFor="email">Email institucional</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="nome@unicentroma.edu.br"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-600">{errors.email.message}</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                Apenas @unicentroma.edu.br
+              </p>
             </div>
           )}
-          <div className="space-y-1">
-            <Label htmlFor="matricula">Matrícula</Label>
-            <Input id="matricula" {...register("matricula")} />
-            {errors.matricula && (
-              <p className="text-sm text-red-600">{errors.matricula.message}</p>
-            )}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
+              <Label htmlFor="matricula">Matrícula</Label>
+              <Input id="matricula" placeholder="Ex.: ENF2026001" {...register("matricula")} />
+              {errors.matricula && (
+                <p className="text-sm text-red-600">{errors.matricula.message}</p>
+              )}
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="cpf">CPF (senha de acesso)</Label>
+              <Input
+                id="cpf"
+                inputMode="numeric"
+                maxLength={14}
+                placeholder="000.000.000-00"
+                {...register("cpf", {
+                  onChange: (e) => setValue("cpf", maskCPF(e.target.value)),
+                })}
+              />
+              {errors.cpf && (
+                <p className="text-sm text-red-600">{errors.cpf.message}</p>
+              )}
+              <p className="text-xs text-muted-foreground">
+                O aluno entra com o CPF como senha
+              </p>
+            </div>
           </div>
           <div className="space-y-1">
             <Label htmlFor="phone">Telefone</Label>
-            <Input id="phone" {...register("phone")} />
+            <Input
+              id="phone"
+              inputMode="tel"
+              maxLength={15}
+              placeholder="(00) 00000-0000"
+              {...register("phone", {
+                onChange: (e) => setValue("phone", maskPhone(e.target.value)),
+              })}
+            />
           </div>
-          {!isEdit && (
-            <div className="space-y-1">
-              <Label htmlFor="password">Senha inicial</Label>
-              <Input id="password" type="password" {...register("password")} />
-              {errors.password && (
-                <p className="text-sm text-red-600">{errors.password.message}</p>
-              )}
-            </div>
-          )}
           <DialogFooter>
             <Button type="submit" disabled={mutation.isPending}>
               {mutation.isPending ? "Salvando..." : "Salvar"}

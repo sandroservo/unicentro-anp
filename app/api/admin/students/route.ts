@@ -52,8 +52,13 @@ export async function POST(request: Request) {
       where: { matricula: data.matricula },
     });
     if (dupMat) return apiError("Esta matrícula já existe", 409);
+    const dupCpf = await prisma.studentProfile.findUnique({
+      where: { cpf: data.cpf },
+    });
+    if (dupCpf) return apiError("Este CPF já está cadastrado", 409);
 
-    const hashedPassword = await hash(data.password, 12);
+    // Senha do aluno = CPF (apenas dígitos)
+    const hashedPassword = await hash(data.cpf, 12);
 
     const user = await prisma.user.create({
       data: {
@@ -65,6 +70,7 @@ export async function POST(request: Request) {
         studentProfile: {
           create: {
             matricula: data.matricula,
+            cpf: data.cpf,
             phone: data.phone || null,
           },
         },

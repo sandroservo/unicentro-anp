@@ -72,9 +72,11 @@ Acesse [http://localhost:3000](http://localhost:3000)
 
 | Perfil | Email | Senha |
 |--------|-------|-------|
-| Aluno | aluno@anp.com | 123456 |
-| Professor | professor@anp.com | 123456 |
-| Admin | admin@anp.com | 123456 |
+| Aluno | aluno@unicentroma.edu.br | CPF `52998224725` |
+| Professor | professor@unicentroma.edu.br | 123456 |
+| Admin | admin@unicentroma.edu.br | 123456 |
+
+Login apenas com email `@unicentroma.edu.br`. Alunos usam o **CPF** como senha; demais usuários usam senha normal.
 
 ## 📁 Estrutura do Projeto
 
